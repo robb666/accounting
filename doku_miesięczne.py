@@ -235,32 +235,27 @@ def uniqa():
 
 
 
-### WARTA ###
-def warta():
-    # try:
-        options = webdriver.ChromeOptions()
-        preferences = {'download.default_directory' : "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
-        options.add_experimental_option("prefs", preferences)
-        driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
 
-        # try :
+def warta():
+    options = webdriver.ChromeOptions()
+    preferences = {'download.default_directory' : "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    options.add_experimental_option("prefs", preferences)
+    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+    try :
         url_warta = 'https://cas.warta.pl/cas/login?service=https%3A%2F%2Feagent.warta.pl%2Fview360%2Flogin%2Fcas'
         driver.get(url_warta)
         driver.find_element_by_id('username').send_keys(warta_l)
         driver.find_element_by_id('password').send_keys(warta_h)
         driver.find_element_by_name('submit').click()
-
         try :
             if driver.find_element_by_name('continue') != 0 :
                 driver.find_element_by_name('continue').click()
         except :
             pass
-        # time.sleep(2.1)
-        # driver.find_element_by_css_selector().click()
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
                                                                        "//*[contains(text(), 'Majątek')]"))).click()
         time.sleep(0.9)
-        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152002/agent/list/?aid=1770160&agentOuid=A00005152002'
+        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list/?aid=1770143&agentOuid=A00005152001'
         driver.get(rozliczenia_agencji)
         time.sleep(1.1)
         WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH, "//*[contains(text(), 'RSP')]")))[0].click()
@@ -272,14 +267,11 @@ def warta():
         time.sleep(2)
         driver.quit()
         print('Warta ok')
-
-        # except:
-        #     print('Brak WARTA')
-        #     pass
-
+    except:
+        print('Brak WARTA')
+        pass
 
 
-### WARTA ŻYCIE ###
 def warta_ż():
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO",
@@ -304,7 +296,7 @@ def warta_ż():
                                                                        "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(8) > input:nth-child(1)"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                        "#Cont\.srodek\.1 > div > form > table > tbody > tr.td_line2 > td:nth-child(8) > a > img"))).click()
-        time.sleep(9)
+        time.sleep(99999999999999)
         driver.quit()
         print('Warta Ż ok')
 
@@ -386,8 +378,8 @@ def pzu():
 # hestia()
 # interrisk()
 # uniqa()
-warta()
-# warta_ż()
+# warta()
+warta_ż()
 # unilink()
 # pzu()
 
