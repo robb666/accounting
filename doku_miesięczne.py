@@ -287,16 +287,21 @@ def warta_ż():
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "PASSWD_13"))).send_keys(warta_ż_h)
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "zaloguj"))).click()
 
-        WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                       "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(2) > select"))).click()
+        WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(2) > select"))).click()
+        # WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR, "tr.td_line1:nth-child(5) > td:nth-child(8) > a:nth-child(1)"))).click()
+        # time.sleep(99999999999999)
+
+
 
         WebDriverWait(driver, 4).until(
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'fakturowanie')]"))).click()
+
+
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                        "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(8) > input:nth-child(1)"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                        "#Cont\.srodek\.1 > div > form > table > tbody > tr.td_line2 > td:nth-child(8) > a > img"))).click()
-        time.sleep(99999999999999)
+
         driver.quit()
         print('Warta Ż ok')
 
