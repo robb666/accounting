@@ -1,0 +1,37 @@
+
+wiener_ks.py
+warta_Ż_ks.py
+warta_ks.py
+*.manifest
+*.toc
+*.pyc
+build/logowanie_do_k/base_library.zip
+build/logowanie_do_k/PKG-00.pkg
+build/logowanie_do_k/PYZ-00.pyz
+build/logowanie_do_k/xref-logowanie_do_k.html
+*.exe
+*.spec
+*.pickle
+kopia zapasowa quickstart.txt
+JetBrains PyCharm Community Edition 2018.3.5 x64.lnk
+geckodriver.log
+credentials.json
+dist/debug.log
+build/logowanie_do_k/warn-logowanie_do_k.txt
+AXA_i_Wienner_GmailAPI.py
+accounting/
+allianz.py
+aws.py
+AXA_i_Wienner_GmailAPI.py
+AXA_i_Wienner_GmailAPI.py
+compensa_ks.py
+find_window.py
+hestia_ks.py
+logowanie_do_k.py
+pobieranie raportu AXA.py
+proama.py
+uniqa_ks.py
+quickstart.py
+loop over list.py
+L_H_ks.py
+generali_ks.py
