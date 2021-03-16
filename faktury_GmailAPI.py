@@ -266,6 +266,7 @@ def a_z_invoice(fv, message_id, msg):
 
 if __name__ == '__main__':
     service = main()
+
     for fv, id, message in labels(service):
         att_id = attachment_id(fv, message)
         axa_invoice(fv, id, message)
