@@ -8,12 +8,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
-from faktury_GmailAPI import main
+from faktury_GmailAPI import email
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
      unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h
 import time
 
+
+email()
 
 
 def santander():
@@ -343,7 +345,7 @@ def pzu():
         pass
 
 
-santander()
+# santander()
 allianz()
 compensa()
 generali()

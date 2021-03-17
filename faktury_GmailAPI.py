@@ -12,6 +12,7 @@ import re
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://mail.google.com/']
 
+
 def main():
     """Shows basic usage of the Gmail API.
     Lists the user's Gmail labels.
@@ -58,12 +59,6 @@ def main():
     # print()
     # print(user_email)
     # print()
-
-
-
-
-
-                ###############   AXA   #####################
 
 
 def labels(service):
@@ -264,11 +259,8 @@ def a_z_invoice(fv, message_id, msg):
             print('Brak A-Z')
 
 
-if __name__ == '__main__':
-    service = main()
-
+def email():
     for fv, id, message in labels(service):
-        att_id = attachment_id(fv, message)
         axa_invoice(fv, id, message)
         wiener_invoice(fv, id, message)
         insly_invoice(fv, id, message)
@@ -278,3 +270,9 @@ if __name__ == '__main__':
         tuw_invoice(fv, id, message)
         tuz_invoice(fv, id, message)
         a_z_invoice(fv, id, message)
+
+
+service = main()
+
+if __name__ == '__main__':
+    email()
