@@ -16,16 +16,11 @@ import time
 
 
 
-
-
-### SANTANDER wyciąg ###
 def santander():
-    ### CHROME ###
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-
     try:
         url_santander = 'https://santander.pl/'
         driver.get(url_santander)
@@ -50,12 +45,10 @@ def santander():
         driver.find_element_by_class_name('logout').click()
         driver.quit()
         print('Santander ok')
-
     except:
         print('Brak wyciągu bankowego')
         driver.quit()
         pass
-
 
 
 def allianz():
@@ -79,31 +72,33 @@ def allianz():
         time.sleep(4)
         driver.quit()
         print('Allianz ok')
-
     except:
         time.sleep(1)
-        print()
         print('Brak Allianz')
         driver.quit()
-        pass
+
 
 
 def compensa():
     try:
-        driver_F = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe')#, options=options)
+        driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe')#, options=options)
         url_compensa = 'https://cportal.compensa.pl/'
-        driver_F.get(url_compensa)
-        WebDriverWait(driver_F, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.input'))).send_keys(compensa_l)
-        driver_F.find_element_by_css_selector('div.fl:nth-child(5) > input:nth-child(1)').send_keys(compensa_h)
-        WebDriverWait(driver_F, 5).until(EC.presence_of_element_located((By.ID, "btnLogin"))).click()
-        WebDriverWait(driver_F, 5).until(EC.presence_of_element_located((By.ID, 'News')))
+        driver.get(url_compensa)
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.input'))).send_keys(compensa_l)
+        driver.find_element_by_css_selector('div.fl:nth-child(5) > input:nth-child(1)').send_keys(compensa_h)
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, "btnLogin"))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'News')))
         url_compensa = 'https://cportal.compensa.pl/#MyCommissions'
-        driver_F.get(url_compensa)
-        driver_F.set_page_load_timeout(40)
-        driver_F.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/compensa.png')
+        time.sleep(1)
+        driver.get(url_compensa)
+        driver.set_page_load_timeout(30)
+        time.sleep(3)
+        driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/compensa.png')
+        driver.close()
         print('Compensa ok')
 
     except Exception as e:
+        driver.close()
         print('Brak Compensa')
 
 
@@ -294,29 +289,23 @@ def warta_ż():
         print('Brak Warta Ż')
 
 
-
-
-### UNILINK ###
 def unilink():
-    ### CHROME ###
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-
     try:
         url_unilink = 'https://unilink.pl/logowanie'
         driver.get(url_unilink)
-
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "submit"))).click()
-        time.sleep(1.4)
+        time.sleep(2)
         url_unilink_faktury = 'https://unilink.pl/pokaz/4020'
         driver.get(url_unilink_faktury)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located(
-            (By.XPATH, '//*[@id="searchformlist"]/table/tbody/tr[2]/td[13]/div[1]/a/i'))).click()
-        time.sleep(3)
+        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH,
+                                            '//*[@id="searchformlist"]/table/tbody/tr[2]/td[13]/div[1]/a/i'))).click()
+        time.sleep(4)
         driver.quit()
         print('Unilink ok')
     except:
@@ -325,16 +314,11 @@ def unilink():
         pass
 
 
-
-
-### PZU ###
 def pzu():
-    ### CHROME ###
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-
     try:
         driver.get('https://everest.pzu.pl/pc/PolicyCenter.do')
         login = driver.find_element_by_id('input_1')
@@ -347,13 +331,12 @@ def pzu():
         hasło = driver.find_element_by_id('Login:LoginScreen:LoginDV:password-inputEl')
         hasło.send_keys(pzu_h)
         driver.find_element_by_id('Login:LoginScreen:LoginDV:submit').click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'treeview-1059-record-9'))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#Desktop\:MenuLinks\:Desktop_ProducerStatementReportOnlinePzu > div'))).click()
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'ProducerStatementReportOnlinePzu:0:statementTab-btnInnerEl'))).click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'ProducerStatementReportOnlinePzu:0:StatementsLV:1:DownloadPdfFileLink'))).click()
-        time.sleep(2)
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
+        time.sleep(4)
         driver.quit()
         print('PZU ok')
-
     except:
         driver.quit()
         print('Brak PZU')
@@ -362,17 +345,18 @@ def pzu():
 
 # santander()
 # allianz()
-# compensa()
+compensa()
 # generali()
 # hestia()
 # interrisk()
 # uniqa()
 # warta()
 # warta_ż()
-unilink()
+# unilink()
 # pzu()
 
-
+for i in range(10):
+    compensa()
 
 
 
