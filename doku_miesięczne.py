@@ -1,3 +1,4 @@
+import os
 import multiprocessing
 import requests
 from selenium import webdriver
@@ -57,9 +58,7 @@ def santander():
 
 
 
-### ALLIANZ ###
 def allianz():
-    ### CHROME ###
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
     options.add_experimental_option("prefs", preferences)
@@ -77,7 +76,8 @@ def allianz():
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
         time.sleep(0.8)
         WebDriverWait(driver, 7).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
-        time.sleep(3)
+        time.sleep(4)
+        driver.quit()
         print('Allianz ok')
 
     except:
@@ -88,13 +88,6 @@ def allianz():
         pass
 
 
-
-###################
-### AXA, WIENER ###
-###################
-
-
-### COMPENSA ###
 def compensa():
     try:
         driver_F = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe')#, options=options)
@@ -106,12 +99,12 @@ def compensa():
         WebDriverWait(driver_F, 5).until(EC.presence_of_element_located((By.ID, 'News')))
         url_compensa = 'https://cportal.compensa.pl/#MyCommissions'
         driver_F.get(url_compensa)
-        driver_F.set_page_load_timeout(10)
+        driver_F.set_page_load_timeout(40)
         driver_F.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/compensa.png')
         print('Compensa ok')
+
     except Exception as e:
         print('Brak Compensa')
-
 
 
 def generali():
@@ -128,6 +121,8 @@ def generali():
         url_accounting = 'https://portal.generali.pl/mikado/commissions/current'
         driver.get(url_accounting)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//*[@class='far fa-file-zip-o']"))).click()
+        time.sleep(9)
+        driver.close()
         print('Generali ok')
     except:
         print('Brak Generali')
@@ -135,7 +130,6 @@ def generali():
         pass
 
 
-### HESTIA ###
 def hestia():
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
@@ -230,6 +224,7 @@ def uniqa():
         driver.quit()
         print('Uniqa ok')
     except:
+        driver.quit()
         print('Brak UNIQA')
         pass
 
@@ -268,6 +263,7 @@ def warta():
         driver.quit()
         print('Warta ok')
     except:
+        driver.quit()
         print('Brak WARTA')
         pass
 
@@ -278,33 +274,21 @@ def warta_ż():
                    'plugins.always_open_pdf_externally': True}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-
     try:
         url_warta_ż = 'https://eplatforma.warta.pl/'
         driver.get(url_warta_ż)
-
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "LOGNAME_13"))).send_keys(warta_ż_l)
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "PASSWD_13"))).send_keys(warta_ż_h)
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "zaloguj"))).click()
-
-        WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(2) > select"))).click()
-        # WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR, "tr.td_line1:nth-child(5) > td:nth-child(8) > a:nth-child(1)"))).click()
-        # time.sleep(99999999999999)
-
-
-
         WebDriverWait(driver, 4).until(
-            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'fakturowanie')]"))).click()
-
-
+            EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'samorozliczenie')]"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                       "#Cont\.srodek\.1 > div > form > table > tbody > tr.filtr > th:nth-child(8) > input:nth-child(1)"))).click()
+                                                                       ".filtr > th:nth-child(8) > input:nth-child(1)"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                       "#Cont\.srodek\.1 > div > form > table > tbody > tr.td_line2 > td:nth-child(8) > a > img"))).click()
-
+                                                                       'tr.td_line2:nth-child(4) > td:nth-child(8) > a:nth-child(1)'))).click()
+        time.sleep(9)
         driver.quit()
         print('Warta Ż ok')
-
     except:
         driver.quit()
         print('Brak Warta Ż')
@@ -384,8 +368,8 @@ def pzu():
 # interrisk()
 # uniqa()
 # warta()
-warta_ż()
-# unilink()
+# warta_ż()
+unilink()
 # pzu()
 
 
