@@ -15,9 +15,6 @@ from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, g
 import time
 
 
-email()
-
-
 def santander():
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
@@ -78,7 +75,6 @@ def allianz():
         time.sleep(1)
         print('Brak Allianz')
         driver.quit()
-
 
 
 def compensa():
@@ -143,7 +139,7 @@ def hestia():
         driver.get(url_agent)
         url_agent = 'https://partner.ergohestia.pl/#/partner' + '/commissionHistory'
         driver.get(url_agent)
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,
+        WebDriverWait(driver, 11).until(EC.presence_of_element_located((By.XPATH,
                                                                         '/html/body/div/div[3]/div[2]/div/ng-include/'
                                                                         'div/div[3]/div/div/div/div[2]/table/tbody/'
                                                                         'tr[1]/td[6]/ng-include/a'))).click()
@@ -151,14 +147,12 @@ def hestia():
         faktura = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,
                                                                         '/html/body/div/div[3]/div[2]/div/ul/li[2]/a')))
         faktura.click()
-        time.sleep(2)
+        time.sleep(4)
         driver.quit()
         print('Hestia ok')
     except:
         print('Brak Hestii')
         driver.quit()
-
-
 
 
 def interrisk() :
@@ -224,8 +218,6 @@ def uniqa():
         driver.quit()
         print('Brak UNIQA')
         pass
-
-
 
 
 def warta():
@@ -346,16 +338,17 @@ def pzu():
 
 
 # santander()
-allianz()
-compensa()
-generali()
+# email()
+# allianz()
+# compensa()
+# generali()
 hestia()
-interrisk()
-uniqa()
-warta()
-warta_ż()
-unilink()
-pzu()
+# interrisk()
+# uniqa()
+# warta()
+# warta_ż()
+# unilink()
+# pzu()
 
 
 
