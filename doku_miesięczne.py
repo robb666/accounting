@@ -294,11 +294,14 @@ def unilink():
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "submit"))).click()
-        time.sleep(2)
+        time.sleep(1)
         url_unilink_faktury = 'https://unilink.pl/pokaz/4020'
         driver.get(url_unilink_faktury)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH,
-                                            '//*[@id="searchformlist"]/table/tbody/tr[2]/td[13]/div[1]/a/i'))).click()
+        try:
+            WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH,
+                                                '//*[@id="searchformlist"]/table/tbody/tr[2]/td[13]/div[1]/a/i'))).click()
+        except:
+            unilink()
         time.sleep(4)
         driver.quit()
         print('Unilink ok')
@@ -342,12 +345,12 @@ def pzu():
 # allianz()
 # compensa()
 # generali()
-hestia()
+# hestia()
 # interrisk()
 # uniqa()
 # warta()
 # warta_ż()
-# unilink()
+unilink()
 # pzu()
 
 
