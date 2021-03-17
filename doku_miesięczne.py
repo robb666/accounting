@@ -25,7 +25,7 @@ def santander():
         url_santander = 'https://santander.pl/'
         driver.get(url_santander)
         driver.find_element_by_partial_link_text('Zaloguj').click()
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 9).until(
             EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Santander interne"))).click()
         try:
             driver.switch_to.window(driver.window_handles[1])
@@ -36,7 +36,7 @@ def santander():
         time.sleep(2)
         dalej = driver.find_element_by_id('okBtn2')
         dalej.click()
-        hasło_san = WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "ordinarypin")))
+        hasło_san = WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ordinarypin")))
         hasło_san.send_keys(san_h)
         driver.find_element_by_id('okBtn2').click()
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'favourite-element'))).click()
@@ -66,9 +66,9 @@ def allianz():
         hasło.send_keys(allianz_h)
         driver.find_element_by_name('submit').click()
         driver.get('https://chuck.allianz.pl/agent/#/invoices')
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
         time.sleep(0.8)
-        WebDriverWait(driver, 7).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
+        WebDriverWait(driver, 9).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
         time.sleep(4)
         driver.quit()
         print('Allianz ok')
@@ -109,12 +109,12 @@ def generali():
     try:
         url_generali = 'https://portal.generali.pl/auth/login?service=https%3A%2F%2Fportal.generali.pl%2Flogin%2Fcas'
         driver.get(url_generali)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username'))).send_keys(generali_l)
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username'))).send_keys(generali_l)
         driver.find_element_by_css_selector('#password').send_keys(generali_h)
         driver.find_element_by_css_selector('#fm1 > div.login > input[type=submit]:nth-child(6)').click()
         url_accounting = 'https://portal.generali.pl/mikado/commissions/current'
         driver.get(url_accounting)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//*[@class='far fa-file-zip-o']"))).click()
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//*[@class='far fa-file-zip-o']"))).click()
         time.sleep(9)
         driver.close()
         print('Generali ok')
@@ -134,7 +134,7 @@ def hestia():
         driver.get(url_santander)
         login_hes = driver.find_element_by_id('input_1').send_keys(hestia_l)
         hasło_hes = driver.find_element_by_id('input_2').send_keys(hestia_h)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
                                                                 '//*[@id="auth_form"]/div[3]/div[4]/button'))).click()
         url_agent = 'https://partner.ergohestia.pl/#/partner'
         driver.get(url_agent)
@@ -165,27 +165,27 @@ def interrisk() :
         url_interrisk = 'https://portal.interrisk.pl/Zaloguj'
         driver.get(url_interrisk)
         driver.find_element_by_id('ctl00_cph1_uxLogin_UserName').send_keys(interrisk_l)
-        WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID,
                                                                 "ctl00_cph1_uxLogin_Password"))).send_keys(interrisk_h)
-        WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.ID, "ctl00_cph1_uxLogin_LoginButton"))).click()
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ctl00_cph1_uxLogin_LoginButton"))).click()
 
         url_interrisk_prow = 'https://portal.interrisk.pl/Rozliczenia/NotyProwizyjne/Przegladaj'
         driver.get(url_interrisk_prow)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                        "#ctl00_ctl00_cph1_cph1_search"))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
                             '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[6]/input'))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID,
                                                                         'ctl00_ctl00_cph1_cph1_cbNoteOnDemand'))).click()
         time.sleep(1)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                         "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                        "#ctl00_ctl00_cph1_cph1_search"))).click()
         try :
-            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
+            WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
                             '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[6]/input'))).click()
-            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+            WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                             "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
         except :
             pass
@@ -197,8 +197,6 @@ def interrisk() :
         print('Brak InterRisk')
 
 
-
-### UNIQA ###
 def uniqa():
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
@@ -363,8 +361,9 @@ if __name__ == '__main__':
 
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
 
-    email()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-        for n in range(len(tasks)):
-            executor.submit(tasks[n])
+    # email()
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    #     for n in range(len(tasks)):
+    #         executor.submit(tasks[n])
 
+    interrisk()
