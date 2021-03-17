@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
+import concurrent.futures
 from faktury_GmailAPI import email
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
@@ -164,20 +165,28 @@ def interrisk() :
         url_interrisk = 'https://portal.interrisk.pl/Zaloguj'
         driver.get(url_interrisk)
         driver.find_element_by_id('ctl00_cph1_uxLogin_UserName').send_keys(interrisk_l)
-        WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID, "ctl00_cph1_uxLogin_Password"))).send_keys(interrisk_h)
+        WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.ID,
+                                                                "ctl00_cph1_uxLogin_Password"))).send_keys(interrisk_h)
         WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.ID, "ctl00_cph1_uxLogin_LoginButton"))).click()
 
         url_interrisk_prow = 'https://portal.interrisk.pl/Rozliczenia/NotyProwizyjne/Przegladaj'
         driver.get(url_interrisk_prow)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#ctl00_ctl00_cph1_cph1_search"))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[6]/input'))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, 'ctl00_ctl00_cph1_cph1_cbNoteOnDemand'))).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                                       "#ctl00_ctl00_cph1_cph1_search"))).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
+                            '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[6]/input'))).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID,
+                                                                        'ctl00_ctl00_cph1_cph1_cbNoteOnDemand'))).click()
         time.sleep(1)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#ctl00_ctl00_cph1_cph1_search"))).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                                        "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                                       "#ctl00_ctl00_cph1_cph1_search"))).click()
         try :
-            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[6]/input'))).click()
-            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
+                            '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[6]/input'))).click()
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                                            "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
         except :
             pass
         time.sleep(1)
@@ -197,7 +206,8 @@ def uniqa():
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     payload = {'login': uniqa_l,
                'password': uniqa_h}
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                                                                                    'Chrome/73.0.3683.86 Safari/537.36'}
     try:
         with requests.Session() as s:
             url_post_login = 'https://pos.uniqa.pl/pl/login_fe'
@@ -239,15 +249,20 @@ def warta():
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
                                                                        "//*[contains(text(), 'Majątek')]"))).click()
         time.sleep(0.9)
-        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list/?aid=1770143&agentOuid=A00005152001'
+        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list' \
+                              '/?aid=1770143&agentOuid=A00005152001'
         driver.get(rozliczenia_agencji)
         time.sleep(1.1)
-        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH, "//*[contains(text(), 'RSP')]")))[0].click()
-        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "settlement-details-documents__content__item__list__elem")))[2].click()
+        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH,
+                                                                            "//*[contains(text(), 'RSP')]")))[0].click()
+        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.CLASS_NAME,
+                                                "settlement-details-documents__content__item__list__elem")))[2].click()
         driver.get(rozliczenia_agencji)
         time.sleep(0.9)
-        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH, "//*[contains(text(), 'RSP')]")))[1].click()
-        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "settlement-details-documents__content__item__list__elem")))[2].click()
+        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH,
+                                                                            "//*[contains(text(), 'RSP')]")))[1].click()
+        WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.CLASS_NAME,
+                                                "settlement-details-documents__content__item__list__elem")))[2].click()
         time.sleep(2)
         driver.quit()
         print('Warta ok')
@@ -272,9 +287,9 @@ def warta_ż():
         WebDriverWait(driver, 4).until(
             EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'samorozliczenie')]"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                       ".filtr > th:nth-child(8) > input:nth-child(1)"))).click()
+                                                             ".filtr > th:nth-child(8) > input:nth-child(1)"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                                       'tr.td_line2:nth-child(4) > td:nth-child(8) > a:nth-child(1)'))).click()
+                                                'tr.td_line2:nth-child(4) > td:nth-child(8) > a:nth-child(1)'))).click()
         time.sleep(9)
         driver.quit()
         print('Warta Ż ok')
@@ -328,9 +343,12 @@ def pzu():
         hasło = driver.find_element_by_id('Login:LoginScreen:LoginDV:password-inputEl')
         hasło.send_keys(pzu_h)
         driver.find_element_by_id('Login:LoginScreen:LoginDV:submit').click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#Desktop\:MenuLinks\:Desktop_ProducerStatementReportOnlinePzu > div'))).click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'ProducerStatementReportOnlinePzu:0:statementTab-btnInnerEl'))).click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                        '#Desktop\:MenuLinks\:Desktop_ProducerStatementReportOnlinePzu > div'))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,
+                                                'ProducerStatementReportOnlinePzu:0:statementTab-btnInnerEl'))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
         time.sleep(4)
         driver.quit()
         print('PZU ok')
@@ -340,83 +358,13 @@ def pzu():
         pass
 
 
-# santander()
-# email()
-# allianz()
-# compensa()
-# generali()
-# hestia()
-# interrisk()
-# uniqa()
-# warta()
-# warta_ż()
-unilink()
-# pzu()
+if __name__ == '__main__':
+    # multiprocessing.freeze_support()
 
+    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
 
+    email()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        for n in range(len(tasks)):
+            executor.submit(tasks[n])
 
-
-
-
-# if __name__ == '__main__':
-#     # multiprocessing.freeze_support()
-#
-#     p1 = multiprocessing.Process(target=santander)
-#     p2 = multiprocessing.Process(target=allianz)
-#     p3 = multiprocessing.Process(target=main)        ### AXA | WIENER | INSLY ###
-#     p4 = multiprocessing.Process(target=compensa)
-#     p5 = multiprocessing.Process(target=generali)
-#     p6 = multiprocessing.Process(target=hestia)
-#     p7 = multiprocessing.Process(target=interrisk)
-#     p8 = multiprocessing.Process(target=proama)
-#     p9 = multiprocessing.Process(target=uniqa)
-#     p10 = multiprocessing.Process(target=warta)
-#     p11 = multiprocessing.Process(target=warta_ż)
-#     p12 = multiprocessing.Process(target=unilink)
-#     p13 = multiprocessing.Process(target=pzu)
-#
-# ##################
-#
-#     p1.start()
-#     p2.start()
-#     p3.start()
-#
-#     p1.join()
-#     p2.join()
-#     p3.join()
-#
-# ###################
-#
-#     p4.start()
-#     p5.start()
-#     p6.start()
-#
-#     p4.join()
-#     p5.join()
-#     p6.join()
-#
-# ####################
-#
-#     p7.start()
-#     p8.start()
-#     p9.start()
-#
-#     p7.join()
-#     p8.join()
-#     p9.join()
-#
-# ####################
-#
-#     p10.start()
-#     p11.start()
-#
-#     p10.join()
-#     p11.join()
-#
-# ####################
-#
-#     p12.start()
-#     p13.start()
-#
-#     p12.join()
-#     p13.join()
