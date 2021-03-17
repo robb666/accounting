@@ -343,21 +343,17 @@ def pzu():
         pass
 
 
-# santander()
-# allianz()
+santander()
+allianz()
 compensa()
-# generali()
-# hestia()
-# interrisk()
-# uniqa()
-# warta()
-# warta_ż()
-# unilink()
-# pzu()
-
-for i in range(10):
-    compensa()
-
+generali()
+hestia()
+interrisk()
+uniqa()
+warta()
+warta_ż()
+unilink()
+pzu()
 
 
 
