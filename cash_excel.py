@@ -1,84 +1,76 @@
 import os
-import win32com.client
+import win32com.client as win32
 from win32com.client import Dispatch
+from datetime import datetime
 
 
+path_bazy = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
 
-"""Sprawdza czy arkusz jest otwarty."""
-"""Jeżeli arkusz jest zamknięty, otwiera go."""
+
+# """Sprawdza czy arkusz jest otwarty."""
+# """Jeżeli arkusz jest zamknięty, otwiera go."""
 try:
-    ExcelApp = win32com.client.GetActiveObject('Excel.Application')
-    wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
-    ws = wb.Worksheets("BAZA 2014")
-    # workbook = ExcelApp.Workbooks("Baza.xlsx")
+      ExcelApp = win32.GetActiveObject('Excel.Application')
+      wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
+      ws = wb.Worksheets("BAZA 2014")
+      # workbook = ExcelApp.Workbooks("BAZA 2014.xlsx")
 
 except:
-    ExcelApp = Dispatch("Excel.Application")
-    wb = ExcelApp.Workbooks.Open(path + "\\2014 BAZA MAGRO.xlsx")
-    ws = wb.Worksheets("BAZA 2014")
+      ExcelApp = Dispatch("Excel.Application")
+      wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
+      ws = wb.Worksheets("BAZA 2014")
+      # wb.DisplayAlerts = False
 
 
-    """Rozpoznaje kolejny wiersz, który może zapisać."""
-    row_to_write = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 30).End(-4162).Row + 1
+data_wyst = ExcelApp.Cells(1096, 30).Value
+tow_ub = ExcelApp.Cells(1096, 38).Value
+nr_polisy = ExcelApp.Cells(1096, 40).Value
+forma_płatności = ExcelApp.Cells(1096, 51).Value
+inkaso = ExcelApp.Cells(1096, 55).Value
 
-    # Rok_przypisu = ExcelApp.Cells(row_to_write, 1).Value =
-    Rozlicz = ExcelApp.Cells(row_to_write, 7).Value =
-    Podpis = ExcelApp.Cells(row_to_write, 10).Value =
-    FIRMA = ExcelApp.Cells(row_to_write, 11).Value =
-    Nazwisko = ExcelApp.Cells(row_to_write, 12).Value =
-    Imie = ExcelApp.Cells(row_to_write, 13).Value =
-    Pesel_Regon = ExcelApp.Cells(row_to_write, 14).Value =
-    ExcelApp.Cells(row_to_write, 15).Value =
-    ExcelApp.Cells(row_to_write, 16).Value =
-    ExcelApp.Cells(row_to_write, 17).Value =
-    ExcelApp.Cells(row_to_write, 18).Value =
-    ExcelApp.Cells(row_to_write, 19).Value =
-    ExcelApp.Cells(row_to_write, 20).Value =
-    ExcelApp.Cells(row_to_write, 23).Value =
-    ExcelApp.Cells(row_to_write, 24).Value =
-    ExcelApp.Cells(row_to_write, 25).Value =
-    ExcelApp.Cells(row_to_write, 26).Value =
-    # ExcelApp.Cells(row_to_write, 29).Value =
-    # ExcelApp.Cells(row_to_write, 30).NumberFormat =
-    ExcelApp.Cells(row_to_write, 30).Value =
-    # ExcelApp.Cells(row_to_write, 31).Value =
-    ExcelApp.Cells(row_to_write, 32).Value =
-    ExcelApp.Cells(row_to_write, 36).Value =
-    tor = ExcelApp.Cells(row_to_write, 37).Value =
-    ExcelApp.Cells(row_to_write, 38).Value =
-    # ExcelApp.Cells(row_to_write, 39).Value =
-    ExcelApp.Cells(row_to_write, 40).Value =
-    # ExcelApp.Cells(row_to_write, 41).Value =
-    # ExcelApp.Cells(row_to_write, 42).Value =
-    # if wzn_idx:
-    #     ExcelApp.Cells(row_to_write, 41).Value =
-    #     ExcelApp.Cells(row_to_write, 42).Value =
-    # else:
-    #     ExcelApp.Cells(row_to_write, 41).Value =
-    #     ExcelApp.Cells(row_to_write, 42).Value =
-    # ryzyko = ExcelApp.Cells(row_to_write, 46).Value =
-    ExcelApp.Cells(row_to_write, 48).Value =
-    ExcelApp.Cells(row_to_write, 49).Value =
-    # if I_rata_data:
-    #     ExcelApp.Cells(row_to_write, 49).Value =
-    if rata_I:
-        ExcelApp.Cells(row_to_write, 50).Value =
-    else:
-        ExcelApp.Cells(row_to_write, 50).Value =
-    ExcelApp.Cells(row_to_write, 51).Value =
-    ExcelApp.Cells(row_to_write, 52).Value =
-    ExcelApp.Cells(row_to_write, 53).Value =
-    data_inkasa = ExcelApp.Cells(row_to_write, 54).Value =
-    if rata_I:
-        ExcelApp.Cells(row_to_write, 55).Value =
-    else:
-        ExcelApp.Cells(row_to_write, 55).Value =
-    ExcelApp.Cells(row_to_write, 60).Value =
+wb.Close(SaveChanges=False)
+
+tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EPZU': 'PZU', 'GEN': 'Generali',
+      'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER',
+      'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW',
+      'TUZ': 'TUZ', 'UNI': 'Uniqa', 'WAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
+
+print(data_wyst, tu[tow_ub], nr_polisy, forma_płatności, inkaso)
 
 
+# """Rozpoznaje kolejny wiersz, który może zapisać."""
+# row_to_write = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 30).End(-4162).Row + 1
+ExcelApp = win32.gencache.EnsureDispatch('Excel.Application')
+ExcelApp.Visible = True
+wb = ExcelApp.Workbooks.Add()
 
-"""Opcje zapisania"""
-ExcelApp.DisplayAlerts = False
-wb.SaveAs("\\cash.xlsx")
+
+cash_ws = wb.Worksheets.Add()
+
+cash_ws.Name = 'Gotówka luty 2021 r.'
+
+
+cash_ws.Cells(1, 1).Value = 'Data'
+cash_ws.Cells(1, 2).Value = 'TU'
+cash_ws.Cells(1, 3).Value = 'Nr polisy'
+cash_ws.Cells(1, 4).Value = 'Kwota inkaso'
+
+
+cash_ws.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
+cash_ws.Range('B2:B32').Value = tu[tow_ub]
+cash_ws.Range('C2:C32').Value = nr_polisy
+cash_ws.Range('D2:D32').Value = inkaso
+
+cash_ws.Columns.AutoFit()
+cash_ws.Columns(3).ColumnWidth = 14
+
+wb.DisplayAlerts = False
+# cash_ws.DisplayAlerts = False
+path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
+
+wb.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
 wb.Close()
-ExcelApp.DisplayAlerts = True
+
+
+ExcelApp.Application.Quit()
+wb.DisplayAlerts = True
