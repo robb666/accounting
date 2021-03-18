@@ -58,11 +58,13 @@ cash_ws.Cells(1, 4).Value = 'Kwota inkaso'
 
 cash_ws.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
 cash_ws.Range('B2:B32').Value = tu[tow_ub]
+cash_ws.Range('C2:C32').NumberFormat = 0
 cash_ws.Range('C2:C32').Value = nr_polisy
 cash_ws.Range('D2:D32').Value = inkaso
 
 cash_ws.Columns.AutoFit()
-cash_ws.Columns(3).ColumnWidth = 14
+cash_ws.Columns(1).ColumnWidth = 12
+cash_ws.Columns(2).ColumnWidth = 10
 
 wb.DisplayAlerts = False
 # cash_ws.DisplayAlerts = False
