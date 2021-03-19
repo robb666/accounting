@@ -21,21 +21,29 @@ except:
       ws = wb.Worksheets("BAZA 2014")
       # wb.DisplayAlerts = False
 
-
-data_wyst = ExcelApp.Cells(1096, 30).Value
-tow_ub = ExcelApp.Cells(1096, 38).Value
-nr_polisy = ExcelApp.Cells(1096, 40).Value
-forma_płatności = ExcelApp.Cells(1096, 51).Value
-inkaso = ExcelApp.Cells(1096, 55).Value
-
-wb.Close(SaveChanges=False)
-
 tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EPZU': 'PZU', 'GEN': 'Generali',
       'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER',
       'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW',
       'TUZ': 'TUZ', 'UNI': 'Uniqa', 'WAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
 
-print(data_wyst, tu[tow_ub], nr_polisy, forma_płatności, inkaso)
+
+# forma_płatności = ExcelApp.Cells(1096, 51).Value
+
+for i in range(20):
+      if ExcelApp.Cells(i, 51).Value == 'G':
+
+
+
+            data_wyst = ExcelApp.Cells(i, 30).Value
+            tow_ub = ExcelApp.Cells(i, 38).Value
+            nr_polisy = ExcelApp.Cells(i, 40).Value
+            inkaso = ExcelApp.Cells(i, 55).Value
+            print(data_wyst, tu[tow_ub], nr_polisy, inkaso)
+
+wb.Close(SaveChanges=False)
+
+
+
 
 
 # """Rozpoznaje kolejny wiersz, który może zapisać."""
