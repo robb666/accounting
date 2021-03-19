@@ -44,33 +44,29 @@ ws_cash.Cells(1, 3).Value = 'Nr polisy'
 ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
 
 
-column = ws.Range(f'AY9:AY{ws.UsedRange.Rows.Count}')
+column = ws.Range(f'AY1:AY{ws.UsedRange.Rows.Count}')
 i = 10
 j = 2
+
 for cash in column:
 
-    if str(cash) == 'G' and str(cash) is not None:
+    if str(cash) == 'G':# and str(cash) is not None:
 
         data_wyst = ExcelApp.Cells(i, 30).Value
         tow_ub = ExcelApp.Cells(i, 38).Value
         nr_polisy = ExcelApp.Cells(i, 40).Value
         inkaso = ExcelApp.Cells(i, 55).Value
-        # forma_p = ExcelApp.Cells(i, 51).Value
+
         print(i, data_wyst, nr_polisy, inkaso, cash)
+
+        ws_cash.Cells(j, 1).Value = data_wyst.strftime('%Y.%m.%d')
+        ws_cash.Cells(j, 2).Value = tu[tow_ub]
+        ws_cash.Columns(3).NumberFormat = 0
+        ws_cash.Cells(j, 3).Value = nr_polisy
+        ws_cash.Cells(j, 4).Value = inkaso
+
         i += 1
-
-        if str(cash) != None:
-
-            ws_cash.Cells(j, 1).Value = data_wyst.strftime('%Y.%m.%d')
-            ws_cash.Cells(j, 2).Value = tu[tow_ub]
-            ws_cash.Columns(3).NumberFormat = 0
-            ws_cash.Cells(j, 3).Value = nr_polisy
-            ws_cash.Cells(j, 4).Value = inkaso
-
-            j += 1
-
-
-
+        j += 1
 
 
 ws_cash.Columns.AutoFit()
