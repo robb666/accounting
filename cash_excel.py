@@ -24,10 +24,10 @@ except:
 
 
 
-tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EPZU': 'PZU', 'GEN': 'Generali', 'GOT': 'Gothaer',
-      'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER', 'LIN': 'LINK 4', 'MTU': 'MTU',
-      'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ', 'UNI': 'Uniqa',
-      'WAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
+tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EIN': 'Euroins', 'EPZU': 'PZU', 'GEN': 'Generali',
+      'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER', 'LIN': 'LINK 4', 'MTU': 'MTU',
+      'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ', 'UNI': 'Uniqa', 'WAR': 'Warta',
+      'WIE': 'Wiener', 'YCD': 'You Can Drive'}
 
 
 
@@ -44,31 +44,30 @@ ws_cash.Cells(1, 3).Value = 'Nr polisy'
 ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
 
 
-column = ws.Range(f'AY6:AY{ws.UsedRange.Rows.Count}')
+column = ws.Range(f'AY9:AY{ws.UsedRange.Rows.Count}')
+i = 10
+j = 2
+for cash in column:
 
-for i, cash in enumerate(column):
-    # print(type(str(cash)))
-    if str(cash) == 'G':
-
-# ExcelApp_cash = win32.gencache.EnsureDispatch('Excel.Application')
-
+    if str(cash) == 'G' and str(cash) is not None:
 
         data_wyst = ExcelApp.Cells(i, 30).Value
         tow_ub = ExcelApp.Cells(i, 38).Value
         nr_polisy = ExcelApp.Cells(i, 40).Value
         inkaso = ExcelApp.Cells(i, 55).Value
-        forma_p = ExcelApp.Cells(i, 51).Value
-        print(i, data_wyst, nr_polisy, inkaso, forma_p)
+        # forma_p = ExcelApp.Cells(i, 51).Value
+        print(i, data_wyst, nr_polisy, inkaso, cash)
+        i += 1
 
+        if str(cash) != None:
 
-        # if str(cash) != None:
-        #
-        #     ws_cash.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
-        #     ws_cash.Range('B2:B32').Value = tu[tow_ub]
-        #     ws_cash.Range('C2:C32').NumberFormat = 0
-        #     ws_cash.Range('C2:C32').Value = nr_polisy
-        #     ws_cash.Range('D2:D32').Value = inkaso
+            ws_cash.Cells(j, 1).Value = data_wyst.strftime('%Y.%m.%d')
+            ws_cash.Cells(j, 2).Value = tu[tow_ub]
+            ws_cash.Columns(3).NumberFormat = 0
+            ws_cash.Cells(j, 3).Value = nr_polisy
+            ws_cash.Cells(j, 4).Value = inkaso
 
+            j += 1
 
 
 
@@ -76,7 +75,7 @@ for i, cash in enumerate(column):
 
 ws_cash.Columns.AutoFit()
 ws_cash.Columns(1).ColumnWidth = 12
-ws_cash.Columns(2).ColumnWidth = 10
+ws_cash.Columns(2).ColumnWidth = 12
 
 wb_cash.DisplayAlerts = False
 # ws_cash.DisplayAlerts = False
