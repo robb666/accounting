@@ -21,66 +21,68 @@ except:
       ws = wb.Worksheets("BAZA 2014")
       # wb.DisplayAlerts = False
 
-tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EPZU': 'PZU', 'GEN': 'Generali',
-      'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER',
-      'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW',
-      'TUZ': 'TUZ', 'UNI': 'Uniqa', 'WAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
 
 
-# forma_płatności = ExcelApp.Cells(1096, 51).Value
+ExcelApp_cash = win32.gencache.EnsureDispatch('Excel.Application')
+ExcelApp_cash.Visible = True
+wb_cash = ExcelApp_cash.Workbooks.Add()
+ws_cash = wb_cash.Worksheets.Add()
+ws_cash.Name = 'Gotówka luty 2021 r.'
 
-for i in range(20):
-      if ExcelApp.Cells(i, 51).Value == 'G':
+
+ws_cash.Cells(1, 1).Value = 'Data'
+ws_cash.Cells(1, 2).Value = 'TU'
+ws_cash.Cells(1, 3).Value = 'Nr polisy'
+ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
 
 
 
-            data_wyst = ExcelApp.Cells(i, 30).Value
-            tow_ub = ExcelApp.Cells(i, 38).Value
-            nr_polisy = ExcelApp.Cells(i, 40).Value
-            inkaso = ExcelApp.Cells(i, 55).Value
-            print(data_wyst, tu[tow_ub], nr_polisy, inkaso)
+tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EPZU': 'PZU', 'GEN': 'Generali', 'GOT': 'Gothaer',
+      'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER', 'LIN': 'LINK 4', 'MTU': 'MTU',
+      'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ', 'UNI': 'Uniqa',
+      'WAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
+
+
+
+
+column = ws.Range(f'AY1:AY{ws.UsedRange.Rows.Count}')
+
+for n, cash in enumerate(column):
+      # print(cash)
+      if cash == 'G':
+          print(cash)
+
+          data_wyst = ExcelApp.Cells(n, 30).Value
+          tow_ub = ExcelApp.Cells(n, 38).Value
+          nr_polisy = ExcelApp.Cells(n, 40).Value
+          inkaso = ExcelApp.Cells(n, 55).Value
+          forma_p = ExcelApp.Cells(n, 51).Value
+          print(data_wyst, tu[tow_ub], nr_polisy, inkaso, forma_p)
+
+          ws_cash.Range(f'A2:A{n}').Value = data_wyst.strftime('%Y.%m.%d')
+          ws_cash.Range(f'B2:B{n}').Value = tu[tow_ub]
+          ws_cash.Range(f'C2:C{n}').NumberFormat = 0
+          ws_cash.Range(f'C2:C{n}').Value = nr_polisy
+          ws_cash.Range(f'D2:D{n}').Value = inkaso
+
+
 
 wb.Close(SaveChanges=False)
 
 
 
+ws_cash.Columns.AutoFit()
+ws_cash.Columns(1).ColumnWidth = 12
+ws_cash.Columns(2).ColumnWidth = 10
 
-
-# """Rozpoznaje kolejny wiersz, który może zapisać."""
-# row_to_write = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 30).End(-4162).Row + 1
-ExcelApp = win32.gencache.EnsureDispatch('Excel.Application')
-ExcelApp.Visible = True
-wb = ExcelApp.Workbooks.Add()
-
-
-cash_ws = wb.Worksheets.Add()
-
-cash_ws.Name = 'Gotówka luty 2021 r.'
-
-
-cash_ws.Cells(1, 1).Value = 'Data'
-cash_ws.Cells(1, 2).Value = 'TU'
-cash_ws.Cells(1, 3).Value = 'Nr polisy'
-cash_ws.Cells(1, 4).Value = 'Kwota inkaso'
-
-
-cash_ws.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
-cash_ws.Range('B2:B32').Value = tu[tow_ub]
-cash_ws.Range('C2:C32').NumberFormat = 0
-cash_ws.Range('C2:C32').Value = nr_polisy
-cash_ws.Range('D2:D32').Value = inkaso
-
-cash_ws.Columns.AutoFit()
-cash_ws.Columns(1).ColumnWidth = 12
-cash_ws.Columns(2).ColumnWidth = 10
-
-wb.DisplayAlerts = False
+wb_cash.DisplayAlerts = False
 # cash_ws.DisplayAlerts = False
 path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
 
-wb.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
-wb.Close()
+ws_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
+wb_cash.Close()
 
 
 ExcelApp.Application.Quit()
-wb.DisplayAlerts = True
+ExcelApp_cash.Application.Quit()
+wb_cash.DisplayAlerts = True
