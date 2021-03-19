@@ -9,17 +9,18 @@ path_bazy = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość
 
 # """Sprawdza czy arkusz jest otwarty."""
 # """Jeżeli arkusz jest zamknięty, otwiera go."""
+
 try:
-      ExcelApp = win32.GetActiveObject('Excel.Application')
-      wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
-      ws = wb.Worksheets("BAZA 2014")
-      # workbook = ExcelApp.Workbooks("BAZA 2014.xlsx")
+    ExcelApp = win32.GetActiveObject('Excel.Application')
+    wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
+    ws = wb.Worksheets("BAZA 2014")
+    # workbook = ExcelApp.Workbooks("BAZA 2014.xlsx")
 
 except:
-      ExcelApp = Dispatch("Excel.Application")
-      wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
-      ws = wb.Worksheets("BAZA 2014")
-      # wb.DisplayAlerts = False
+    ExcelApp = Dispatch("Excel.Application")
+    wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
+    ws = wb.Worksheets("BAZA 2014")
+    # wb.DisplayAlerts = False
 
 
 
@@ -37,41 +38,36 @@ wb_cash = ExcelApp_cash.Workbooks.Add()
 ws_cash = wb_cash.Worksheets.Add()
 ws_cash.Name = 'Gotówka luty 2021 r.'
 
-
-column = ws.Range(f'AY1:AY{ws.UsedRange.Rows.Count}')
-
-for i, cash in enumerate(column):
-      if cash == 'G':
-          print(cash)
-# ExcelApp_cash = win32.gencache.EnsureDispatch('Excel.Application')
-
-
-data_wyst = ExcelApp.Cells(1097, 30).Value
-tow_ub = ExcelApp.Cells(1097, 38).Value
-nr_polisy = ExcelApp.Cells(1097, 40).Value
-inkaso = ExcelApp.Cells(1097, 55).Value
-forma_p = ExcelApp.Cells(1097, 51).Value
-print(data_wyst, nr_polisy, inkaso, forma_p)
-
-
-                              
-
-
-wb.Close(SaveChanges=False)
-
-
-
 ws_cash.Cells(1, 1).Value = 'Data'
 ws_cash.Cells(1, 2).Value = 'TU'
 ws_cash.Cells(1, 3).Value = 'Nr polisy'
 ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
 
 
-ws_cash.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
-ws_cash.Range('B2:B32').Value = tu[tow_ub]
-ws_cash.Range('C2:C32').NumberFormat = 0
-ws_cash.Range('C2:C32').Value = nr_polisy
-ws_cash.Range('D2:D32').Value = inkaso
+column = ws.Range(f'AY6:AY{ws.UsedRange.Rows.Count}')
+
+for i, cash in enumerate(column):
+    # print(type(str(cash)))
+    if str(cash) == 'G':
+
+# ExcelApp_cash = win32.gencache.EnsureDispatch('Excel.Application')
+
+
+        data_wyst = ExcelApp.Cells(i, 30).Value
+        tow_ub = ExcelApp.Cells(i, 38).Value
+        nr_polisy = ExcelApp.Cells(i, 40).Value
+        inkaso = ExcelApp.Cells(i, 55).Value
+        forma_p = ExcelApp.Cells(i, 51).Value
+        print(i, data_wyst, nr_polisy, inkaso, forma_p)
+
+
+        # if str(cash) != None:
+        #
+        #     ws_cash.Range('A2:A32').Value = data_wyst.strftime('%Y.%m.%d')
+        #     ws_cash.Range('B2:B32').Value = tu[tow_ub]
+        #     ws_cash.Range('C2:C32').NumberFormat = 0
+        #     ws_cash.Range('C2:C32').Value = nr_polisy
+        #     ws_cash.Range('D2:D32').Value = inkaso
 
 
 
@@ -87,8 +83,9 @@ wb_cash.DisplayAlerts = False
 path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
 
 wb_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
+wb.Close(SaveChanges=False)
 wb_cash.Close()
-
-
 ExcelApp.Application.Quit()
+ExcelApp_cash.Application.Quit()
+
 wb_cash.DisplayAlerts = True
