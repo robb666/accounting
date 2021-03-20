@@ -29,7 +29,7 @@ ExcelApp.Visible = True
 tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EIN': 'Euroins', 'EPZU': 'PZU', 'GEN': 'Generali', 'ŻGEN': 'Generali',
       'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER', 'LIN': 'LINK 4', 'MTU': 'MTU',
       'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ', 'UNI': 'Uniqa', 'WAR': 'Warta',
-      'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive'}
+      'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'None': ''}
 
 
 
@@ -45,12 +45,10 @@ ws_cash.Cells(1, 2).Value = 'TU'
 ws_cash.Cells(1, 3).Value = 'Nr polisy'
 ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
 
-print(str((datetime.today() + relativedelta(months=-1)).strftime('%Y-%m-%d')))
-print( ExcelApp.Cells(800, 30).Value)
 
 # ws.Columns(3).NumberFormat = "yyyy-MM"
-
 # s = constants.Format(str((datetime.today() + relativedelta(months=-1)).strftime('%Y-%m-%d')), "yyyy-mm-dd")
+
 
 ws.Columns(1).AutoFilter(Field=2, Criteria1="21_02")
 ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
@@ -62,16 +60,29 @@ ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
 
 
-t_ub = ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}')
+
+
+print(wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row)
+
+t_ub_range = ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').SpecialCells(constants.xlCellTypeVisible).Cells.Count - 39
+
+print(t_ub_range)
+
+t_ub = ws.Range(f'AL{wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row - t_ub_range}:'
+                f'AL{ws.UsedRange.Rows.Count - 39}')
+
+print(t_ub_range, t_ub)
 time.sleep(.6)
-j = 2
+row = 2
 for tow in t_ub:
-    if str(tow) in tu.keys():
-        ws_cash.Cells(j, 2).Value = tu[str(tow)]
-        j += 1
-    ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').copy()
-    ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    if str(tow) is not None:
+        ws_cash.Cells(row, 2).Value = tu[str(tow)]
+        row += 1
+    # ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').copy()
+    # ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
+
+
 
 
 ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
@@ -81,6 +92,7 @@ ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
 
 
+
 ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
 time.sleep(.6)
 ws_cash.Range(f'D2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
@@ -88,12 +100,9 @@ time.sleep(.6)
 
 
 
-
-
-
 ws_cash.Columns.AutoFit()
-ws_cash.Columns(1).ColumnWidth = 12
-ws_cash.Columns(2).ColumnWidth = 12
+ws_cash.Columns(1).ColumnWidth = 11
+ws_cash.Columns(2).ColumnWidth = 11
 
 
 
