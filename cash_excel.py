@@ -52,10 +52,7 @@ print( ExcelApp.Cells(800, 30).Value)
 
 # s = constants.Format(str((datetime.today() + relativedelta(months=-1)).strftime('%Y-%m-%d')), "yyyy-mm-dd")
 
-ws.Columns(1).AutoFilter(Field=30, Criteria1="#2021-03-08#")
-
-
-
+ws.Columns(1).AutoFilter(Field=2, Criteria1="21_02")
 ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
 
 
@@ -64,16 +61,25 @@ time.sleep(.6)
 ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
 
-ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
+
+t_ub = ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}')
 time.sleep(.6)
-ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+j = 2
+for tow in t_ub:
+    if str(tow) in tu.keys():
+        ws_cash.Cells(j, 2).Value = tu[str(tow)]
+        j += 1
+    ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').copy()
+    ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
+
 
 ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
 time.sleep(.6)
 ws_cash.Columns(3).NumberFormat = 0
 ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
+
 
 ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
 time.sleep(.6)
@@ -93,8 +99,8 @@ ws_cash.Columns(2).ColumnWidth = 12
 
 
 path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
-
-wb_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
+wb_cash.DisplayAlerts = False
+# wb_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
 wb.Close(SaveChanges=False)
 wb_cash.Close()
 ExcelApp.Application.Quit()
