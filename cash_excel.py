@@ -8,6 +8,7 @@ import time
 
 def baza():
     path_bazy = r'M:\Agent baza'
+
     """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
