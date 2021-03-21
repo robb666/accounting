@@ -60,29 +60,20 @@ ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
 
 
-
-
-print(wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row)
-
-t_ub_range = ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').SpecialCells(constants.xlCellTypeVisible).Cells.Count - 39
-
-print(t_ub_range)
-
-t_ub = ws.Range(f'AL{wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row - t_ub_range}:'
-                f'AL{ws.UsedRange.Rows.Count - 39}')
-
-print(t_ub_range, t_ub)
+ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
 time.sleep(.6)
+ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+
+col_diff = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 2).End(-4162).Row
 row = 2
-for tow in t_ub:
-    if str(tow) is not None:
-        ws_cash.Cells(row, 2).Value = tu[str(tow)]
-        row += 1
-    # ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').copy()
-    # ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-time.sleep(.6)
-
-
+none_list = []
+for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff}'):
+    if none := str(tow) is None:
+        none_list.append(none)
+        if len(none_list) > 3:
+            break
+    ws_cash.Cells(row, 2).Value = tu[str(tow)]
+    row += 1
 
 
 ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
@@ -90,7 +81,6 @@ time.sleep(.6)
 ws_cash.Columns(3).NumberFormat = 0
 ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 time.sleep(.6)
-
 
 
 ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
@@ -109,7 +99,7 @@ ws_cash.Columns(2).ColumnWidth = 11
 
 path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
 wb_cash.DisplayAlerts = False
-# wb_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
+wb_cash.SaveAs(path_do_zapisu_w + "\\inkaso.xlsx")
 wb.Close(SaveChanges=False)
 wb_cash.Close()
 ExcelApp.Application.Quit()
@@ -130,7 +120,12 @@ wb_cash.DisplayAlerts = True
 
 
 
-
+# print(wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row)
+# t_ub_range = ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').SpecialCells(constants.xlCellTypeVisible).Cells.Count - 39
+# print(t_ub_range)
+# t_ub = ws.Range(f'AL{wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 38).End(-4162).Row - t_ub_range}:'
+#                 f'AL{ws.UsedRange.Rows.Count - 39}')
+# print(t_ub_range, t_ub)
 
 
 
@@ -188,3 +183,7 @@ wb_cash.DisplayAlerts = True
 # ExcelApp_cash.Application.Quit()
 #
 # wb_cash.DisplayAlerts = True
+
+
+
+
