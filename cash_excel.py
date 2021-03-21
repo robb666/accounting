@@ -12,16 +12,17 @@ def baza():
     # """Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
-        wb = ExcelApp.Workbooks("2014 BAZA MAGRO short.xlsx")
+        wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
 
     except:
         ExcelApp = Dispatch("Excel.Application")
-        wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO short.xlsx")
+        wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
 
     ExcelApp.Visible = True
     col_diff = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 2).End(-4162).Row
+    
     return ExcelApp, wb, ws, col_diff
 
 
@@ -34,9 +35,9 @@ def filtr_tu(tow):
     return tu[tow]
 
 
-def za_okres():
-    msc = (datetime.today() + relativedelta(months=-2)).strftime('%m')
-    msc_rok = (datetime.today() + relativedelta(months=-2)).strftime('%m.%Y')
+def okres(n):
+    msc = (datetime.today() + relativedelta(months=n)).strftime('%m')
+    msc_rok = (datetime.today() + relativedelta(months=n)).strftime('%m.%Y')
 
     return msc, msc_rok
 
@@ -74,7 +75,7 @@ def copy_paste_daty(ws, ws_cash):
 
 def copy_paste_tu(ws, ws_cash, col_diff):
     ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
-    time.sleep(.6)
+    time.sleep(.7)
     ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
     none_list = []
     row = 2
@@ -139,10 +140,10 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     wb_cash.DisplayAlerts = True
 
 
-def raport_inkaso():
+def raport_inkaso(*, za_okres):
     ExcelApp, wb, ws, col_diff = baza()
 
-    msc, msc_rok = za_okres()
+    msc, msc_rok = okres(za_okres)
     ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc)
 
     filtry_kolumn(ws, msc)
@@ -155,32 +156,7 @@ def raport_inkaso():
     opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
 
 
-def dots():
-    import time
-    import sys
-    s = '.'
-    sys.stdout.write('Raport kasowy')
-    while True:
-        sys.stdout.write(s)
-        sys.stdout.flush()
-        time.sleep(1)
-        if not raport_inkaso():
-            break
-
-
-
 if __name__ == '__main__':
-    import concurrent.futures
-    tasks = [dots, raport_inkaso]
-
-
-    with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
-        # results = ex.map(task, range(1, 6), timeout=3)
-        for n in range(len(tasks)):
-            future = executor.submit(tasks[n])
-            if future.result():
-                print('donre')
-
-
-    # raport_inkaso()
-    # print('Raport kasowy ok')
+    print('Raport kasowy...')
+    raport_inkaso(za_okres=-1)
+    print('Raport kasowy ok')
