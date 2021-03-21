@@ -35,7 +35,7 @@ ExcelApp_cash = win32.DispatchEx('Excel.Application')
 ExcelApp_cash.Visible = True
 wb_cash = ExcelApp_cash.Workbooks.Add()
 ws_cash = wb_cash.Worksheets.Add()
-ws_cash.Name = f'Gotówka {m}.2021r.'
+ws_cash.Name = f'Inkaso {m}.2021r.'
 
 ws_cash.Cells(1, 1).Value = 'Data'
 ws_cash.Cells(1, 2).Value = 'TU'
