@@ -6,6 +6,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
 
+print('Raport kasowy...')
+
 path_bazy = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
 
 
@@ -29,13 +31,14 @@ tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EIN': 'Euroins', 'EPZU
       'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ',
       'UNI': 'Uniqa', 'WAR': 'Warta', 'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'None': ''}
 
-m = (datetime.today() + relativedelta(months=-1)).strftime('%m')
+msc = (datetime.today() + relativedelta(months=-1)).strftime('%m')
+msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
 
 ExcelApp_cash = win32.DispatchEx('Excel.Application')
 ExcelApp_cash.Visible = True
 wb_cash = ExcelApp_cash.Workbooks.Add()
 ws_cash = wb_cash.Worksheets.Add()
-ws_cash.Name = f'Inkaso {m}.2021r.'
+ws_cash.Name = f'Inkaso {msc}.2021r.'
 
 ws_cash.Cells(1, 1).Value = 'Data'
 ws_cash.Cells(1, 2).Value = 'TU'
@@ -45,7 +48,7 @@ ws_cash.Cells(1, 5).Value = 'Suma inkaso PLN:'
 ws_cash.Cells(1, 5).Font.Bold = True
 
 
-ws.Columns(1).AutoFilter(Field=2, Criteria1=f'21_{m}')
+ws.Columns(1).AutoFilter(Field=2, Criteria1=f'21_{msc}')
 ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
 
 
@@ -107,8 +110,8 @@ path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księg
 wb_cash.DisplayAlerts = False
 ExcelApp.Application.CutCopyMode = False
 
-okres = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
-wb_cash.SaveAs(path_do_zapisu_w + f"\\gotówka {okres}.xlsx")
+
+wb_cash.SaveAs(path_do_zapisu_w + f"\\gotówka {msc_rok}.xlsx")
 wb.Close(SaveChanges=False)
 wb_cash.Close()
 ExcelApp.Application.Quit()
@@ -116,5 +119,4 @@ ExcelApp_cash.Application.Quit()
 
 wb_cash.DisplayAlerts = True
 
-
-
+print('Raport kasowy ok')
