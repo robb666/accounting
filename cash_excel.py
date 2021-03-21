@@ -1,4 +1,3 @@
-import os
 import win32com.client as win32
 from win32com.client import Dispatch
 from win32com.client import constants
@@ -6,7 +5,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
 
-print('Raport kasowy...')
 
 def baza():
     path_bazy = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
@@ -23,28 +21,27 @@ def baza():
         ws = wb.Worksheets("BAZA 2014")
 
     ExcelApp.Visible = True
-
-    return ExcelApp, wb, ws
+    col_diff = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 2).End(-4162).Row
+    return ExcelApp, wb, ws, col_diff
 
 
 def filtr_tu(tow):
-
     tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EIN': 'Euroins', 'EPZU': 'PZU', 'GEN': 'Generali',
           'ŻGEN': 'Generali', 'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER',
           'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ',
           'UNI': 'Uniqa', 'WAR': 'Warta', 'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'None': ''}
 
-    return tu
+    return tu[tow]
 
 
 def za_okres():
-    msc = (datetime.today() + relativedelta(months=-1)).strftime('%m')
-    msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
+    msc = (datetime.today() + relativedelta(months=-2)).strftime('%m')
+    msc_rok = (datetime.today() + relativedelta(months=-2)).strftime('%m.%Y')
 
     return msc, msc_rok
 
 
-def raport(msc):
+def arkusz_raportu(msc):
     ExcelApp_cash = win32.DispatchEx('Excel.Application')
     ExcelApp_cash.Visible = True
     wb_cash = ExcelApp_cash.Workbooks.Add()
@@ -55,7 +52,7 @@ def raport(msc):
     ws_cash.Cells(1, 2).Value = 'TU'
     ws_cash.Cells(1, 3).Value = 'Nr polisy'
     ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
-    ws_cash.Cells(1, 5).Value = 'Suma inkaso PLN:'
+    ws_cash.Cells(1, 5).Value = 'Suma inkaso w PLN:'
     ws_cash.Cells(1, 5).Font.Bold = True
 
     return ExcelApp_cash, wb_cash, ws_cash
@@ -71,19 +68,14 @@ def copy_paste_daty(ws, ws_cash):
     time.sleep(.6)
     ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 
-    ws_cash.Range(f'A2:A300').HorizontalAlignment = constants.xlHAlignLeft
+    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
     time.sleep(.6)
 
 
-def copy_paste_tu(wb, ws, ws_cash):
+def copy_paste_tu(ws, ws_cash, col_diff):
     ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(.6)
     ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-
-
-    col_diff = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 2).End(-4162).Row
-
-
     none_list = []
     row = 2
     for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff}'):
@@ -93,7 +85,7 @@ def copy_paste_tu(wb, ws, ws_cash):
             row += 1
             if len(none_list) > 3:
                 break
-        ws_cash.Cells(row, 2).Value = tu[tow]
+        ws_cash.Cells(row, 2).Value = filtr_tu(tow)
         row += 1
 
 
@@ -102,10 +94,11 @@ def copy_paste_nr(ws, ws_cash):
     time.sleep(.6)
     ws_cash.Columns(3).NumberFormat = 0
     ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'C2:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignRight
     time.sleep(.6)
 
 
-def copy_paste_inkaso(ws, ws_cash):
+def copy_paste_inkaso(ws, ws_cash, col_diff):
     ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(.6)
     ws_cash.Range(f'D2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
@@ -146,12 +139,48 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     wb_cash.DisplayAlerts = True
 
 
+def raport_inkaso():
+    ExcelApp, wb, ws, col_diff = baza()
+
+    msc, msc_rok = za_okres()
+    ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc)
+
+    filtry_kolumn(ws, msc)
+    copy_paste_daty(ws, ws_cash)
+    copy_paste_tu(ws, ws_cash, col_diff)
+    copy_paste_nr(ws, ws_cash)
+    copy_paste_inkaso(ws, ws_cash, col_diff)
+    sortowanie(ws, ws_cash, col_diff)
+    auto_fit(ws_cash)
+    opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
+
+
+def dots():
+    import time
+    import sys
+    s = '.'
+    sys.stdout.write('Raport kasowy')
+    while True:
+        sys.stdout.write(s)
+        sys.stdout.flush()
+        time.sleep(1)
+        if not raport_inkaso():
+            break
 
 
 
 if __name__ == '__main__':
+    import concurrent.futures
+    tasks = [dots, raport_inkaso]
 
 
+    with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
+        # results = ex.map(task, range(1, 6), timeout=3)
+        for n in range(len(tasks)):
+            future = executor.submit(tasks[n])
+            if future.result():
+                print('donre')
 
 
-print('Raport kasowy ok')
+    # raport_inkaso()
+    # print('Raport kasowy ok')
