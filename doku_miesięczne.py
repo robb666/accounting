@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 import concurrent.futures
 from faktury_GmailAPI import email
+from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
      unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h
@@ -359,11 +360,11 @@ def pzu():
 if __name__ == '__main__':
     # multiprocessing.freeze_support()
 
-    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
+    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
 
-    # email()
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-    #     for n in range(len(tasks)):
-    #         executor.submit(tasks[n])
+    email()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        for n in range(len(tasks)):
+            executor.submit(tasks[n])
 
-    interrisk()
+    raport_inkaso(za_okres=-1)

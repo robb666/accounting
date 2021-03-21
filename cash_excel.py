@@ -139,6 +139,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
 
 
 def raport_inkaso(*, za_okres):
+    print('Raport kasowy...')
     ExcelApp, wb, ws, col_diff = baza()
 
     msc, msc_rok = okres(za_okres)
@@ -152,9 +153,9 @@ def raport_inkaso(*, za_okres):
     sortowanie(ws, ws_cash, col_diff)
     auto_fit(ws_cash)
     opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
+    print('Raport kasowy ok')
 
 
 if __name__ == '__main__':
-    print('Raport kasowy...')
     raport_inkaso(za_okres=-1)
-    print('Raport kasowy ok')
+
