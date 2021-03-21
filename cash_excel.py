@@ -7,14 +7,12 @@ import time
 
 
 def baza():
-    path_bazy = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
-    # """Sprawdza czy arkusz jest otwarty."""
-    # """Jeżeli arkusz jest zamknięty, otwiera go."""
+    path_bazy = r'M:\Agent baza'
+    """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
-        wb = ExcelApp.Workbooks("2014 BAZA MAGRO.xlsx")
+        wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
-
     except:
         ExcelApp = Dispatch("Excel.Application")
         wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
@@ -22,7 +20,7 @@ def baza():
 
     ExcelApp.Visible = True
     col_diff = wb.Worksheets(1).Cells(wb.Worksheets(1).Rows.Count, 2).End(-4162).Row
-    
+
     return ExcelApp, wb, ws, col_diff
 
 
@@ -68,7 +66,6 @@ def copy_paste_daty(ws, ws_cash):
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(.6)
     ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-
     ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
     time.sleep(.6)
 
@@ -127,7 +124,7 @@ def auto_fit(ws_cash):
 
 
 def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
-    path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno'
+    path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
     wb_cash.DisplayAlerts = False
     ExcelApp.Application.CutCopyMode = False
 
