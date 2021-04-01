@@ -264,7 +264,9 @@ def email():
         axa_invoice(fv, id, message)
         wiener_invoice(fv, id, message)
         insly_invoice(fv, id, message)
-        orange_mobil_invoice(fv, id, message)
+        try:
+            orange_mobil_invoice(fv, id, message)
+        except: pass
         orange_stac_invoice(fv, id, message)
         aws_invoice(fv, id, message)
         tuw_invoice(fv, id, message)

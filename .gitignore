@@ -41,3 +41,14 @@ inkaso do porównania.xlsx
 2014 BAZA MAGRO short.xlsx
 gotówka 02.2021.xlsx
 gotówka 01.2021.xlsx
+build/cash_excel/base_library.zip
+build/cash_excel/PYZ-00.pyz
+build/cash_excel/xref-cash_excel.html
+*.pkg
+*.pyz
+build/doku_miesięczne/warn-doku_miesięczne.txt
+build/doku_miesięczne/xref-doku_miesięczne.html
+zapisać braki do poliku tekstowego.txt
+build/doku_miesięczne/base_library.zip
+build/cash_excel/warn-cash_excel.txt
+zapisać braki do pliku tekstowego.txt

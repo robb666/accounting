@@ -1,10 +1,12 @@
 import win32com.client as win32
 from win32com.client import Dispatch
-from win32com.client import constants
+# from win32com.client import constants
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
 
+# print(Dispatch.__dict__)
+# __import__('win32com.gen_py', globals(), locals(), ['00020813-0000-0000-C000-000000000046x0x1x6'], 0)
 
 def baza():
     path_bazy = r'M:\Agent baza'
@@ -43,6 +45,8 @@ def okres(n):
 
 def arkusz_raportu(msc):
     ExcelApp_cash = win32.DispatchEx('Excel.Application')
+    # ExcelApp_cash = win32.dynamic.Dispatch('Excel.Application')
+    # ExcelApp_cash = win32.gencache.EnsureDispatch('Excel.Application')
     ExcelApp_cash.Visible = True
     wb_cash = ExcelApp_cash.Workbooks.Add()
     ws_cash = wb_cash.Worksheets.Add()
@@ -65,16 +69,16 @@ def filtry_kolumn(ws, msc):
 
 def copy_paste_daty(ws, ws_cash):
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
-    time.sleep(.6)
-    ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
-    time.sleep(.6)
+    time.sleep(3)
+    ws_cash.Range(f'A2').PasteSpecial(Paste=12)  # constants.xlPasteValuesAndNumberFormats
+    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = -4131  # constants.xlHAlignLeft
+    time.sleep(.7)
 
 
 def copy_paste_tu(ws, ws_cash, col_diff):
     ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
-    time.sleep(.7)
-    ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    time.sleep(1)
+    ws_cash.Range(f'B2').PasteSpecial(Paste=12)
     none_list = []
     row = 2
     for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff}'):
@@ -90,17 +94,17 @@ def copy_paste_tu(ws, ws_cash, col_diff):
 
 def copy_paste_nr(ws, ws_cash):
     ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
-    time.sleep(.6)
+    time.sleep(1)
     ws_cash.Columns(3).NumberFormat = 0
-    ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-    ws_cash.Range(f'C2:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignRight
-    time.sleep(.6)
+    ws_cash.Range(f'C2').PasteSpecial(Paste=12)
+    ws_cash.Range(f'C2:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = -4131
+    time.sleep(.7)
 
 
 def copy_paste_inkaso(ws, ws_cash, col_diff):
     ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
-    time.sleep(.6)
-    ws_cash.Range(f'D2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    time.sleep(1)
+    ws_cash.Range(f'D2').PasteSpecial(Paste=12)
 
     for i, value in enumerate(ws_cash.Range(f'D2:D{ws.UsedRange.Rows.Count - col_diff}')):
         if str(value) in ('0.0', 'None', None, ''):
@@ -126,7 +130,7 @@ def auto_fit(ws_cash):
 
 def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
-    wb_cash.DisplayAlerts = False
+    # wb_cash.DisplayAlerts = 0
     ExcelApp.Application.CutCopyMode = False
 
     wb_cash.SaveAs(path_do_zapisu_w + f"\\gotówka {msc_rok}.xlsx")
@@ -135,7 +139,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     ExcelApp.Application.Quit()
     ExcelApp_cash.Application.Quit()
 
-    wb_cash.DisplayAlerts = True
+    # wb_cash.DisplayAlerts = 1
 
 
 def raport_inkaso(*, za_okres):

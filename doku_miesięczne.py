@@ -17,39 +17,39 @@ from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, g
 import time
 
 
-def santander():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-    try:
-        url_santander = 'https://santander.pl/'
-        driver.get(url_santander)
-        driver.find_element_by_partial_link_text('Zaloguj').click()
-        WebDriverWait(driver, 9).until(
-            EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Santander interne"))).click()
-        try:
-            driver.switch_to.window(driver.window_handles[1])
-        except:
-            pass
-        login_san = driver.find_element_by_id('input_nik')
-        login_san.send_keys(san_l)
-        time.sleep(2)
-        dalej = driver.find_element_by_id('okBtn2')
-        dalej.click()
-        hasło_san = WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ordinarypin")))
-        hasło_san.send_keys(san_h)
-        driver.find_element_by_id('okBtn2').click()
-        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'favourite-element'))).click()
-        driver.find_element_by_partial_link_text("Pobie").click()
-        time.sleep(2)
-        driver.find_element_by_class_name('logout').click()
-        driver.quit()
-        print('Santander ok')
-    except:
-        print('Brak wyciągu bankowego')
-        driver.quit()
-        pass
+# def santander():
+#     options = webdriver.ChromeOptions()
+#     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
+#     options.add_experimental_option("prefs", preferences)
+#     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+#     try:
+#         url_santander = 'https://santander.pl/'
+#         driver.get(url_santander)
+#         driver.find_element_by_partial_link_text('Zaloguj').click()
+#         WebDriverWait(driver, 9).until(
+#             EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Santander interne"))).click()
+#         try:
+#             driver.switch_to.window(driver.window_handles[1])
+#         except:
+#             pass
+#         login_san = driver.find_element_by_id('input_nik')
+#         login_san.send_keys(san_l)
+#         time.sleep(2)
+#         dalej = driver.find_element_by_id('okBtn2')
+#         dalej.click()
+#         hasło_san = WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ordinarypin")))
+#         hasło_san.send_keys(san_h)
+#         driver.find_element_by_id('okBtn2').click()
+#         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'favourite-element'))).click()
+#         driver.find_element_by_partial_link_text("Pobie").click()
+#         time.sleep(2)
+#         driver.find_element_by_class_name('logout').click()
+#         driver.quit()
+#         print('Santander ok')
+#     except:
+#         print('Brak wyciągu bankowego')
+#         driver.quit()
+#         pass
 
 
 def allianz():
