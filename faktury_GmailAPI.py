@@ -188,7 +188,7 @@ def orange_stac_invoice(fv, message_id, msg):
         if str(msg).find('e-faktura Orange Polska') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                                       id=att_id).execute()
+                                                                   id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura stacjonarne' + '.pdf'])
             with open(path, 'wb') as f:

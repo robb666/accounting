@@ -387,4 +387,4 @@ if __name__ == '__main__':
 
     raport_inkaso(za_okres=-1)
 
-    time.sleep(1000)
+    time.sleep(10)
