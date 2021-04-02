@@ -110,12 +110,11 @@ def axa_invoice(fv, message_id, msg):
             if str(msg).find('plik prowizyjny') > -1:
                 att_id = attachment_id(fv, msg)
                 get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                       id=att_id).execute()
+                                                                                        id=att_id).execute()
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
                 path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AXA prowizja' + '.xls'])
-                f = open(path, 'wb')
-                f.write(get_att_de)
-                f.close()
+                with open(path, 'wb') as f:
+                    f.write(get_att_de)
 
                 # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
                 xlApp = Dispatch("Excel.Application")
@@ -128,6 +127,8 @@ def axa_invoice(fv, message_id, msg):
                 xlwb.Close()
                 print('AXA ok')
             else:
+                with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                    f.write('Brak AXA\n')
                 print('Brak AXA')
 
 
@@ -139,11 +140,12 @@ def wiener_invoice(fv, message_id, msg):
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Wiener prowizja' + '.pdf'])
-            f = open(path, 'wb')
-            f.write(get_att_de)
-            f.close()
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
             print('Wiener ok')
         else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Wiener\n')
             print('Brak Wiener')
 
 
@@ -155,11 +157,12 @@ def insly_invoice(fv, message_id, msg):
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Insly faktura' + '.pdf'])
-            f = open(path, 'wb')
-            f.write(get_att_de)
-            f.close()
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
             print('Insly ok')
         else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Insly\n')
             print('Brak Insly')
 
 
@@ -171,12 +174,13 @@ def orange_mobil_invoice(fv, message_id, msg):
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura mobilne' + '.pdf'])
-            f = open(path, 'wb')
-            f.write(get_att_de)
-            f.close()
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
             print('Orange mobilne ok')
         else:
-            print('Brak Orange usł mobilne')
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Orange usługi mobilne\n')
+            print('Brak Orange usługi mobilne')
 
 
 def orange_stac_invoice(fv, message_id, msg):
@@ -184,15 +188,16 @@ def orange_stac_invoice(fv, message_id, msg):
         if str(msg).find('e-faktura Orange Polska') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                   id=att_id).execute()
+                                                                                       id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura stacjonarne' + '.pdf'])
-            f = open(path, 'wb')
-            f.write(get_att_de)
-            f.close()
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
             print('Orange stacjonarne ok')
         else:
-            print('Brak Orange usł stacjonarne')
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Orange usługi stacjonarne\n')
+            print('Brak Orange usługi stacjonarne')
 
 
 def aws_invoice(fv, message_id, msg):
@@ -203,11 +208,12 @@ def aws_invoice(fv, message_id, msg):
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AWS faktura' + '.pdf'])
-            f = open(path, 'wb')
-            f.write(get_att_de)
-            f.close()
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
             print('AWS ok')
         else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak AWS\n')
             print('Brak AWS')
 
 
@@ -226,6 +232,8 @@ def tuw_invoice(fv, message_id, msg):
             if path + '.zip':
                 print('TUW ok')
             else:
+                with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                    f.write('Brak TUW\n')
                 print('Brak TUW')
 
 
@@ -241,6 +249,8 @@ def tuz_invoice(fv, message_id, msg):
                 f.write(get_att_de)
             print('TUZ ok')
         else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak TUZ\n')
             print('Brak TUZ')
 
 
@@ -256,6 +266,8 @@ def a_z_invoice(fv, message_id, msg):
                 f.write(get_att_de)
             print('A-Z ok')
         else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak A-Z\n')
             print('Brak A-Z')
 
 

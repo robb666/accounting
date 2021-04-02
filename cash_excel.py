@@ -139,21 +139,27 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
 
 
 def raport_inkaso(*, za_okres):
-    print('Raport kasowy...')
-    ExcelApp, wb, ws, col_diff = baza()
+    try:
+        print('Raport kasowy...')
+        ExcelApp, wb, ws, col_diff = baza()
 
-    msc, msc_rok = okres(za_okres)
-    ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc)
+        msc, msc_rok = okres(za_okres)
+        ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc)
 
-    filtry_kolumn(ws, msc)
-    copy_paste_daty(ws, ws_cash)
-    copy_paste_tu(ws, ws_cash, col_diff)
-    copy_paste_nr(ws, ws_cash)
-    copy_paste_inkaso(ws, ws_cash, col_diff)
-    sortowanie(ws, ws_cash, col_diff)
-    auto_fit(ws_cash)
-    opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
-    print('Raport kasowy ok')
+        filtry_kolumn(ws, msc)
+        copy_paste_daty(ws, ws_cash)
+        copy_paste_tu(ws, ws_cash, col_diff)
+        copy_paste_nr(ws, ws_cash)
+        copy_paste_inkaso(ws, ws_cash, col_diff)
+        sortowanie(ws, ws_cash, col_diff)
+        auto_fit(ws_cash)
+        opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
+        print('Raport kasowy ok')
+
+    except:
+        with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            f.write('Brak raportu kasowego\n')
+        print('Brak raportu kasowego')
 
 
 if __name__ == '__main__':

@@ -75,6 +75,8 @@ def allianz():
         print('Allianz ok')
     except:
         time.sleep(1)
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Allianz\n")
         print('Brak Allianz')
         driver.quit()
 
@@ -99,6 +101,8 @@ def compensa():
 
     except Exception as e:
         driver.close()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Compensa\n")
         print('Brak Compensa')
 
 
@@ -120,9 +124,10 @@ def generali():
         driver.close()
         print('Generali ok')
     except:
-        print('Brak Generali')
         driver.close()
-        pass
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Generali\n")
+        print('Brak Generali')
 
 
 def hestia():
@@ -153,8 +158,10 @@ def hestia():
         driver.quit()
         print('Hestia ok')
     except:
-        print('Brak Hestii')
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Hestii\n")
+        print('Brak Hestii')
 
 
 def interrisk() :
@@ -195,6 +202,8 @@ def interrisk() :
         print('InterRisk ok')
     except :
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak InterRisk\n")
         print('Brak InterRisk')
 
 
@@ -225,8 +234,9 @@ def uniqa():
         print('Uniqa ok')
     except:
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak UNIQA\n")
         print('Brak UNIQA')
-        pass
 
 
 def warta():
@@ -267,6 +277,8 @@ def warta():
         print('Warta ok')
     except:
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak WARTA\n")
         print('Brak WARTA')
         pass
 
@@ -294,7 +306,9 @@ def warta_ż():
         print('Warta Ż ok')
     except:
         driver.quit()
-        print('Brak Warta Ż')
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Warta Życie\n")
+        print('Brak Warta Życie')
 
 
 def unilink():
@@ -321,8 +335,10 @@ def unilink():
         print('Unilink ok')
     except:
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak Unilink\n")
         print('Brak Unilink')
-        pass
+
 
 
 def pzu():
@@ -353,6 +369,8 @@ def pzu():
         print('PZU ok')
     except:
         driver.quit()
+        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+            f.write("Brak PZU\n")
         print('Brak PZU')
         pass
 
@@ -368,3 +386,5 @@ if __name__ == '__main__':
             executor.submit(tasks[n])
 
     raport_inkaso(za_okres=-1)
+
+    time.sleep(1000)
