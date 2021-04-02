@@ -6,6 +6,27 @@ from dateutil.relativedelta import relativedelta
 import time
 
 
+# def gen_py():
+#     try:
+#         xl = win32.gencache.EnsureDispatch('Excel.Application')
+#     except AttributeError:
+#         # Corner case dependencies.
+#         import os
+#         import re
+#         import sys
+#         import shutil
+#
+#         # Remove cache and try again.
+#         MODULE_LIST = [m.__name__ for m in sys.modules.values()]
+#         for module in MODULE_LIST:
+#             if re.match(r'win32com\.gen_py\..+', module):
+#                 del sys.modules[module]
+#         shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
+#         # from win32com import client
+#
+#         xl = win32.gencache.EnsureDispatch('Excel.Application')
+
+
 def baza():
     path_bazy = r'M:\Agent baza'
 
@@ -15,7 +36,8 @@ def baza():
         wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
     except:
-        ExcelApp = Dispatch("Excel.Application")
+        # ExcelApp = Dispatch("Excel.Application")
+        ExcelApp = win32.gencache.EnsureDispatch("Excel.Application")
         wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
 
@@ -164,4 +186,3 @@ def raport_inkaso(*, za_okres):
 
 if __name__ == '__main__':
     raport_inkaso(za_okres=-1)
-
