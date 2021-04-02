@@ -156,10 +156,10 @@ def raport_inkaso(*, za_okres):
         opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
         print('Raport kasowy ok')
 
-    except:
+    except Exception as e:
         with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
             f.write('Brak raportu kasowego\n')
-        print('Brak raportu kasowego')
+        print(f'Brak raportu kasowego: {e}')
 
 
 if __name__ == '__main__':

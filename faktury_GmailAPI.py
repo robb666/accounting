@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 import pickle
 import os.path
@@ -79,12 +80,13 @@ def labels(service):
 
     for label in labels.items():
         results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=2, q=query).execute()
-        n = 1 if label[0] == 'Orange stac' else 0  # Dwa różne maile z fv w tej samej labelce.
+
+        n = 1 if label[0] == 'Orange stac' and results['resultSizeEstimate'] > 1 else 0  # Dwa różne maile z fv w tej samej labelce.
         message_id = ''
         try:
             message_id = results['messages'][n]['id']
-        except Exception as e:
-            print(f'Brak faktury {e}')
+        except Exception:
+            pass
         msg = service.users().messages().get(userId='me', id=message_id).execute()
 
         yield label[0], message_id, msg
@@ -168,7 +170,7 @@ def insly_invoice(fv, message_id, msg):
 
 def orange_mobil_invoice(fv, message_id, msg):
     if fv == 'Orange mob':
-        if str(msg).find('e-faktura Orange') > -1:
+        if str(msg).find('e-faktura Orange') > -1 and not str(msg).find('e-faktura Orange Polska'):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
@@ -185,19 +187,19 @@ def orange_mobil_invoice(fv, message_id, msg):
 
 def orange_stac_invoice(fv, message_id, msg):
     if fv == 'Orange stac':
-        if str(msg).find('e-faktura Orange Polska') > -1:
-            att_id = attachment_id(fv, msg)
-            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                   id=att_id).execute()
-            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura stacjonarne' + '.pdf'])
-            with open(path, 'wb') as f:
-                f.write(get_att_de)
-            print('Orange stacjonarne ok')
-        else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
-                f.write('Brak Orange usługi stacjonarne\n')
-            print('Brak Orange usługi stacjonarne')
+            if str(msg).find('e-faktura Orange Polska') > -1:
+                att_id = attachment_id(fv, msg)
+                get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
+                                                                       id=att_id).execute()
+                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+                path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura stacjonarne' + '.pdf'])
+                with open(path, 'wb') as f:
+                    f.write(get_att_de)
+                print('Orange stacjonarne ok')
+            else:
+                with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                    f.write('Brak Orange usługi stacjonarne\n')
+                print('Brak Orange usługi stacjonarne')
 
 
 def aws_invoice(fv, message_id, msg):
@@ -231,10 +233,10 @@ def tuw_invoice(fv, message_id, msg):
                 # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
             if path + '.zip':
                 print('TUW ok')
-            else:
-                with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
-                    f.write('Brak TUW\n')
-                print('Brak TUW')
+        else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak TUW\n')
+            print('Brak TUW')
 
 
 def tuz_invoice(fv, message_id, msg):
@@ -276,9 +278,7 @@ def email():
         axa_invoice(fv, id, message)
         wiener_invoice(fv, id, message)
         insly_invoice(fv, id, message)
-        try:
-            orange_mobil_invoice(fv, id, message)
-        except: pass
+        orange_mobil_invoice(fv, id, message)
         orange_stac_invoice(fv, id, message)
         aws_invoice(fv, id, message)
         tuw_invoice(fv, id, message)

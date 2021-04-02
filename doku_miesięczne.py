@@ -185,7 +185,7 @@ def interrisk() :
                             '/html/body/form/div[3]/div[2]/div[1]/div[2]/div[2]/table/tbody/tr[1]/td[6]/input'))).click()
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID,
                                                                         'ctl00_ctl00_cph1_cph1_cbNoteOnDemand'))).click()
-        time.sleep(1)
+        time.sleep(1.5)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                         "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR,
@@ -197,7 +197,7 @@ def interrisk() :
                                                                             "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
         except :
             pass
-        time.sleep(1)
+        time.sleep(1.5)
         driver.quit()
         print('InterRisk ok')
     except :
