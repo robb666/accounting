@@ -379,12 +379,10 @@ if __name__ == '__main__':
     # multiprocessing.freeze_support()
 
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
-
+    raport_inkaso(za_okres=-1)
     email()
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
-
-    raport_inkaso(za_okres=-1)
 
     time.sleep(10)
