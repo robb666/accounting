@@ -1,30 +1,26 @@
 import win32com.client as win32
-from win32com.client import Dispatch
 from win32com.client import constants
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
 
 
-# def gen_py():
-#     try:
-#         xl = win32.gencache.EnsureDispatch('Excel.Application')
-#     except AttributeError:
-#         # Corner case dependencies.
-#         import os
-#         import re
-#         import sys
-#         import shutil
-#
-#         # Remove cache and try again.
-#         MODULE_LIST = [m.__name__ for m in sys.modules.values()]
-#         for module in MODULE_LIST:
-#             if re.match(r'win32com\.gen_py\..+', module):
-#                 del sys.modules[module]
-#         shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
-#         # from win32com import client
-#
-#         xl = win32.gencache.EnsureDispatch('Excel.Application')
+def gen_py():
+    try:
+        win32.gencache.EnsureDispatch('Excel.Application')
+    except AttributeError:
+        # Corner case dependencies.
+        import os
+        import re
+        import sys
+        import shutil
+
+        # Remove cache and try again.
+        MODULE_LIST = [m.__name__ for m in sys.modules.values()]
+        for module in MODULE_LIST:
+            if re.match(r'win32com\.gen_py\..+', module):
+                del sys.modules[module]
+        shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
 
 
 def baza():
@@ -36,7 +32,6 @@ def baza():
         wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
     except:
-        # ExcelApp = Dispatch("Excel.Application")
         ExcelApp = win32.gencache.EnsureDispatch("Excel.Application")
         wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
@@ -161,6 +156,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
 
 
 def raport_inkaso(*, za_okres):
+    gen_py()
     try:
         print('Raport kasowy...')
         ExcelApp, wb, ws, col_diff = baza()
