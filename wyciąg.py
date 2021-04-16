@@ -104,7 +104,7 @@ def send_message(service, raw_message):
 def mail(service):
     """Email z wyciągiem."""
     msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
-    email_to = 'ubezpieczenia.magro@gmail.com'
+    email_to = 'dg.jn@poczta.fm'
     my_email = 'ubezpieczenia.magro@gmail.com'
     message_text = """
 Cześć Ola,\n 
@@ -136,6 +136,7 @@ www.ubezpieczenia-magro.pl
 if __name__ == '__main__':
     win = open_browser()
     download_summary(win)
+    # Program dodany do harmonogramu zadań wykonuje się z folderu C:\WINDOWS\system32 #
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
