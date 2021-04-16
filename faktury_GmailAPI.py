@@ -266,7 +266,7 @@ def tuz_invoice(fv, message_id, msg):
             print('Brak TUZ')
 
 
-def a_z_invoice(fv, message_id, msg):
+def az_invoice(fv, message_id, msg):
     if fv == 'A-Z':
         if str(msg).find('fakturę') > -1:
             att_id = attachment_id(fv, msg)
@@ -312,7 +312,7 @@ def email():
         aws_invoice(fv, id, message)
         tuw_invoice(fv, id, message)
         tuz_invoice(fv, id, message)
-        a_z_invoice(fv, id, message)
+        az_invoice(fv, id, message)
         eins(fv, id, message)
 
 
