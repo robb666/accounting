@@ -29,6 +29,7 @@ def baza():
     """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
+        ExcelApp.DisplayAlerts = False
         wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
     except:
@@ -94,7 +95,8 @@ def copy_paste_tu(ws, ws_cash, col_diff):
     ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
     none_list = []
     row = 2
-    for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff}'):
+
+    for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff + 110}'):
         tow = str(tow)
         if none := tow is None:
             none_list.append(none)
@@ -152,6 +154,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     ExcelApp.Application.Quit()
     ExcelApp_cash.Application.Quit()
 
+    ExcelApp.DisplayAlerts = True
     wb_cash.DisplayAlerts = True
 
 
