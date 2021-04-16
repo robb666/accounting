@@ -104,7 +104,7 @@ def send_message(service, raw_message):
 def mail(service):
     """Email z wyciągiem."""
     msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
-    email_to = 'dg.jn@poczta.fm'
+    email_to = 'ubezpieczenia.magro@gmail.com'
     my_email = 'ubezpieczenia.magro@gmail.com'
     message_text = """
 Cześć Ola,\n 
