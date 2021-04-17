@@ -95,10 +95,14 @@ def compensa():
         driver.get(url_compensa)
         driver.set_page_load_timeout(30)
         time.sleep(3)
+        try:
+            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH,
+                                                                           "//*[contains(text(), 'Zamkn')]"))).click()
+        except:
+            pass
         driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/compensa.png')
         driver.close()
         print('Compensa ok')
-
     except Exception as e:
         driver.close()
         with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
