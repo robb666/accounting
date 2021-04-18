@@ -291,7 +291,7 @@ def eins(fv, message_id, msg):
                                                                        messageId=message_id,
                                                                        id=att_id).execute()
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Euroins_{filename}'])
+                path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Euroins_{filename}'.replace(' ', '_')])
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
                 print('Euroins ok')

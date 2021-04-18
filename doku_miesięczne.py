@@ -15,7 +15,14 @@ from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, g
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
      unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi
 import time
-
+import smtplib, ssl
+from email import encoders
+import mimetypes
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # def santander():
 #     options = webdriver.ChromeOptions()
@@ -369,6 +376,10 @@ def pzu():
                                 '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
         time.sleep(4)
         driver.quit()
+        documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+        for item in os.listdir(documents):
+            if '+' in item and os.path.isfile(os.path.join(documents, item)):
+                os.rename(os.path.join(documents, item), os.path.join(documents, 'PZU.pdf'))
         print('PZU ok')
     except:
         driver.quit()
@@ -406,7 +417,6 @@ def send_attachments(sender_email, receiver_email):
 
 
 if __name__ == '__main__':
-    # multiprocessing.freeze_support()
 
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
     raport_inkaso(za_okres=-1)
@@ -416,4 +426,4 @@ if __name__ == '__main__':
             executor.submit(tasks[n])
 
     send_attachments('ubezpieczenia.magro@gmail.com', 'magro@ubezpieczenia-magro.pl')
-    time.sleep(10)
+    time.sleep(1)
