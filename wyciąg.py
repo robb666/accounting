@@ -137,6 +137,7 @@ if __name__ == '__main__':
     win = open_browser()
     download_summary(win)
     # Program dodany do harmonogramu zadań wykonuje się z folderu C:\WINDOWS\system32 #
+    # Ewentualnie funkcja - os.chdir()
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
