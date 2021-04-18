@@ -1,6 +1,6 @@
 
 import os
-import email, smtplib, ssl
+import smtplib, ssl
 from email import encoders
 import mimetypes
 from email.mime.base import MIMEBase
@@ -8,7 +8,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import base64
 from L_H_ks import gapi
 
 
