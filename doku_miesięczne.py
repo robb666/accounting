@@ -13,7 +13,7 @@ from faktury_GmailAPI import email
 from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
-     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h
+     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi
 import time
 
 
@@ -100,7 +100,7 @@ def compensa():
                                                                            "//*[contains(text(), 'Zamkn')]"))).click()
         except:
             pass
-        driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/compensa.png')
+        driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Compensa.png')
         driver.close()
         print('Compensa ok')
     except Exception as e:
@@ -402,7 +402,7 @@ def send_attachments(sender_email, receiver_email):
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
-        server.login('ubezpieczenia.magro@gmail.com', 'pornogrubas')
+        server.login('ubezpieczenia.magro@gmail.com', gapi)
         server.sendmail(sender_email, receiver_email, text)
 
 

@@ -124,17 +124,17 @@ def axa_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AXA prowizja' + '.xls'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AXA_prowizja' + '.xls'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
 
             # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
             xlApp = Dispatch("Excel.Application")
-            xlwb = xlApp.Workbooks.Open('C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\AXA prowizja.xls',
+            xlwb = xlApp.Workbooks.Open('C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\AXA_prowizja.xls',
                                         False, False, None, 'PVxCC32%pLkO')
             path = ''.join(['C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO'])
             xlApp.DisplayAlerts = False
-            xlwb.SaveAs(path + '\AXA prowizja.xls', FileFormat=-4143, Password='')
+            xlwb.SaveAs(path + '\AXA_prowizja.xls', FileFormat=-4143, Password='')
             xlApp.DisplayAlerts = True
             xlwb.Close()
             print('AXA ok')
@@ -151,7 +151,7 @@ def wiener_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Wiener prowizja' + '.pdf'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Wiener_prowizja' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Wiener ok')
@@ -168,7 +168,7 @@ def insly_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Insly faktura' + '.pdf'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Insly_faktura' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Insly ok')
@@ -185,7 +185,7 @@ def orange_mobil_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura mobilne' + '.pdf'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_mobilne' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Orange mobilne ok')
@@ -202,7 +202,7 @@ def orange_stac_invoice(fv, message_id, msg):
                 get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                        id=att_id).execute()
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange faktura stacjonarne' + '.pdf'])
+                path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_stacjonarne' + '.pdf'])
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
                 print('Orange stacjonarne ok')
@@ -219,7 +219,7 @@ def aws_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AWS faktura' + '.pdf'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AWS_faktura' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('AWS ok')
@@ -236,7 +236,7 @@ def tuw_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW faktura, hasło; {h.group(1)}'])
+            path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_faktura_haslo_{h.group(1)}'])
             with open(path + '.zip', 'wb') as f:
                 f.write(get_att_de)
                 # zip_ref = zipfile.ZipFile(path + '.zip')
@@ -256,7 +256,7 @@ def tuz_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUZ faktura'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUZ_faktura'])
             with open(path + '.pdf', 'wb') as f:
                 f.write(get_att_de)
             print('TUZ ok')
@@ -273,7 +273,7 @@ def az_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AZ faktura, hasło; Rozliczenia'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AZ_faktura_haslo_Rozliczenia'])
             with open(path + '.zip', 'wb') as f:
                 f.write(get_att_de)
             print('A-Z ok')
@@ -291,7 +291,7 @@ def eins(fv, message_id, msg):
                                                                        messageId=message_id,
                                                                        id=att_id).execute()
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Euroins {filename}'])
+                path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Euroins_{filename}'])
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
                 print('Euroins ok')

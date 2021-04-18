@@ -148,7 +148,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     wb_cash.DisplayAlerts = False
     ExcelApp.Application.CutCopyMode = False
 
-    wb_cash.SaveAs(path_do_zapisu_w + f"\\gotówka {msc_rok}.xlsx")
+    wb_cash.SaveAs(path_do_zapisu_w + f"\\Raport_kasowy_{msc_rok}.xlsx")
     wb.Close(SaveChanges=False)
     wb_cash.Close()
     ExcelApp.Application.Quit()

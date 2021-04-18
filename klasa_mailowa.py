@@ -9,14 +9,14 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import base64
-# from L_H_ks import gapi
+from L_H_ks import gapi
 
 
 def send_attachments(sender_email, receiver_email):
     msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
     message = MIMEMultipart()
     message['Subject'] = f'Dokumenty za {msc_rok}'
-    body = """ Cześć, przesyłam dokumenty w załącznikach.\n """
+    body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
     documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
@@ -35,7 +35,7 @@ def send_attachments(sender_email, receiver_email):
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
-        server.login('ubezpieczenia.magro@gmail.com')
+        server.login('ubezpieczenia.magro@gmail.com', gapi)
         server.sendmail(sender_email, receiver_email, text)
 
 
