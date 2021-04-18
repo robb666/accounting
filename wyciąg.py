@@ -78,7 +78,6 @@ def create_message(to, sender, subject, msg_text, msg_attachments):
         else:
             content_type, encoding = mimetypes.guess_type(attachment, strict=False)
             main_type, sub_type = content_type.split('/', 1)
-            # file_name = os.path.basename(attachment)
             my_file = MIMEBase(main_type, sub_type)
 
         with open(attachment, 'rb') as f:

@@ -379,14 +379,42 @@ def pzu():
         pass
 
 
+def send_attachments(sender_email, receiver_email):
+    msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
+    message = MIMEMultipart()
+    message['Subject'] = f'Dokumenty za {msc_rok}'
+    body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
+    message.attach(MIMEText(body))
+
+    documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+    os.chdir(documents)
+    for attachment in os.listdir(documents):
+        content_type, encoding = mimetypes.guess_type(attachment, strict=False)
+        main_type, sub_type = content_type.split('/', 1)
+        my_file = MIMEBase(main_type, sub_type)
+
+        with open(attachment, 'rb') as f:
+            my_file.set_payload(f.read())
+            my_file.add_header('Content-Disposition', f'attachment; filename = {attachment}', )
+            encoders.encode_base64(my_file)
+            message.attach(my_file)
+            text = message.as_string()
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
+        server.login('ubezpieczenia.magro@gmail.com', 'pornogrubas')
+        server.sendmail(sender_email, receiver_email, text)
+
+
 if __name__ == '__main__':
     # multiprocessing.freeze_support()
 
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
     raport_inkaso(za_okres=-1)
-    email()
+    email()  # faktury z gmailAPI
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
+    send_attachments('ubezpieczenia.magro@gmail.com', 'magro@ubezpieczenia-magro.pl')
     time.sleep(10)
