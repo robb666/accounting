@@ -23,8 +23,9 @@ def main():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+    project_path = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist\\'
+    if os.path.exists(project_path + 'token.pickle'):
+        with open(project_path + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
 
     # If there are no (valid) credentials available, let the user log in.
@@ -32,11 +33,11 @@ def main():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(project_path + 'credentials.json', SCOPES)
             creds = flow.run_local_server()
+
         # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
+        with open(project_path + 'token.pickle', 'wb') as token:
             pickle.dump(creds, token)
 
     return build('gmail', 'v1', credentials=creds)
@@ -301,7 +302,6 @@ def eins(fv, message_id, msg):
             print('Brak noty Euroins')
 
 
-
 def email():
     for fv, id, message in labels(service):
         axa_invoice(fv, id, message)
@@ -319,5 +319,8 @@ def email():
 service = main()
 
 if __name__ == '__main__':
-
     email()
+
+
+
+

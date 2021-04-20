@@ -107,6 +107,7 @@ def compensa():
                                                                            "//*[contains(text(), 'Zamkn')]"))).click()
         except:
             pass
+        time.sleep(.5)
         driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Compensa.png')
         driver.close()
         print('Compensa ok')
@@ -417,7 +418,7 @@ def send_attachments(sender_email, receiver_email):
 
 
 if __name__ == '__main__':
-
+    # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
     raport_inkaso(za_okres=-1)
     email()  # faktury z gmailAPI
@@ -425,5 +426,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', 'magro@ubezpieczenia-magro.pl')
+    send_attachments('ubezpieczenia.magro@gmail.com', 'dg.jn@poczta.fm')
     time.sleep(1)

@@ -123,7 +123,6 @@ www.ubezpieczenia-magro.pl
     attachments = []
     for item in os.listdir(desktop):
         if 'wyciag_' in item and os.path.isfile(os.path.join(desktop, item)):
-
             attachments.append(os.path.join(desktop, item))
 
     message = create_message(email_to, my_email, f'Wyciąg za {msc_rok}', message_text, attachments)
@@ -136,9 +135,9 @@ if __name__ == '__main__':
     win = open_browser()
     download_summary(win)
     # Program dodany do harmonogramu zadań wykonuje się z folderu C:\WINDOWS\system32 #
-    # Ewentualnie funkcja - os.chdir()
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+    project_path = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist\\'
+    if os.path.exists(project_path + 'token.pickle'):
+        with open(project_path + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
     service = build('gmail', 'v1', credentials=creds)
     mail(service)
