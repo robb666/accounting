@@ -21,7 +21,7 @@ ahk = AHK()
 
 def open_browser():
     ahk.run_script('Run, firefox.exe -new-window https://www.santander.pl/klient-indywidualny')
-    time.sleep(4.5)
+    time.sleep(9)
     for window in ahk.windows():
         if 'Santander' in window.title.decode('windows-1252'):
             win = window
@@ -31,33 +31,33 @@ def open_browser():
 
 
 def log_into_account():
-    ahk.mouse_move(1429, 157, speed=2)
+    ahk.mouse_move(1429, 157, speed=10)
     ahk.click()
-    ahk.mouse_move(1404, 240, speed=2)
-    ahk.click()
-    time.sleep(3)
-    ahk.run_script(f'Send, {numpad}')
-    ahk.mouse_move(991, 402, speed=2)
-    ahk.click()
-    time.sleep(2)
+    ahk.mouse_move(1404, 240, speed=10)
     ahk.click()
     time.sleep(5)
+    ahk.run_script(f'Send, {numpad}')
+    ahk.mouse_move(991, 402, speed=10)
+    ahk.click()
+    time.sleep(3)
+    ahk.click()
+    time.sleep(8)
 
 
 def download_summary(win):
     log_into_account()
-    ahk.mouse_move(1254, 471, speed=1)
+    ahk.mouse_move(1254, 471, speed=10)
     ahk.click()
-    time.sleep(2)
+    time.sleep(6)
     ahk.mouse_wheel('down')
     ahk.mouse_wheel('down')
-    ahk.mouse_move(981, 939, speed=1)
+    ahk.mouse_move(981, 939, speed=10)
     ahk.click()
-    ahk.mouse_move(704, 260, speed=2)
+    ahk.mouse_move(704, 260, speed=10)
     ahk.click()
-    ahk.mouse_move(981, 939, speed=3)
+    ahk.mouse_move(981, 939, speed=10)
     ahk.click()
-    time.sleep(2)
+    time.sleep(6)
     win.close()
 
 
