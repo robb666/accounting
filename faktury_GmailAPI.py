@@ -297,7 +297,6 @@ def az_invoice(fv, message_id, msg):
 
 def eins(fv, message_id, msg):
     if fv == 'Euroins':
-        # print(msg)
         if re.search('(not[a|ę]+|prowizyjn[a|ą|y]+)', str(msg)):  # or 'Łuczak' in str(msg):
             for att_id, filename in attachment_id_gen(fv, msg):
                 get_att = service.users().messages().attachments().get(userId='me',
@@ -316,16 +315,16 @@ def eins(fv, message_id, msg):
 
 def email():
     for fv, id, message in labels(service):
-        # axa_invoice(fv, id, message)
-        # wiener_invoice(fv, id, message)
-        # insly_invoice(fv, id, message)
-        # orange_stac_invoice(fv, id, message)
-        # orange_mobil_invoice(fv, id, message)
-        # aws_invoice(fv, id, message)
+        axa_invoice(fv, id, message)
+        wiener_invoice(fv, id, message)
+        insly_invoice(fv, id, message)
+        orange_stac_invoice(fv, id, message)
+        orange_mobil_invoice(fv, id, message)
+        aws_invoice(fv, id, message)
         tuw_invoice(fv, id, message)
-        # tuz_invoice(fv, id, message)
-        # az_invoice(fv, id, message)
-        # eins(fv, id, message)
+        tuz_invoice(fv, id, message)
+        az_invoice(fv, id, message)
+        eins(fv, id, message)
 
 
 service = main()
