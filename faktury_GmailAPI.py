@@ -69,8 +69,8 @@ def labels(service):
     labels = {'AXA': 'Label_6603011562280603842',
               'Wiener': 'Label_7350084330973658333',
               'Insly': 'Label_2969710781820475073',
-              'Orange mob': 'Label_7521852298094424071',
               'Orange stac': 'Label_7521852298094424071',
+              'Orange mob': 'Label_7521852298094424071',
               'TUW': 'Label_7255175017814621709',
               'TUZ': 'Label_1453748131451092882',
               'A-Z': 'Label_4747893535910550011',
@@ -83,8 +83,10 @@ def labels(service):
 
     for label in labels.items():
         results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=2, q=query).execute()
-
-        n = 1 if label[0] == 'Orange stac' and results['resultSizeEstimate'] > 1 else 0  # Dwa różne maile z fv w tej samej labelce.
+        # Dwa różne maile z fv w tej samej labelce.
+        # n = 1 if label[0] == 'Orange mob' and results['resultSizeEstimate'] > 1 else 0
+        """Usł mobilne są w terminie pobrania drugim rezultatem, stąd n = 1. """
+        n = 1 if label[0] == 'Orange mob' else 0
         message_id = ''
         try:
             message_id = results['messages'][n]['id']
@@ -112,8 +114,9 @@ def attachment_id(fv, msg):
 
 def attachment_id_gen(fv, msg):
     for part in msg['payload']['parts']:
-        d = True if fv == 'Euroins' and re.search('.pdf$', part['filename']) else False
-        if d:
+        d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
+        e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
+        if d or e:
             att_id = part['body']['attachmentId']
             yield att_id, part['filename']
 
@@ -179,9 +182,26 @@ def insly_invoice(fv, message_id, msg):
             print('Brak faktury Insly')
 
 
+def orange_stac_invoice(fv, message_id, msg):
+    if fv == 'Orange stac':
+        if '_' in str(msg['payload']['parts'][1]['filename']):
+            att_id = attachment_id(fv, msg)
+            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
+                                                                   id=att_id).execute()
+            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_stacjonarne' + '.pdf'])
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
+            print('Orange stacjonarne ok')
+        else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Orange usługi stacjonarne\n')
+            print('Brak faktury Orange usługi stacjonarne')
+
+
 def orange_mobil_invoice(fv, message_id, msg):
     if fv == 'Orange mob':
-        if str(msg).find('e-faktura Orange') > -1 and not str(msg).find('e-faktura Orange Polska'):
+        if 'FAKTURA' in str(msg['payload']['parts'][1]['filename']):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
@@ -194,23 +214,6 @@ def orange_mobil_invoice(fv, message_id, msg):
             with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
                 f.write('Brak Orange usługi mobilne\n')
             print('Brak faktury Orange usługi mobilne')
-
-
-def orange_stac_invoice(fv, message_id, msg):
-    if fv == 'Orange stac':
-            if str(msg).find('e-faktura Orange Polska') > -1:
-                att_id = attachment_id(fv, msg)
-                get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                       id=att_id).execute()
-                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_stacjonarne' + '.pdf'])
-                with open(path, 'wb') as f:
-                    f.write(get_att_de)
-                print('Orange stacjonarne ok')
-            else:
-                with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
-                    f.write('Brak Orange usługi stacjonarne\n')
-                print('Brak faktury Orange usługi stacjonarne')
 
 
 def aws_invoice(fv, message_id, msg):
@@ -232,18 +235,26 @@ def aws_invoice(fv, message_id, msg):
 
 def tuw_invoice(fv, message_id, msg):
     if fv == 'TUW':
-        if h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg)):
-            att_id = attachment_id(fv, msg)
-            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                   id=att_id).execute()
-            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_faktura_haslo_{h.group(1)}'])
-            with open(path + '.zip', 'wb') as f:
-                f.write(get_att_de)
-                # zip_ref = zipfile.ZipFile(path + '.zip')
-                # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
-            if path + '.zip':
-                print('TUW ok')
+        """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
+        h = ''
+        if re.search('Towarzystwo', str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))):
+            # att_id = attachment_id(fv, msg)
+            for att_id, filename in attachment_id_gen(fv, msg):
+                get_att = service.users().messages().attachments().get(userId='me',
+                                                                       messageId=message_id,
+                                                                       id=att_id).execute()
+                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+                """Raz wpisuje hasło w treść, raz nie."""
+                if h:
+                    path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_faktura_haslo_{h.group(1)}'])
+                else:
+                    path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_{filename}'])
+                with open(path, 'wb') as f:
+                    f.write(get_att_de)
+                    # zip_ref = zipfile.ZipFile(path + '.zip')
+                    # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
+                if path + '.pdf':
+                    print('TUW ok')
         else:
             with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
                 f.write('Brak TUW\n')
@@ -286,7 +297,8 @@ def az_invoice(fv, message_id, msg):
 
 def eins(fv, message_id, msg):
     if fv == 'Euroins':
-        if re.search('(not[aę]|prowizyjn[aą])', str(msg)):
+        # print(msg)
+        if re.search('(not[a|ę]+|prowizyjn[a|ą|y]+)', str(msg)):  # or 'Łuczak' in str(msg):
             for att_id, filename in attachment_id_gen(fv, msg):
                 get_att = service.users().messages().attachments().get(userId='me',
                                                                        messageId=message_id,
@@ -304,16 +316,16 @@ def eins(fv, message_id, msg):
 
 def email():
     for fv, id, message in labels(service):
-        axa_invoice(fv, id, message)
-        wiener_invoice(fv, id, message)
-        insly_invoice(fv, id, message)
-        orange_mobil_invoice(fv, id, message)
-        orange_stac_invoice(fv, id, message)
-        aws_invoice(fv, id, message)
+        # axa_invoice(fv, id, message)
+        # wiener_invoice(fv, id, message)
+        # insly_invoice(fv, id, message)
+        # orange_stac_invoice(fv, id, message)
+        # orange_mobil_invoice(fv, id, message)
+        # aws_invoice(fv, id, message)
         tuw_invoice(fv, id, message)
-        tuz_invoice(fv, id, message)
-        az_invoice(fv, id, message)
-        eins(fv, id, message)
+        # tuz_invoice(fv, id, message)
+        # az_invoice(fv, id, message)
+        # eins(fv, id, message)
 
 
 service = main()
