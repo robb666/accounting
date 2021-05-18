@@ -253,7 +253,7 @@ def tuw_invoice(fv, message_id, msg):
                     f.write(get_att_de)
                     # zip_ref = zipfile.ZipFile(path + '.zip')
                     # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
-                if path + '.pdf':
+                if path + '.pdf' or path + '.zip':
                     print('TUW ok')
         else:
             with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
