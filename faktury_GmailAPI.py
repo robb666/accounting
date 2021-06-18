@@ -167,7 +167,7 @@ def wiener_invoice(fv, message_id, msg):
 
 def insly_invoice(fv, message_id, msg):
     if fv == 'Insly':
-        if str(msg).find('Faktura') > -1:
+        if str(msg).find('Faktura') > -1 and not 'minął termin' in str(msg):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
