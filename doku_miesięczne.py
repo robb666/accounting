@@ -162,11 +162,11 @@ def hestia():
                                                                         '/html/body/div/div[3]/div[2]/div/ng-include/'
                                                                         'div/div[3]/div/div/div/div[2]/table/tbody/'
                                                                         'tr[1]/td[6]/ng-include/a'))).click()
-        time.sleep(1.2)
+        time.sleep(2.2)
         faktura = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,
                                                                         '/html/body/div/div[3]/div[2]/div/ul/li[2]/a')))
         faktura.click()
-        time.sleep(4)
+        time.sleep(5)
         driver.quit()
         print('Hestia ok')
     except:

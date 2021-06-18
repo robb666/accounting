@@ -21,9 +21,9 @@ def send_attachments(sender_email, receiver_email):
     documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
     os.chdir(documents)
     for attachment in os.listdir(documents):
-        print(attachment)
+
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
-        print(content_type, encoding)
+
         try:
             main_type, sub_type = content_type.split('/', 1)
         except:
