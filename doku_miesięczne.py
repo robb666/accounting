@@ -419,7 +419,7 @@ def send_attachments(sender_email, receiver_email):
 
 if __name__ == '__main__':
     # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
-    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu, raport_inkaso]
+    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
     raport_inkaso(za_okres=-1)
     email()  # faktury z gmailAPI
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
