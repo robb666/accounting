@@ -75,7 +75,7 @@ def allianz():
         driver.find_element_by_name('submit').click()
         driver.get('https://chuck.allianz.pl/agent/#/invoices')
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
-        time.sleep(0.8)
+        time.sleep(1)
         WebDriverWait(driver, 9).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
         time.sleep(4)
         driver.quit()
@@ -107,7 +107,7 @@ def compensa():
                                                                            "//*[contains(text(), 'Zamkn')]"))).click()
         except:
             pass
-        time.sleep(.5)
+        time.sleep(1)
         driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Compensa.png')
         driver.close()
         print('Compensa ok')
@@ -132,7 +132,7 @@ def generali():
         url_accounting = 'https://portal.generali.pl/mikado/commissions/current'
         driver.get(url_accounting)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//*[@class='far fa-file-zip-o']"))).click()
-        time.sleep(9)
+        time.sleep(10)
         driver.close()
         print('Generali ok')
     except:
@@ -209,7 +209,7 @@ def interrisk() :
                                                                             "#ctl00_ctl00_cph1_cph1_exportPdf"))).click()
         except :
             pass
-        time.sleep(1.5)
+        time.sleep(2.5)
         driver.quit()
         print('InterRisk ok')
     except :
