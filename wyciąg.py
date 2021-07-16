@@ -140,8 +140,8 @@ if __name__ == '__main__':
     if os.path.exists(project_path + 'token.pickle'):
         with open(project_path + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
-    # service = build('gmail', 'v1', credentials=creds)
-    # mail(service)
+    service = build('gmail', 'v1', credentials=creds)
+    mail(service)
 
 
 
