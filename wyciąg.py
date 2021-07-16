@@ -31,13 +31,14 @@ def open_browser():
 
 
 def log_into_account():
-    ahk.mouse_move(1429, 157, speed=10)
+    ahk.mouse_move(1429, 190, speed=10)
+    # ahk.run_script('ImageSearch, 1172, 94, 1625, 246, Zaloguj.png')
     ahk.click()
-    ahk.mouse_move(1404, 240, speed=10)
+    ahk.mouse_move(1404, 259, speed=10)
     ahk.click()
     time.sleep(5)
     ahk.run_script(f'Send, {numpad}')
-    ahk.mouse_move(991, 402, speed=10)
+    ahk.mouse_move(991, 428, speed=10)
     ahk.click()
     time.sleep(3)
     ahk.click()
@@ -46,7 +47,7 @@ def log_into_account():
 
 def download_summary(win):
     log_into_account()
-    ahk.mouse_move(1254, 471, speed=10)
+    ahk.mouse_move(1254, 500, speed=10)
     ahk.click()
     time.sleep(6)
     ahk.mouse_wheel('down')
@@ -139,8 +140,8 @@ if __name__ == '__main__':
     if os.path.exists(project_path + 'token.pickle'):
         with open(project_path + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
-    service = build('gmail', 'v1', credentials=creds)
-    mail(service)
+    # service = build('gmail', 'v1', credentials=creds)
+    # mail(service)
 
 
 
