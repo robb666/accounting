@@ -59,9 +59,7 @@ def main():
     #
     # user_profile = service.users().getProfile(userId='me').execute()
     # user_email = user_profile['emailAddress']
-    # print()
     # print(user_email)
-    # print()
 
 
 def labels(service):
@@ -75,7 +73,8 @@ def labels(service):
               'TUZ': 'Label_1453748131451092882',
               'A-Z': 'Label_4747893535910550011',
               'AWS': 'Label_3955391925081514655',
-              'Euroins': 'Label_2774382001212357899'}
+              'Euroins': 'Label_2774382001212357899',
+              'Inter': 'Label_7352333857366744444'}
 
     today = date.today()
     query = "newer_than:40d".format(today.strftime('%d/%m/%Y'))
@@ -128,24 +127,24 @@ def uniqa_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/UNIkA_prowizja' + '.xls'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Uniqa_prowizja' + '.xls'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
 
             # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
             xlApp = Dispatch("Excel.Application")
-            xlwb = xlApp.Workbooks.Open(r'C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\UNIkA_prowizja.xls',
+            xlwb = xlApp.Workbooks.Open(r'C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\Uniqa_prowizja.xls',
                                         False, False, None, 'PVxCC32%pLkO')
             path = ''.join(['C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO'])
             xlApp.DisplayAlerts = False
-            xlwb.SaveAs(path + r'\UNIkA_prowizja.xls', FileFormat=-4143, Password='')
+            xlwb.SaveAs(path + r'\Uniqa_prowizja.xls', FileFormat=-4143, Password='')
             xlApp.DisplayAlerts = True
             xlwb.Close()
-            print('UNIQA ok')
+            print('Uniqa ok')
         else:
             with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
-                f.write('Brak AXA\n')
-            print('Brak UNIQA')
+                f.write('Brak Uniqa\n')
+            print('Brak Uniqa')
 
 
 def wiener_invoice(fv, message_id, msg):
@@ -250,6 +249,8 @@ def tuw_invoice(fv, message_id, msg):
                     path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_faktura_haslo_{h.group(1)}'])
                 else:
                     path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_{filename}'])
+                    with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                        f.write('TUW hasło: TUW!_5121_TUW\n')
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
                     # zip_ref = zipfile.ZipFile(path + '.zip')
@@ -314,6 +315,23 @@ def eins(fv, message_id, msg):
             print('Brak noty Euroins')
 
 
+def interpolska(fv, message_id, msg):
+    if fv == 'Inter':
+        if str(msg).find('zestawienie prowizyjne') > -1:
+            att_id = attachment_id(fv, msg)
+            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
+                                                                   id=att_id).execute()
+            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Inter_prowizja' + '.pdf'])
+            with open(path, 'wb') as f:
+                f.write(get_att_de)
+            print('Inter ok')
+        else:
+            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                f.write('Brak Inter\n')
+            print('Brak Inter')
+
+
 def email():
     for fv, id, message in labels(service):
         uniqa_invoice(fv, id, message)
@@ -326,6 +344,7 @@ def email():
         tuz_invoice(fv, id, message)
         az_invoice(fv, id, message)
         eins(fv, id, message)
+        interpolska(fv, id, message)
 
 
 service = main()
