@@ -66,7 +66,7 @@ def main():
 
 def labels(service):
 
-    labels = {'AXA': 'Label_6603011562280603842',
+    labels = {'Uniqa': 'Label_6603011562280603842',
               'Wiener': 'Label_7350084330973658333',
               'Insly': 'Label_2969710781820475073',
               'Orange stac': 'Label_7521852298094424071',
@@ -100,7 +100,7 @@ def labels(service):
 def attachment_id(fv, msg):
     """Sprawdza czy i o jakiej nazwie jest załącznik, przekazuje ID."""
     for part in msg['payload']['parts']:
-        a = True if fv in ('AXA', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
+        a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
         b = True if fv in ('Insly', 'Orange mob') and re.search('faktura', part['filename'], re.I) else False
         c = True if fv in ('Orange stac', 'TUZ') and re.search('.pdf$', part['filename'], re.I) else False
         if a or b or c and fv != 'Euroins':
@@ -121,31 +121,31 @@ def attachment_id_gen(fv, msg):
             yield att_id, part['filename']
 
 
-def axa_invoice(fv, message_id, msg):
-    if fv == 'AXA':
+def uniqa_invoice(fv, message_id, msg):
+    if fv == 'Uniqa':
         if str(msg).find('plik prowizyjny') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AXA_prowizja' + '.xls'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/UNIkA_prowizja' + '.xls'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
 
             # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
             xlApp = Dispatch("Excel.Application")
-            xlwb = xlApp.Workbooks.Open('C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\AXA_prowizja.xls',
+            xlwb = xlApp.Workbooks.Open(r'C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\UNIkA_prowizja.xls',
                                         False, False, None, 'PVxCC32%pLkO')
             path = ''.join(['C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO'])
             xlApp.DisplayAlerts = False
-            xlwb.SaveAs(path + '\AXA_prowizja.xls', FileFormat=-4143, Password='')
+            xlwb.SaveAs(path + r'\UNIkA_prowizja.xls', FileFormat=-4143, Password='')
             xlApp.DisplayAlerts = True
             xlwb.Close()
-            print('AXA ok')
+            print('UNIQA ok')
         else:
             with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
                 f.write('Brak AXA\n')
-            print('Brak AXA')
+            print('Brak UNIQA')
 
 
 def wiener_invoice(fv, message_id, msg):
@@ -201,7 +201,7 @@ def orange_stac_invoice(fv, message_id, msg):
 
 def orange_mobil_invoice(fv, message_id, msg):
     if fv == 'Orange mob':
-        if 'FAKTURA' in str(msg['payload']['parts'][1]['filename']):
+        if 'Faktura' in str(msg['payload']['parts'][1]['filename']):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
@@ -237,7 +237,8 @@ def tuw_invoice(fv, message_id, msg):
     if fv == 'TUW':
         """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
         h = ''
-        if re.search('Towarzystwo', str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))):
+        possible_words = re.compile('Towarzystwo|Hasło', re.I)
+        if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))):
             # att_id = attachment_id(fv, msg)
             for att_id, filename in attachment_id_gen(fv, msg):
                 get_att = service.users().messages().attachments().get(userId='me',
@@ -315,7 +316,7 @@ def eins(fv, message_id, msg):
 
 def email():
     for fv, id, message in labels(service):
-        axa_invoice(fv, id, message)
+        uniqa_invoice(fv, id, message)
         wiener_invoice(fv, id, message)
         insly_invoice(fv, id, message)
         orange_stac_invoice(fv, id, message)
