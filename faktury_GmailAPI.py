@@ -269,7 +269,7 @@ def tuz_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUZ_faktura'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUZ_nota_Haslo_326272'])
             with open(path + '.pdf', 'wb') as f:
                 f.write(get_att_de)
             print('TUZ ok')
@@ -286,7 +286,7 @@ def az_invoice(fv, message_id, msg):
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AZ_faktura_haslo_Rozliczenia'])
+            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AZ_nota_haslo_Rozliczenia'])
             with open(path + '.zip', 'wb') as f:
                 f.write(get_att_de)
             print('A-Z ok')
