@@ -120,119 +120,118 @@ def attachment_id_gen(fv, msg):
             yield att_id, part['filename']
 
 
-def uniqa_invoice(fv, message_id, msg):
+def uniqa_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Uniqa':
         if str(msg).find('plik prowizyjny') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Uniqa_prowizja' + '.xls'])
+            path = ''.join([next_month_path + 'Uniqa_prowizja' + '.xls'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
 
             # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
             xlApp = Dispatch("Excel.Application")
-            xlwb = xlApp.Workbooks.Open(r'C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO\Uniqa_prowizja.xls',
+            xlwb = xlApp.Workbooks.Open(next_month_path + 'Uniqa_prowizja.xls',
                                         False, False, None, 'PVxCC32%pLkO')
-            path = ''.join(['C:\\Users\ROBERT\Desktop\Księgowość\\2021\RobO'])
+            path = ''.join([next_month_path])
             xlApp.DisplayAlerts = False
-            xlwb.SaveAs(path + r'\Uniqa_prowizja.xls', FileFormat=-4143, Password='')
+            xlwb.SaveAs(path + r'Uniqa_prowizja.xls', FileFormat=-4143, Password='')
             xlApp.DisplayAlerts = True
             xlwb.Close()
             print('Uniqa ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(next_month_path + 'brak dokumentów.txt', 'a') as f:
                 f.write('Brak Uniqa\n')
             print('Brak Uniqa')
 
-
-def wiener_invoice(fv, message_id, msg):
+def wiener_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Wiener':
         if str(msg).find('prowizji za miesiąc') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Wiener_prowizja' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Wiener_prowizja' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Wiener ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Wiener\n')
             print('Brak Wiener')
 
 
-def insly_invoice(fv, message_id, msg):
+def insly_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Insly':
         if str(msg).find('Faktura') > -1 and not 'minął termin' in str(msg):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Insly_faktura' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Insly_faktura' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Insly ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Insly\n')
             print('Brak faktury Insly')
 
 
-def orange_stac_invoice(fv, message_id, msg):
+def orange_stac_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Orange stac':
         if '_' in str(msg['payload']['parts'][1]['filename']):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_stacjonarne' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Orange_faktura_stacjonarne' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Orange stacjonarne ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Orange usługi stacjonarne\n')
             print('Brak faktury Orange usługi stacjonarne')
 
 
-def orange_mobil_invoice(fv, message_id, msg):
+def orange_mobil_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Orange mob':
         if 'Faktura' in str(msg['payload']['parts'][1]['filename']):
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Orange_faktura_mobilne' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Orange_faktura_mobilne' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Orange mobilne ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Orange usługi mobilne\n')
             print('Brak faktury Orange usługi mobilne')
 
 
-def aws_invoice(fv, message_id, msg):
+def aws_invoice(fv, message_id, msg, next_month_path):
     if fv == 'AWS':
         if str(msg).find('Invoice(s) available') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AWS_faktura' + '.pdf'])
+            path = ''.join([rf'{next_month_path}AWS_faktura' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('AWS ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak AWS\n')
             print('Brak faktury Amazon Web Services')
 
 
-def tuw_invoice(fv, message_id, msg):
+def tuw_invoice(fv, message_id, msg, next_month_path):
     if fv == 'TUW':
         """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
         h = ''
@@ -246,10 +245,10 @@ def tuw_invoice(fv, message_id, msg):
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
                 """Raz wpisuje hasło w treść, raz nie."""
                 if h:
-                    path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_faktura_haslo_{h.group(1)}'])
+                    path = ''.join([rf'{next_month_path}TUW_faktura_haslo_{h.group(1)}'])
                 else:
-                    path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUW_{filename}'])
-                    with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+                    path = ''.join([rf'{next_month_path}TUW_{filename}'])
+                    with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                         f.write('TUW hasło: TUW!_5121_TUW\n')
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
@@ -258,46 +257,46 @@ def tuw_invoice(fv, message_id, msg):
                 if path + '.pdf' or path + '.zip':
                     print('TUW ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak TUW\n')
             print('Brak TUW')
 
 
-def tuz_invoice(fv, message_id, msg):
+def tuz_invoice(fv, message_id, msg, next_month_path):
     if fv == 'TUZ':
         if str(msg).find('zestawienie prowizyjne') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/TUZ_nota_Haslo_326272'])
+            path = ''.join([rf'{next_month_path}TUZ_nota_Haslo_326272'])
             with open(path + '.pdf', 'wb') as f:
                 f.write(get_att_de)
             print('TUZ ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak TUZ\n')
             print('Brak TUZ')
 
 
-def az_invoice(fv, message_id, msg):
+def az_invoice(fv, message_id, msg, next_month_path):
     if fv == 'A-Z':
         if str(msg).find('fakturę') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/AZ_nota_haslo_Rozliczenia'])
+            path = ''.join([rf'{next_month_path}AZ_nota_haslo_Rozliczenia'])
             with open(path + '.zip', 'wb') as f:
                 f.write(get_att_de)
             print('A-Z ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak A-Z\n')
             print('Brak A-Z')
 
 
-def eins(fv, message_id, msg):
+def eins(fv, message_id, msg, next_month_path):
     if fv == 'Euroins':
         if re.search('(not[a|ę]+|prowizyjn[a|ą|y]+)', str(msg)):  # or 'Łuczak' in str(msg):
             for att_id, filename in attachment_id_gen(fv, msg):
@@ -305,52 +304,50 @@ def eins(fv, message_id, msg):
                                                                        messageId=message_id,
                                                                        id=att_id).execute()
                 get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join([f'C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Euroins_{filename}'.replace(' ', '_')])
+                path = ''.join([rf'{next_month_path}Euroins_{filename}'.replace(' ', '_')])
                 with open(path, 'wb') as f:
                     f.write(get_att_de)
                 print('Euroins ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Euroins\n')
             print('Brak noty Euroins')
 
 
-def interpolska(fv, message_id, msg):
+def interpolska(fv, message_id, msg, next_month_path):
     if fv == 'Inter':
         if str(msg).find('zestawienie prowizyjne') > -1:
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join(['C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Inter_prowizja' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Inter_prowizja' + '.pdf'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Inter ok')
         else:
-            with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
                 f.write('Brak Inter\n')
             print('Brak Inter')
 
 
-def email():
+def email(next_month_path):
     for fv, id, message in labels(service):
-        uniqa_invoice(fv, id, message)
-        wiener_invoice(fv, id, message)
-        insly_invoice(fv, id, message)
-        orange_stac_invoice(fv, id, message)
-        orange_mobil_invoice(fv, id, message)
-        aws_invoice(fv, id, message)
-        tuw_invoice(fv, id, message)
-        tuz_invoice(fv, id, message)
-        az_invoice(fv, id, message)
-        eins(fv, id, message)
-        interpolska(fv, id, message)
+        uniqa_invoice(fv, id, message, next_month_path)
+        wiener_invoice(fv, id, message, next_month_path)
+        insly_invoice(fv, id, message, next_month_path)
+        orange_stac_invoice(fv, id, message, next_month_path)
+        orange_mobil_invoice(fv, id, message, next_month_path)
+        aws_invoice(fv, id, message, next_month_path)
+        tuw_invoice(fv, id, message, next_month_path)
+        tuz_invoice(fv, id, message, next_month_path)
+        az_invoice(fv, id, message, next_month_path)
+        eins(fv, id, message, next_month_path)
+        interpolska(fv, id, message, next_month_path)
 
 
 service = main()
 
-if __name__ == '__main__':
-    email()
 
 
 

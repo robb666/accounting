@@ -143,12 +143,12 @@ def auto_fit(ws_cash):
     ws_cash.Columns(2).ColumnWidth = 11
 
 
-def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
-    path_do_zapisu_w = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, next_month_path):
+    path_do_zapisu_w = next_month_path
     wb_cash.DisplayAlerts = False
     ExcelApp.Application.CutCopyMode = False
 
-    wb_cash.SaveAs(path_do_zapisu_w + f"\\Raport_kasowy_{msc_rok}.xlsx")
+    wb_cash.SaveAs(path_do_zapisu_w + f"Raport_kasowy_{msc_rok}.xlsx")
     wb.Close(SaveChanges=False)
     wb_cash.Close()
     ExcelApp.Application.Quit()
@@ -158,7 +158,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok):
     wb_cash.DisplayAlerts = True
 
 
-def raport_inkaso(*, za_okres):
+def raport_inkaso(*, za_okres, path):
     gen_py()
     try:
         print('Raport kasowy...')
@@ -174,14 +174,11 @@ def raport_inkaso(*, za_okres):
         copy_paste_inkaso(ws, ws_cash, col_diff)
         sortowanie(ws, ws_cash, col_diff)
         auto_fit(ws_cash)
-        opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok)
+        opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
         print('Raport kasowy ok')
 
     except Exception as e:
-        with open(r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt', 'a') as f:
+        with open(rf'{path}brak dokumentów.txt', 'a') as f:
             f.write('Brak raportu kasowego\n')
         print(f'Brak raportu kasowego: {e}')
 
-
-if __name__ == '__main__':
-    raport_inkaso(za_okres=-1)

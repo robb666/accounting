@@ -24,6 +24,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+
 # def santander():
 #     options = webdriver.ChromeOptions()
 #     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
@@ -61,7 +62,8 @@ from dateutil.relativedelta import relativedelta
 
 def allianz():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    # preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
 
@@ -82,7 +84,7 @@ def allianz():
         print('Allianz ok')
     except:
         time.sleep(1)
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Allianz\n")
         print('Brak Allianz')
         driver.quit()
@@ -108,19 +110,19 @@ def compensa():
         except:
             pass
         time.sleep(1)
-        driver.get_screenshot_as_file('C:/Users/ROBERT/Desktop/Księgowość/2021/RobO/Compensa.png')
+        driver.get_screenshot_as_file(f'{next_month_path}/Compensa.png')
         driver.close()
         print('Compensa ok')
     except Exception as e:
         driver.close()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Compensa\n")
         print('Brak Compensa')
 
 
 def generali():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try:
@@ -137,19 +139,19 @@ def generali():
         print('Generali ok')
     except:
         driver.close()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Generali\n")
         print('Brak Generali')
 
 
 def hestia():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try:
-        url_santander = 'https://sso.ergohestia.pl/my.policy'
-        driver.get(url_santander)
+        url = 'https://sso.ergohestia.pl/my.policy'
+        driver.get(url)
         login_hes = driver.find_element_by_id('input_1').send_keys(hestia_l)
         hasło_hes = driver.find_element_by_id('input_2').send_keys(hestia_h)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
@@ -171,14 +173,14 @@ def hestia():
         print('Hestia ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}\brak dokumentów.txt", "a") as f:
             f.write("Brak Hestii\n")
         print('Brak Hestii')
 
 
 def interrisk() :
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory' : "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try :
@@ -214,14 +216,14 @@ def interrisk() :
         print('InterRisk ok')
     except :
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak InterRisk\n")
         print('Brak InterRisk')
 
 
 def uniqa():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     payload = {'login': uniqa_l,
@@ -246,14 +248,14 @@ def uniqa():
         print('Uniqa ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak UNIQA\n")
         print('Brak UNIQA')
 
 
 def warta():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory' : "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try :
@@ -289,7 +291,7 @@ def warta():
         print('Warta ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak WARTA\n")
         print('Brak WARTA')
         pass
@@ -297,7 +299,7 @@ def warta():
 
 def warta_ż():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO",
+    preferences = {'download.default_directory': next_month_path,
                    'plugins.always_open_pdf_externally': True}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
@@ -318,14 +320,14 @@ def warta_ż():
         print('Warta Ż ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Warta Życie\n")
         print('Brak Warta Życie')
 
 
 def unilink():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try:
@@ -347,14 +349,14 @@ def unilink():
         print('Unilink ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Unilink\n")
         print('Brak Unilink')
 
 
 def pzu():
     options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
+    preferences = {'download.default_directory': next_month_path}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
     try:
@@ -377,17 +379,21 @@ def pzu():
                                 '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
         time.sleep(4)
         driver.quit()
-        documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+        documents = next_month_path
         for item in os.listdir(documents):
             if '+' in item and os.path.isfile(os.path.join(documents, item)):
                 os.rename(os.path.join(documents, item), os.path.join(documents, 'PZU.pdf'))
         print('PZU ok')
     except:
         driver.quit()
-        with open(r"C:\Users\ROBERT\Desktop\Księgowość\2021\RobO\brak dokumentów.txt", "a") as f:
+        with open(rf"{next_month_path}brak dokumentów.txt", "a") as f:
             f.write("Brak PZU\n")
         print('Brak PZU')
         pass
+
+
+def mk_month_dir(next_month_dir):
+    os.mkdir(next_month_dir)
 
 
 def send_attachments(sender_email, receiver_email):
@@ -397,7 +403,8 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
-    documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+    # TODO -> Za każdym razem utworzyć nowy katalog z numerem miesiąca.
+    documents = next_month_path
     os.chdir(documents)
     for attachment in os.listdir(documents):
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
@@ -419,9 +426,12 @@ def send_attachments(sender_email, receiver_email):
 
 if __name__ == '__main__':
     # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
+    next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\' \
+                      f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+    mk_month_dir(next_month_path)
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
-    raport_inkaso(za_okres=-1)
-    email()  # faktury z gmailAPI
+    raport_inkaso(za_okres=-1, path=next_month_path)
+    email(next_month_path)  # faktury z gmailAPI
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
