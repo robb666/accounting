@@ -426,7 +426,7 @@ def send_attachments(sender_email, receiver_email):
 
 if __name__ == '__main__':
     # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
-    next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\' \
+    next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
     mk_month_dir(next_month_path)
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
