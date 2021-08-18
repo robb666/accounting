@@ -236,7 +236,8 @@ def tuw_invoice(fv, message_id, msg, next_month_path):
         """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
         h = ''
         possible_words = re.compile('Towarzystwo|Hasło', re.I)
-        if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))):
+        if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg)))\
+                or str(msg['snippet']) == '':  # W przypadku braku treści.
             # att_id = attachment_id(fv, msg)
             for att_id, filename in attachment_id_gen(fv, msg):
                 get_att = service.users().messages().attachments().get(userId='me',
@@ -347,8 +348,6 @@ def email(next_month_path):
 
 
 service = main()
-
-
 
 
 

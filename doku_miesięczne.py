@@ -403,7 +403,7 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
-    # TODO -> Za każdym razem utworzyć nowy katalog z numerem miesiąca.
+    # TODO -> Dostęp dla mniej bezpiecznych aplikacji..
     documents = next_month_path
     os.chdir(documents)
     for attachment in os.listdir(documents):
