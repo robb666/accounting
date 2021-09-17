@@ -408,8 +408,11 @@ def send_attachments(sender_email, receiver_email):
     os.chdir(documents)
     for attachment in os.listdir(documents):
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
-        main_type, sub_type = content_type.split('/', 1)
-        my_file = MIMEBase(main_type, sub_type)
+        if content_type is not None:
+            main_type, sub_type = content_type.split('/', 1)
+            my_file = MIMEBase(main_type, sub_type)
+        else:
+            pass
 
         with open(attachment, 'rb') as f:
             my_file.set_payload(f.read())

@@ -18,12 +18,16 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
-    documents = r'C:\Users\ROBERT\Desktop\Księgowość\2021\RobO'
+    documents = r'C:\Users\ROBERT\Desktop\Księgowość\07.2021'
     os.chdir(documents)
     for attachment in os.listdir(documents):
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
-        main_type, sub_type = content_type.split('/', 1)
-        my_file = MIMEBase(main_type, sub_type)
+        print(content_type, encoding)
+        if content_type is not None:
+            main_type, sub_type = content_type.split('/', 1)
+            my_file = MIMEBase(main_type, sub_type)
+        else:
+            pass
 
         with open(attachment, 'rb') as f:
             my_file.set_payload(f.read())
@@ -38,5 +42,5 @@ def send_attachments(sender_email, receiver_email):
         server.sendmail(sender_email, receiver_email, text)
 
 
-# send_attachments('ubezpieczenia.magro@gmail.com',
-#                  'ubezpieczenia.magro@gmail.com')
+send_attachments('ubezpieczenia.magro@gmail.com',
+                 'ubezpieczenia.magro@gmail.com')
