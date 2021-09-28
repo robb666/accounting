@@ -1,6 +1,7 @@
 
 from __future__ import print_function
 from ahk import AHK
+import pyautogui
 import time
 import os
 import pickle
@@ -31,11 +32,17 @@ def open_browser():
 
 
 def log_into_account():
-    ahk.mouse_move(1725, 190, speed=10)
-    # ahk.run_script('ImageSearch, 1172, 94, 1625, 246, Zaloguj.png')
-    ahk.click()
-    ahk.mouse_move(1725, 259, speed=10)
-    ahk.click()
+    # Tyko "Narzędzie Wycinanie" z Win10, screenshot z przeglądarki nie zadziała!
+    path = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\wpłaty\images\\'
+    if pyautogui.locateOnScreen(path + r'zalog_b.png'):
+        pyautogui.click(path + r'zalog_b.png')
+    else:
+        pyautogui.locateOnScreen(path + r'zalog_sz.png')
+        pyautogui.click(path + r'zalog_sz.png')
+
+    pyautogui.locateOnScreen(path + r'sant_int.png')
+    pyautogui.click(path + r'sant_int.png')
+
     time.sleep(5)
     ahk.run_script(f'Send, {numpad}')
     ahk.mouse_move(1297, 428, speed=10)

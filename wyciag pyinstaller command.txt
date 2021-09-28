@@ -1,1 +1,1 @@
-pyinstaller -F --noconsole --add-data "C:\Users\Robert\AppData\Local\Programs\Python\Python39\Lib\site-packages\ahk";"ahk" wyciag.py
+pyinstaller -F --noconsole --add-data "C:\Users\Robert\AppData\Local\Programs\Python\Python39\Lib\site-packages\ahk";"ahk" wyciag.py --hidden-import pyautogui
