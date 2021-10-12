@@ -13,7 +13,7 @@ from faktury_GmailAPI import email
 from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
-     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi
+     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi, bookkeeping
 import time
 import smtplib, ssl
 from email import encoders
@@ -439,5 +439,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', 'dg.jn@poczta.fm')
+    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
     time.sleep(1)
