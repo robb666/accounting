@@ -40,9 +40,8 @@ def driver_inst(func):
 
 
 @driver_inst
-def allianz(driver):
+def allianz(driver, url_allianz='https://start.allianz.pl/'):
     try:
-        url_allianz = 'https://start.allianz.pl/'
         driver.get(url_allianz)
         login = driver.find_element_by_id('username')
         login.send_keys(allianz_l)
@@ -65,9 +64,8 @@ def allianz(driver):
 
 
 @driver_inst
-def compensa(driver):
+def compensa(driver, url_compensa='https://cportal.compensa.pl/'):
     try:
-        url_compensa = 'https://cportal.compensa.pl/'
         driver.get(url_compensa)
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.input'))).send_keys(compensa_l)
         driver.find_element_by_css_selector('div.fl:nth-child(5) > input:nth-child(1)').send_keys(compensa_h)
@@ -95,9 +93,9 @@ def compensa(driver):
 
 
 @driver_inst
-def generali(driver):
+def generali(driver,
+             url_generali='https://portal.generali.pl/auth/login?service=https%3A%2F%2Fportal.generali.pl%2Flogin%2Fcas'):
     try:
-        url_generali = 'https://portal.generali.pl/auth/login?service=https%3A%2F%2Fportal.generali.pl%2Flogin%2Fcas'
         driver.get(url_generali)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#username'))).send_keys(generali_l)
         driver.find_element_by_css_selector('#password').send_keys(generali_h)
@@ -116,9 +114,9 @@ def generali(driver):
 
 
 @driver_inst
-def hestia(driver):
+def hestia(driver, url='https://sso.ergohestia.pl/my.policy'):
     try:
-        url = 'https://sso.ergohestia.pl/my.policy'
+
         driver.get(url)
         login_hes = driver.find_element_by_id('input_1').send_keys(hestia_l)
         hasło_hes = driver.find_element_by_id('input_2').send_keys(hestia_h)
@@ -147,9 +145,8 @@ def hestia(driver):
 
 
 @driver_inst
-def interrisk(driver):
+def interrisk(driver, url_interrisk='https://portal.interrisk.pl/Zaloguj'):
     try :
-        url_interrisk = 'https://portal.interrisk.pl/Zaloguj'
         driver.get(url_interrisk)
         driver.find_element_by_id('ctl00_cph1_uxLogin_UserName').send_keys(interrisk_l)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID,
@@ -187,14 +184,13 @@ def interrisk(driver):
 
 
 @driver_inst
-def uniqa(driver):
+def uniqa(driver, url_post_login='https://pos.uniqa.pl/pl/login_fe'):
     payload = {'login': uniqa_l,
                'password': uniqa_h}
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                                                                     'Chrome/73.0.3683.86 Safari/537.36'}
     try:
         with requests.Session() as s:
-            url_post_login = 'https://pos.uniqa.pl/pl/login_fe'
             r = s.post(url_post_login, data=payload, headers=headers)
             ks = s.get('https://pos.uniqa.pl/pl/zadania_i_plany/prowizje?menu=1')
         driver.get(ks.url)
@@ -216,9 +212,9 @@ def uniqa(driver):
 
 
 @driver_inst
-def warta(driver):
+def warta(driver,
+          url_warta='https://cas.warta.pl/cas/login?service=https%3A%2F%2Feagent.warta.pl%2Fview360%2Flogin%2Fcas'):
     try :
-        url_warta = 'https://cas.warta.pl/cas/login?service=https%3A%2F%2Feagent.warta.pl%2Fview360%2Flogin%2Fcas'
         driver.get(url_warta)
         driver.find_element_by_id('username').send_keys(warta_l)
         driver.find_element_by_id('password').send_keys(warta_h)
@@ -257,9 +253,8 @@ def warta(driver):
 
 
 @driver_inst
-def warta_ż(driver):
+def warta_ż(driver, url_warta_ż='https://eplatforma.warta.pl/'):
     try:
-        url_warta_ż = 'https://eplatforma.warta.pl/'
         driver.get(url_warta_ż)
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "LOGNAME_13"))).send_keys(warta_ż_l)
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.NAME, "PASSWD_13"))).send_keys(warta_ż_h)
@@ -281,9 +276,8 @@ def warta_ż(driver):
 
 
 @driver_inst
-def unilink(driver):
+def unilink(driver, url_unilink='https://unilink.pl/logowanie'):
     try:
-        url_unilink = 'https://unilink.pl/logowanie'
         driver.get(url_unilink)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
@@ -307,9 +301,9 @@ def unilink(driver):
 
 
 @driver_inst
-def pzu(driver):
+def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
     try:
-        driver.get('https://everest.pzu.pl/pc/PolicyCenter.do')
+        driver.get(url_pezu)
         login = driver.find_element_by_id('input_1')
         login.send_keys(pzu_l)
         hasło = driver.find_element_by_id('input_2')
@@ -369,7 +363,6 @@ def send_attachments(sender_email, receiver_email):
             encoders.encode_base64(my_file)
             message.attach(my_file)
             text = message.as_string()
-
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
