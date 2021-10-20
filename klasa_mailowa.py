@@ -42,5 +42,5 @@ def send_attachments(sender_email, receiver_email):
         server.sendmail(sender_email, receiver_email, text)
 
 
-send_attachments('ubezpieczenia.magro@gmail.com',
-                 'robert.patryk.grzelak@gmail.com')
+# send_attachments('ubezpieczenia.magro@gmail.com',
+#                  'robert.patryk.grzelak@gmail.com')

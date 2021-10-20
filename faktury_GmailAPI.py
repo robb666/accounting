@@ -146,6 +146,7 @@ def uniqa_invoice(fv, message_id, msg, next_month_path):
                 f.write('Brak Uniqa\n')
             print('Brak Uniqa')
 
+
 def wiener_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Wiener':
         if str(msg).find('prowizji za miesiąc') > -1:
@@ -182,7 +183,7 @@ def insly_invoice(fv, message_id, msg, next_month_path):
 
 def orange_stac_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Orange stac':
-        if '_' in str(msg['payload']['parts'][1]['filename']):
+        if 'Faktura_' in str(msg['payload']['parts'][1]['filename']):  # tytuł załącznika
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
@@ -199,7 +200,7 @@ def orange_stac_invoice(fv, message_id, msg, next_month_path):
 
 def orange_mobil_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Orange mob':
-        if 'Faktura' in str(msg['payload']['parts'][1]['filename']):
+        if 'FAKTURA' in str(msg['payload']['parts'][1]['filename']):  # tytuł załącznika
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
@@ -335,20 +336,20 @@ def interpolska(fv, message_id, msg, next_month_path):
 def email(next_month_path):
     for fv, id, message in labels(service):
         uniqa_invoice(fv, id, message, next_month_path)
-        wiener_invoice(fv, id, message, next_month_path)
-        insly_invoice(fv, id, message, next_month_path)
+        # wiener_invoice(fv, id, message, next_month_path)
+        # insly_invoice(fv, id, message, next_month_path)
         orange_stac_invoice(fv, id, message, next_month_path)
         orange_mobil_invoice(fv, id, message, next_month_path)
-        aws_invoice(fv, id, message, next_month_path)
-        tuw_invoice(fv, id, message, next_month_path)
-        tuz_invoice(fv, id, message, next_month_path)
-        az_invoice(fv, id, message, next_month_path)
-        eins(fv, id, message, next_month_path)
-        interpolska(fv, id, message, next_month_path)
+        # aws_invoice(fv, id, message, next_month_path)
+        # tuw_invoice(fv, id, message, next_month_path)
+        # tuz_invoice(fv, id, message, next_month_path)
+        # az_invoice(fv, id, message, next_month_path)
+        # eins(fv, id, message, next_month_path)
+        # interpolska(fv, id, message, next_month_path)
 
 
 service = main()
 
 
-# next_month_path = r'C:\Users\ROBERT\Desktop\Księgowość\09.2021\\'
-# email(next_month_path)
+next_month_path = 'C:\\Users\ROBERT\Desktop\Księgowość\\09.2021\\'
+email(next_month_path)
