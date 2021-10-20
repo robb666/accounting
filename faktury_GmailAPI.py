@@ -350,4 +350,5 @@ def email(next_month_path):
 service = main()
 
 
-
+# next_month_path = r'C:\Users\ROBERT\Desktop\Księgowość\09.2021\\'
+# email(next_month_path)

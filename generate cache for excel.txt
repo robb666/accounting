@@ -1,0 +1,23 @@
+script src=httpsgist.github.comrdapaz63590adb94a46039ca4a10994dff9dbe.jsscript
+
+ścieżka = C:\Users\ROBERT\AppData\Local\Temp\gen_py\3.9
+
+
+"""
+try:
+    xl = client.gencache.EnsureDispatch('Excel.Application')
+except AttributeError:
+    # Corner case dependencies.
+    import os
+    import re
+    import sys
+    import shutil
+    # Remove cache and try again.
+    MODULE_LIST = [m.__name__ for m in sys.modules.values()]
+    for module in MODULE_LIST:
+        if re.match(r'win32com\.gen_py\..+', module):
+            del sys.modules[module]
+    shutil.rmtree(os.path.join(os.environ.get('LOCALAPPDATA'), 'Temp', 'gen_py'))
+    from win32com import client
+    xl = client.gencache.EnsureDispatch('Excel.Application')
+"""

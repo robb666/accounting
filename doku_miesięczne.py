@@ -23,50 +23,24 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from functools import wraps
 
 
-# def santander():
-#     options = webdriver.ChromeOptions()
-#     preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2019"}
-#     options.add_experimental_option("prefs", preferences)
-#     driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-#     try:
-#         url_santander = 'https://santander.pl/'
-#         driver.get(url_santander)
-#         driver.find_element_by_partial_link_text('Zaloguj').click()
-#         WebDriverWait(driver, 9).until(
-#             EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, "Santander interne"))).click()
-#         try:
-#             driver.switch_to.window(driver.window_handles[1])
-#         except:
-#             pass
-#         login_san = driver.find_element_by_id('input_nik')
-#         login_san.send_keys(san_l)
-#         time.sleep(2)
-#         dalej = driver.find_element_by_id('okBtn2')
-#         dalej.click()
-#         hasło_san = WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ordinarypin")))
-#         hasło_san.send_keys(san_h)
-#         driver.find_element_by_id('okBtn2').click()
-#         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CLASS_NAME, 'favourite-element'))).click()
-#         driver.find_element_by_partial_link_text("Pobie").click()
-#         time.sleep(2)
-#         driver.find_element_by_class_name('logout').click()
-#         driver.quit()
-#         print('Santander ok')
-#     except:
-#         print('Brak wyciągu bankowego')
-#         driver.quit()
-#         pass
+def driver_inst(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        options = webdriver.ChromeOptions()
+        preferences = {'download.default_directory': next_month_path,
+                       'plugins.always_open_pdf_externally': True}
+        options.add_experimental_option("prefs", preferences)
+        driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe',
+                                  options=options)
+        return func(driver)
+    return wrapper
 
 
-def allianz():
-    options = webdriver.ChromeOptions()
-    # preferences = {'download.default_directory': "C:\\Users\\ROBERT\\Desktop\\Księgowość\\2021\\RobO"}
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
-
+@driver_inst
+def allianz(driver):
     try:
         url_allianz = 'https://start.allianz.pl/'
         driver.get(url_allianz)
@@ -90,9 +64,9 @@ def allianz():
         driver.quit()
 
 
-def compensa():
+@driver_inst
+def compensa(driver):
     try:
-        driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe')#, options=options)
         url_compensa = 'https://cportal.compensa.pl/'
         driver.get(url_compensa)
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.input'))).send_keys(compensa_l)
@@ -120,11 +94,8 @@ def compensa():
         print('Brak Compensa')
 
 
-def generali():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def generali(driver):
     try:
         url_generali = 'https://portal.generali.pl/auth/login?service=https%3A%2F%2Fportal.generali.pl%2Flogin%2Fcas'
         driver.get(url_generali)
@@ -144,11 +115,8 @@ def generali():
         print('Brak Generali')
 
 
-def hestia():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def hestia(driver):
     try:
         url = 'https://sso.ergohestia.pl/my.policy'
         driver.get(url)
@@ -178,11 +146,8 @@ def hestia():
         print('Brak Hestii')
 
 
-def interrisk() :
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def interrisk(driver):
     try :
         url_interrisk = 'https://portal.interrisk.pl/Zaloguj'
         driver.get(url_interrisk)
@@ -221,11 +186,8 @@ def interrisk() :
         print('Brak InterRisk')
 
 
-def uniqa():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def uniqa(driver):
     payload = {'login': uniqa_l,
                'password': uniqa_h}
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -253,11 +215,8 @@ def uniqa():
         print('Brak UNIQA')
 
 
-def warta():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def warta(driver):
     try :
         url_warta = 'https://cas.warta.pl/cas/login?service=https%3A%2F%2Feagent.warta.pl%2Fview360%2Flogin%2Fcas'
         driver.get(url_warta)
@@ -297,12 +256,8 @@ def warta():
         pass
 
 
-def warta_ż():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path,
-                   'plugins.always_open_pdf_externally': True}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def warta_ż(driver):
     try:
         url_warta_ż = 'https://eplatforma.warta.pl/'
         driver.get(url_warta_ż)
@@ -325,11 +280,8 @@ def warta_ż():
         print('Brak Warta Życie')
 
 
-def unilink():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def unilink(driver):
     try:
         url_unilink = 'https://unilink.pl/logowanie'
         driver.get(url_unilink)
@@ -354,11 +306,8 @@ def unilink():
         print('Brak Unilink')
 
 
-def pzu():
-    options = webdriver.ChromeOptions()
-    preferences = {'download.default_directory': next_month_path}
-    options.add_experimental_option("prefs", preferences)
-    driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe', options=options)
+@driver_inst
+def pzu(driver):
     try:
         driver.get('https://everest.pzu.pl/pc/PolicyCenter.do')
         login = driver.find_element_by_id('input_1')
@@ -421,6 +370,7 @@ def send_attachments(sender_email, receiver_email):
             message.attach(my_file)
             text = message.as_string()
 
+
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
         server.login('ubezpieczenia.magro@gmail.com', gapi)
@@ -439,5 +389,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    send_attachments('ubezpieczenia.magro@gmail.com', 'robert.patryk.grzelak@gmail.com')#bookkeeping)
     time.sleep(1)

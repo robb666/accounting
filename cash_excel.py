@@ -25,7 +25,6 @@ def gen_py():
 
 def baza():
     path_bazy = r'M:\Agent baza'
-
     """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
@@ -34,7 +33,7 @@ def baza():
         ws = wb.Worksheets("BAZA 2014")
     except:
         ExcelApp = win32.gencache.EnsureDispatch("Excel.Application")
-        wb = ExcelApp.Workbooks.Open(path_bazy + "\\2014 BAZA MAGRO.xlsx")
+        wb = ExcelApp.Workbooks.OpenXML(path_bazy + "\\2014 BAZA MAGRO.xlsx")
         ws = wb.Worksheets("BAZA 2014")
 
     ExcelApp.Visible = True
@@ -183,6 +182,5 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
-                      f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
-raport_inkaso(za_okres=-1, path=next_month_path)
+# next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
+#                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
