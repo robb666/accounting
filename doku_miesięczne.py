@@ -346,7 +346,7 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
-    # TODO -> Dostęp dla mniej bezpiecznych aplikacji..
+    # TODO -> Dostęp dla mniej bezpiecznych aplikacji../zmiana na API Gmail
     documents = next_month_path
     os.chdir(documents)
     for attachment in os.listdir(documents):
