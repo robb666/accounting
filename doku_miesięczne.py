@@ -382,5 +382,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', 'robert.patryk.grzelak@gmail.com')#bookkeeping)
+    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
     time.sleep(1)
