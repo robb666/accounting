@@ -14,11 +14,11 @@ from L_H_ks import gapi
 def send_attachments(sender_email, receiver_email):
     msc_rok = (datetime.today() + relativedelta(months=-1)).strftime('%m.%Y')
     message = MIMEMultipart()
-    message['Subject'] = f'Dokumenty za {msc_rok}'
-    body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
+    message['Subject'] = f'Test za {msc_rok}'
+    body = """Cześć, to test smtplib.\n\n"""
     message.attach(MIMEText(body))
 
-    documents = r'C:\Users\ROBERT\Desktop\Księgowość\07.2021'
+    documents = r'C:\Users\ROBERT\Desktop\Księgowość\Kadrowe\test'
     os.chdir(documents)
     for attachment in os.listdir(documents):
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
@@ -42,5 +42,5 @@ def send_attachments(sender_email, receiver_email):
         server.sendmail(sender_email, receiver_email, text)
 
 
-# send_attachments('ubezpieczenia.magro@gmail.com',
-#                  'ubezpieczenia.magro@gmail.com')
+send_attachments('ubezpieczenia.magro@gmail.com',
+                 'robert.patryk.grzelak@gmail.com')
