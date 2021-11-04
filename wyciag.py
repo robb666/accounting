@@ -61,10 +61,13 @@ def download_summary(win):
     ahk.mouse_wheel('down')
     ahk.mouse_move(1309, 970, speed=10)
     ahk.click()
+    time.sleep(1)
     ahk.mouse_move(1023, 290, speed=10)
     ahk.click()
+    time.sleep(1)
     ahk.mouse_move(1309, 970, speed=10)
     ahk.click()
+    time.sleep(1)
     time.sleep(6)
     win.close()
 
