@@ -237,31 +237,34 @@ def tuw_invoice(fv, message_id, msg, next_month_path):
         """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
         h = ''
         possible_words = re.compile('Towarzystwo|Hasło', re.I)
-        if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg)))\
-                or str(msg['snippet']) == '':  # W przypadku braku treści.
-            # att_id = attachment_id(fv, msg)
-            for att_id, filename in attachment_id_gen(fv, msg):
-                get_att = service.users().messages().attachments().get(userId='me',
-                                                                       messageId=message_id,
-                                                                       id=att_id).execute()
-                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                """Raz wpisuje hasło w treść, raz nie."""
-                if h:
-                    path = ''.join([rf'{next_month_path}TUW_faktura_haslo_{h.group(1)}'])
-                else:
-                    path = ''.join([rf'{next_month_path}TUW_{filename}'])
-                    with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                        f.write('TUW hasło: TUW!_5121_TUW\n')
-                with open(path, 'wb') as f:
-                    f.write(get_att_de)
-                    # zip_ref = zipfile.ZipFile(path + '.zip')
-                    # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
-                if path + '.pdf' or path + '.zip':
-                    print('TUW ok')
-        else:
-            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                f.write('Brak TUW\n')
-            print('Brak TUW')
+        try:
+            if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))) \
+                    or str(msg['snippet']) == '':  # W przypadku braku treści.
+                # att_id = attachment_id(fv, msg)
+                for att_id, filename in attachment_id_gen(fv, msg):
+                    get_att = service.users().messages().attachments().get(userId='me',
+                                                                           messageId=message_id,
+                                                                           id=att_id).execute()
+                    get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+                    """Raz wpisuje hasło w treść, raz nie."""
+                    if h:
+                        path = ''.join([rf'{next_month_path}TUW_faktura_haslo_{h.group(1)}'])
+                    else:
+                        path = ''.join([rf'{next_month_path}TUW_{filename}'])
+                        with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
+                            f.write('TUW hasło: TUW!_5121_TUW\n')
+                    with open(path, 'wb') as f:
+                        f.write(get_att_de)
+                        # zip_ref = zipfile.ZipFile(path + '.zip')
+                        # zip_ref.extractall(pwd='TUW!_5121_TUW'.encode('ascii'))
+                    if path + '.pdf' or path + '.zip':
+                        print('TUW ok')
+            else:
+                with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
+                    f.write('Brak TUW\n')
+                print('Brak TUW')
+        except Exception as e:
+            print('Brak TUW\n')
 
 
 def tuz_invoice(fv, message_id, msg, next_month_path):
@@ -336,20 +339,20 @@ def interpolska(fv, message_id, msg, next_month_path):
 def email(next_month_path):
     for fv, id, message in labels(service):
         uniqa_invoice(fv, id, message, next_month_path)
-        # wiener_invoice(fv, id, message, next_month_path)
-        # insly_invoice(fv, id, message, next_month_path)
+        wiener_invoice(fv, id, message, next_month_path)
+        insly_invoice(fv, id, message, next_month_path)
         orange_stac_invoice(fv, id, message, next_month_path)
         orange_mobil_invoice(fv, id, message, next_month_path)
-        # aws_invoice(fv, id, message, next_month_path)
-        # tuw_invoice(fv, id, message, next_month_path)
-        # tuz_invoice(fv, id, message, next_month_path)
-        # az_invoice(fv, id, message, next_month_path)
-        # eins(fv, id, message, next_month_path)
-        # interpolska(fv, id, message, next_month_path)
+        aws_invoice(fv, id, message, next_month_path)
+        tuw_invoice(fv, id, message, next_month_path)
+        tuz_invoice(fv, id, message, next_month_path)
+        az_invoice(fv, id, message, next_month_path)
+        eins(fv, id, message, next_month_path)
+        interpolska(fv, id, message, next_month_path)
 
 
 service = main()
 
 
-next_month_path = 'C:\\Users\ROBERT\Desktop\Księgowość\\09.2021\\'
-email(next_month_path)
+# next_month_path = 'C:\\Users\ROBERT\Desktop\Księgowość\\10.2021\\'
+# email(next_month_path)
