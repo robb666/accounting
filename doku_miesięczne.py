@@ -335,6 +335,15 @@ def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
         pass
 
 
+def path_exists(next_month_path, num):
+    if os.path.exists(next_month_path):
+        num += 1
+        next_month_path = f'{next_month_path[:-1]}..{str(num)}'
+        return path_exists(next_month_path, num)
+    else:
+        return next_month_path
+
+
 def mk_month_dir(next_month_dir):
     os.mkdir(next_month_dir)
 
@@ -374,6 +383,8 @@ if __name__ == '__main__':
     # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
     next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+
+    next_month_path = path_exists(next_month_path, 0)
     mk_month_dir(next_month_path)
     tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
     raport_inkaso(za_okres=-1, path=next_month_path)
