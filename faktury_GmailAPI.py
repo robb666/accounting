@@ -67,8 +67,8 @@ def labels(service):
     labels = {'Uniqa': 'Label_6603011562280603842',
               'Wiener': 'Label_7350084330973658333',
               'Insly': 'Label_2969710781820475073',
-              'Orange stac': 'Label_7521852298094424071',
-              'Orange mob': 'Label_7521852298094424071',
+              'Orange mob': 'Label_4629219869026954498',
+              'Orange stac': 'Label_3828969746595527731',
               'TUW': 'Label_7255175017814621709',
               'TUZ': 'Label_1453748131451092882',
               'A-Z': 'Label_4747893535910550011',
@@ -81,28 +81,23 @@ def labels(service):
     query01 = "from:faktury_prowizje@axaubezpieczenia.pl"
 
     for label in labels.items():
-        results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=2, q=query).execute()
-        # Dwa różne maile z fv w tej samej labelce.
-        # n = 1 if label[0] == 'Orange mob' and results['resultSizeEstimate'] > 1 else 0
-        """Usł mobilne są w terminie pobrania drugim rezultatem, stąd n = 1. """
-        n = 1 if label[0] == 'Orange mob' else 0
-        message_id = ''
+        results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=1, q=query).execute()
         try:
-            message_id = results['messages'][n]['id']
-        except Exception:
+            message_id = results['messages'][0]['id']
+            msg = service.users().messages().get(userId='me', id=message_id).execute()
+            yield label[0], message_id, msg
+        except Exception as e:
             pass
-        msg = service.users().messages().get(userId='me', id=message_id).execute()
-
-        yield label[0], message_id, msg
 
 
 def attachment_id(fv, msg):
     """Sprawdza czy i o jakiej nazwie jest załącznik, przekazuje ID."""
     for part in msg['payload']['parts']:
         a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
-        b = True if fv in ('Insly', 'Orange mob') and re.search('faktura', part['filename'], re.I) else False
-        c = True if fv in ('Orange stac', 'TUZ') and re.search('.pdf$', part['filename'], re.I) else False
-        if a or b or c and fv != 'Euroins':
+        b = True if fv in ('Insly') and re.search('faktura', part['filename'], re.I) else False
+        c = True if fv in ('Orange mob', 'Orange stac', 'TUZ') and re.search('.pdf$', part['filename'], re.I) else False
+        d = True if fv in ('Wiener') and re.search('raport', part['filename'], re.I) else False
+        if a or b or c or d:
             if 'data' in part['body']:
                 att_id = part['body']['data']
                 return att_id
@@ -149,12 +144,13 @@ def uniqa_invoice(fv, message_id, msg, next_month_path):
 
 def wiener_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Wiener':
-        if str(msg).find('prowizji za miesiąc') > -1:
+        # if str(msg).find('INFORMACJA PROWIZYJNA') > -1:
+        if fv == 'Wiener':
             att_id = attachment_id(fv, msg)
             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join([rf'{next_month_path}Wiener_prowizja' + '.pdf'])
+            path = ''.join([rf'{next_month_path}Wiener_prowizja' + '.xlsx'])
             with open(path, 'wb') as f:
                 f.write(get_att_de)
             print('Wiener ok')
@@ -198,7 +194,7 @@ def orange_stac_invoice(fv, message_id, msg, next_month_path):
             print('Brak faktury Orange usługi stacjonarne')
 
 
-def orange_mobil_invoice(fv, message_id, msg, next_month_path):
+def orange_mob_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Orange mob':
         if 'FAKTURA' in str(msg['payload']['parts'][1]['filename']):  # tytuł załącznika
             att_id = attachment_id(fv, msg)
@@ -234,12 +230,11 @@ def aws_invoice(fv, message_id, msg, next_month_path):
 
 def tuw_invoice(fv, message_id, msg, next_month_path):
     if fv == 'TUW':
-        """Raz wpisuje hasło w treść, raz nie. Powinien rozpoznawać pdf lub zip."""
         h = ''
-        possible_words = re.compile('Towarzystwo|Hasło', re.I)
+        possible_words = re.compile('załączeniu|fakturę|prowizję', re.I)
         try:
             if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))) \
-                    or str(msg['snippet']) == '':  # W przypadku braku treści.
+                                                            or str(msg['snippet']) == '':  # W przypadku braku treści.
                 # att_id = attachment_id(fv, msg)
                 for att_id, filename in attachment_id_gen(fv, msg):
                     get_att = service.users().messages().attachments().get(userId='me',
@@ -264,7 +259,7 @@ def tuw_invoice(fv, message_id, msg, next_month_path):
                     f.write('Brak TUW\n')
                 print('Brak TUW')
         except Exception as e:
-            print('Brak TUW\n')
+            print('Brak TUW')
 
 
 def tuz_invoice(fv, message_id, msg, next_month_path):
@@ -301,24 +296,6 @@ def az_invoice(fv, message_id, msg, next_month_path):
             print('Brak A-Z')
 
 
-def eins(fv, message_id, msg, next_month_path):
-    if fv == 'Euroins':
-        if re.search('(not[a|ę]+|prowizyjn[a|ą|y]+)', str(msg)):  # or 'Łuczak' in str(msg):
-            for att_id, filename in attachment_id_gen(fv, msg):
-                get_att = service.users().messages().attachments().get(userId='me',
-                                                                       messageId=message_id,
-                                                                       id=att_id).execute()
-                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-                path = ''.join([rf'{next_month_path}Euroins_{filename}'.replace(' ', '_')])
-                with open(path, 'wb') as f:
-                    f.write(get_att_de)
-                print('Euroins ok')
-        else:
-            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                f.write('Brak Euroins\n')
-            print('Brak noty Euroins')
-
-
 def interpolska(fv, message_id, msg, next_month_path):
     if fv == 'Inter':
         if str(msg).find('zestawienie prowizyjne') > -1:
@@ -341,13 +318,12 @@ def email(next_month_path):
         uniqa_invoice(fv, id, message, next_month_path)
         wiener_invoice(fv, id, message, next_month_path)
         insly_invoice(fv, id, message, next_month_path)
+        orange_mob_invoice(fv, id, message, next_month_path)
         orange_stac_invoice(fv, id, message, next_month_path)
-        orange_mobil_invoice(fv, id, message, next_month_path)
         aws_invoice(fv, id, message, next_month_path)
         tuw_invoice(fv, id, message, next_month_path)
         tuz_invoice(fv, id, message, next_month_path)
         az_invoice(fv, id, message, next_month_path)
-        eins(fv, id, message, next_month_path)
         interpolska(fv, id, message, next_month_path)
 
 

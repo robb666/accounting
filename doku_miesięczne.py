@@ -11,9 +11,9 @@ from selenium.webdriver.firefox.options import Options
 import concurrent.futures
 from faktury_GmailAPI import email
 from cash_excel import raport_inkaso
-from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, generali_l, generali_h, \
+from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, eins_l, eins_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
-     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi, bookkeeping
+     unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi, bookkeeping, OTP
 import time
 import smtplib, ssl
 from email import encoders
@@ -24,6 +24,7 @@ from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from functools import wraps
+import pyotp
 
 
 def driver_inst(func):
@@ -93,6 +94,35 @@ def compensa(driver, url_compensa='https://cportal.compensa.pl/'):
 
 
 @driver_inst
+def euroins(driver, url_eins='https://eins.com.pl/index.php/login'):
+    try:
+        driver.get(url_eins)
+        driver.find_element_by_xpath('//input[@id="user"]').send_keys(eins_l)
+        driver.find_element_by_xpath('//input[@id="password"]').send_keys(eins_h)
+        driver.find_element_by_xpath('//input[@id="submit-form"]').click()
+        totp = pyotp.TOTP(OTP).now()
+        WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
+                                                                '//input[@name="challenge"]'))).send_keys(totp)
+        driver.find_element_by_xpath('//button[@type="submit"]').click()
+        WebDriverWait(driver, 9).until(EC.url_changes(url_eins))
+        url = 'https://eins.com.pl/index.php/apps/files/?dir=/MAGRO_E/noty%20prowizyjne&fileid=58566'
+        driver.get(url)
+        WebDriverWait(driver, 9).until(EC.url_changes(url))
+        driver.find_element_by_xpath(
+            '//tbody/tr[not(@data-id <= preceding-sibling::tr/@data-id) and not(@data-id <= following-sibling::tr/@data-id)]'
+        ).click()
+        time.sleep(3)
+        driver.quit()
+        print('Euroins ok')
+    except:
+        time.sleep(1)
+        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
+            f.write("Brak Euroins\n")
+        print('Brak Euroins')
+        driver.quit()
+
+
+@driver_inst
 def generali(driver,
              url_generali='https://portal.generali.pl/auth/login?service=https%3A%2F%2Fportal.generali.pl%2Flogin%2Fcas'):
     try:
@@ -116,7 +146,6 @@ def generali(driver,
 @driver_inst
 def hestia(driver, url='https://sso.ergohestia.pl/my.policy'):
     try:
-
         driver.get(url)
         login_hes = driver.find_element_by_id('input_1').send_keys(hestia_l)
         hasło_hes = driver.find_element_by_id('input_2').send_keys(hestia_h)
@@ -338,7 +367,7 @@ def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
 def path_exists(next_month_path, num):
     if os.path.exists(next_month_path):
         num += 1
-        next_month_path = f'{next_month_path[:-1]}..{str(num)}'
+        next_month_path = f'{next_month_path[:-1]}..{str(num)}\\'
         return path_exists(next_month_path, num)
     else:
         return next_month_path
@@ -355,7 +384,7 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, przesyłam dokumenty w załącznikach.\n\n"""
     message.attach(MIMEText(body))
 
-    # TODO -> Dostęp dla mniej bezpiecznych aplikacji../zmiana na API Gmail
+    # TODO -> Dostęp dla mniej bezpiecznych aplikacji../zmiana na API Gmail | --> dodana wysyłka pustego maila w połowie okresu
     documents = next_month_path
     os.chdir(documents)
     for attachment in os.listdir(documents):
@@ -386,12 +415,14 @@ if __name__ == '__main__':
 
     next_month_path = path_exists(next_month_path, 0)
     mk_month_dir(next_month_path)
-    tasks = [allianz, compensa, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
+
+    tasks = [allianz, compensa, euroins, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
+
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    # send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
     time.sleep(1)
