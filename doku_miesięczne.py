@@ -107,11 +107,11 @@ def euroins(driver, url_eins='https://eins.com.pl/index.php/login'):
         WebDriverWait(driver, 9).until(EC.url_changes(url_eins))
         url = 'https://eins.com.pl/index.php/apps/files/?dir=/MAGRO_E/noty%20prowizyjne&fileid=58566'
         driver.get(url)
-        WebDriverWait(driver, 9).until(EC.url_changes(url))
+        WebDriverWait(driver, 9).until(EC.url_contains('58566'))
         driver.find_element_by_xpath(
             '//tbody/tr[not(@data-id <= preceding-sibling::tr/@data-id) and not(@data-id <= following-sibling::tr/@data-id)]'
         ).click()
-        time.sleep(3)
+        time.sleep(5)
         driver.quit()
         print('Euroins ok')
     except:
@@ -424,5 +424,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    # send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
     time.sleep(1)
