@@ -327,8 +327,19 @@ def email(next_month_path):
         interpolska(fv, id, message, next_month_path)
 
 
-service = main()
+def zallianz():
+    label = {'zallianz': 'Label_3251381808219322746'}
+    today = date.today()
+    query = "newer_than:1d".format(today.strftime('%d/%m/%Y'))
+    results = service.users().messages().list(userId='me', labelIds=[label['zallianz']], maxResults=1, q=query).execute()
+    message_id = results['messages'][0]['id']
+    msg = service.users().messages().get(userId='me', id=message_id).execute()
+    tiktok = re.search('jednorazowy (\d+)', msg['snippet'])
+    if tiktok:
+        return tiktok.group(1)
 
+
+service = main()
 
 # next_month_path = 'C:\\Users\ROBERT\Desktop\Księgowość\\10.2021\\'
 # email(next_month_path)

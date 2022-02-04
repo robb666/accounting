@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 import concurrent.futures
-from faktury_GmailAPI import email
+from faktury_GmailAPI import email, zallianz
 from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, eins_l, eins_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
@@ -41,15 +41,25 @@ def driver_inst(func):
 
 
 @driver_inst
-def allianz(driver, url_allianz='https://start.allianz.pl/'):
+def allianz(driver, url_allianz='https://start.allianz.pl'):
     try:
-        driver.get(url_allianz)
-        login = driver.find_element_by_id('username')
-        login.send_keys(allianz_l)
-        hasło = driver.find_element_by_id('password')
-        hasło.send_keys(allianz_h)
-        driver.find_element_by_name('submit').click()
-        driver.get('https://chuck.allianz.pl/agent/#/invoices')
+        for _ in range(2):
+            driver.get(url_allianz)
+            login = driver.find_element_by_id('username')
+            login.send_keys(allianz_l)
+            pwd = driver.find_element_by_id('password')
+            pwd.send_keys(allianz_h)
+            driver.find_element_by_name('submit').click()
+            WebDriverWait(driver, 15).until(EC.url_changes(url_allianz))
+
+        time.sleep(5.5)
+        token = driver.find_element_by_id('token')
+        tiktok = zallianz()
+        token.send_keys(tiktok)
+        driver.find_element_by_xpath('//button[@accesskey="s"]').click()
+        url_inv = 'https://chuck.allianz.pl/agent/#/invoices'
+        driver.get(url_inv)
+        WebDriverWait(driver, 15).until(EC.url_changes(url_inv))
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
         time.sleep(1)
         WebDriverWait(driver, 9).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
@@ -57,7 +67,6 @@ def allianz(driver, url_allianz='https://start.allianz.pl/'):
         driver.quit()
         print('Allianz ok')
     except:
-        time.sleep(1)
         with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak Allianz\n")
         print('Brak Allianz')
@@ -424,5 +433,5 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    # send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping) *
     time.sleep(1)
