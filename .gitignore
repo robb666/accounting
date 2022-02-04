@@ -65,3 +65,5 @@ build/wyciag/base_library.zip
 build/klasa_mailowa/warn-klasa_mailowa.txt
 build/klasa_mailowa/base_library.zip
 wyciag2.py
+wyciag2/
+build/

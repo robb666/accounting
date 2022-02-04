@@ -339,6 +339,21 @@ def zallianz():
         return tiktok.group(1)
 
 
+def zsanpl():
+    label = {'zallianz/zsanpl': 'Label_7938073158094859915'}
+    today = date.today()
+    query = "newer_than:1d".format(today.strftime('%d/%m/%Y'))
+    results = service.users().messages().list(userId='me',
+                                              labelIds=[label['zallianz/zsanpl']],
+                                              maxResults=1,
+                                              q=query).execute()
+    message_id = results['messages'][0]['id']
+    msg = service.users().messages().get(userId='me', id=message_id).execute()
+    zsan = re.search('od: (\d{3}-\d{3})', msg['snippet'])
+    if zsan:
+        return zsan.group(1)
+
+
 service = main()
 
 # next_month_path = 'C:\\Users\ROBERT\Desktop\Księgowość\\10.2021\\'
