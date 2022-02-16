@@ -59,7 +59,6 @@ def allianz(driver, url_allianz='https://start.allianz.pl'):
         driver.find_element_by_xpath('//button[@accesskey="s"]').click()
         url_inv = 'https://chuck.allianz.pl/agent/#/invoices'
         driver.get(url_inv)
-        WebDriverWait(driver, 15).until(EC.url_changes(url_inv))
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
         time.sleep(1)
         WebDriverWait(driver, 9).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.am-btn-primary')))[1].click()
@@ -265,8 +264,8 @@ def warta(driver,
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
                                                                        "//*[contains(text(), 'Majątek')]"))).click()
         time.sleep(0.9)
-        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list' \
-                              '/?aid=1770143&agentOuid=A00005152001'
+        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list/?aid=2632795&agentOuid=A00005152001'
+
         driver.get(rozliczenia_agencji)
         time.sleep(1.1)
         WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH,
@@ -429,6 +428,7 @@ if __name__ == '__main__':
 
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
