@@ -1,5 +1,5 @@
+
 import os
-import multiprocessing
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -16,7 +16,8 @@ from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, e
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
      unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi, bookkeeping, OTP
 import time
-import smtplib, ssl
+import smtplib
+import ssl
 from email import encoders
 import mimetypes
 from email.mime.base import MIMEBase
@@ -34,8 +35,9 @@ def driver_inst(func):
         options = webdriver.ChromeOptions()
         preferences = {'download.default_directory': next_month_path,
                        'plugins.always_open_pdf_externally': True}
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])  # win devtools supress
         options.add_experimental_option("prefs", preferences)
-        driver = webdriver.Chrome(executable_path=r'M:/zzzProjekty/drivery przegądarek/chromedriver.exe',
+        driver = webdriver.Chrome(executable_path=r'\\Js\e\zzzProjekty\drivery przegądarek\chromedriver.exe',
                                   options=options)
         return func(driver)
     return wrapper
@@ -440,6 +442,6 @@ if __name__ == '__main__':
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    # send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
-    send_attachments('ubezpieczenia.magro@gmail.com', 'ubezpieczenia.magro@gmail.com')
+    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    # send_attachments('ubezpieczenia.magro@gmail.com', 'ubezpieczenia.magro@gmail.com')
     time.sleep(1)
