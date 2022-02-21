@@ -23,7 +23,8 @@ def main():
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    project_path = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist\\'
+    # project_path = r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist\\'
+    project_path = r'C:\Users\PipBoy3000\Desktop\IT\projekty\accounting\\'
     if os.path.exists(project_path + 'token.pickle'):
         with open(project_path + 'token.pickle', 'rb') as token:
             creds = pickle.load(token)
@@ -164,7 +165,8 @@ def insly_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Insly':
         if str(msg).find('Faktura') > -1 and not 'minął termin' in str(msg):
             att_id = attachment_id(fv, msg)
-            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
+            get_att = service.users().messages().attachments().get(userId='me',
+                                                                   messageId=message_id,
                                                                    id=att_id).execute()
             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
             path = ''.join([rf'{next_month_path}Insly_faktura' + '.pdf'])

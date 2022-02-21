@@ -67,3 +67,4 @@ build/klasa_mailowa/base_library.zip
 wyciag2.py
 wyciag2/
 build/
+.env/

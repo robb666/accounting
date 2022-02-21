@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
 import concurrent.futures
 from faktury_GmailAPI import email, zallianz
 from cash_excel import raport_inkaso
@@ -47,6 +48,7 @@ def allianz(driver, url_allianz='https://start.allianz.pl'):
             driver.get(url_allianz)
             login = driver.find_element_by_id('username')
             login.send_keys(allianz_l)
+            time.sleep(1)
             pwd = driver.find_element_by_id('password')
             pwd.send_keys(allianz_h)
             driver.find_element_by_name('submit').click()
@@ -76,11 +78,11 @@ def allianz(driver, url_allianz='https://start.allianz.pl'):
 def compensa(driver, url_compensa='https://cportal.compensa.pl/'):
     try:
         driver.get(url_compensa)
-        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.input'))).send_keys(compensa_l)
-        driver.find_element_by_css_selector('div.fl:nth-child(5) > input:nth-child(1)').send_keys(compensa_h)
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, "btnLogin"))).click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'News')))
-        url_compensa = 'https://cportal.compensa.pl/#MyCommissions'
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, 'login'))).send_keys(compensa_l)
+        driver.find_element_by_id('password').send_keys(compensa_h)
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, "submitLogin"))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//a[contains(text(), 'Mój cPortal')]")))
+        url_compensa = 'https://cportal.compensa.pl/Portal#/legacy/MyCommissions'
         time.sleep(1)
         driver.get(url_compensa)
         driver.set_page_load_timeout(30)
@@ -155,10 +157,15 @@ def generali(driver,
 def hestia(driver, url='https://sso.ergohestia.pl/my.policy'):
     try:
         driver.get(url)
-        login_hes = driver.find_element_by_id('input_1').send_keys(hestia_l)
-        hasło_hes = driver.find_element_by_id('input_2').send_keys(hestia_h)
+        driver.find_element_by_id('input_1').send_keys(hestia_l)
+        driver.find_element_by_id('input_2').send_keys(hestia_h)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
                                                                 '//*[@id="auth_form"]/div[3]/div[4]/button'))).click()
+        try:
+            WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//span[text()='Anuluj']"))).click()
+        except NoSuchElementException:
+            pass
+
         url_agent = 'https://partner.ergohestia.pl/#/partner'
         driver.get(url_agent)
         url_agent = 'https://partner.ergohestia.pl/#/partner' + '/commissionHistory'
@@ -418,7 +425,7 @@ def send_attachments(sender_email, receiver_email):
 
 if __name__ == '__main__':
     # os.chdir(r'C:\Users\ROBERT\Desktop\IT\PYTHON\PYTHON 37 PROJEKTY\księgowość\skrypty osobno\dist')
-    next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
+    next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\Księgowość\\' \
                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
 
     next_month_path = path_exists(next_month_path, 0)
@@ -429,9 +436,10 @@ if __name__ == '__main__':
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         for n in range(len(tasks)):
             executor.submit(tasks[n])
 
-    send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    # send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
+    send_attachments('ubezpieczenia.magro@gmail.com', 'ubezpieczenia.magro@gmail.com')
     time.sleep(1)
