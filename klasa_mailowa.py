@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from L_H_ks import gapi
+# from L_H_ks import gapi
 
 
 def send_attachments(sender_email, receiver_email):
@@ -18,7 +18,7 @@ def send_attachments(sender_email, receiver_email):
     body = """Cześć, to test smtplib.\n\n"""
     message.attach(MIMEText(body))
 
-    documents = r'C:\Users\ROBERT\Desktop\Księgowość\Kadrowe\test'
+    documents = r'C:\Users\PipBoy3000\Desktop\Księgowość\Kadrowe\test'
     os.chdir(documents)
     for attachment in os.listdir(documents):
         content_type, encoding = mimetypes.guess_type(attachment, strict=False)
@@ -38,9 +38,9 @@ def send_attachments(sender_email, receiver_email):
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
-        server.login('ubezpieczenia.magro@gmail.com', gapi)
+        server.login('ubezpieczenia.magro@gmail.com', 'pornogrubas')
         server.sendmail(sender_email, receiver_email, text)
 
 
-# send_attachments('ubezpieczenia.magro@gmail.com',
-#                  'robert.patryk.grzelak@gmail.com')
+send_attachments('ubezpieczenia.magro@gmail.com',
+                 'robert.patryk.grzelak@gmail.com')
