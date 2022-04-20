@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 import concurrent.futures
 from faktury_GmailAPI import email, zallianz
 from cash_excel import raport_inkaso
@@ -37,6 +38,8 @@ def driver_inst(func):
                        'plugins.always_open_pdf_externally': True}
         options.add_experimental_option('excludeSwitches', ['enable-logging'])  # win devtools supress
         options.add_experimental_option("prefs", preferences)
+        # options.add_experimental_option("detach", True)
+        # options.headless = True
         driver = webdriver.Chrome(executable_path=r'\\Js\e\zzzProjekty\drivery przegądarek\chromedriver.exe',
                                   options=options)
         return func(driver)
@@ -167,6 +170,8 @@ def hestia(driver, url='https://sso.ergohestia.pl/my.policy'):
             WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//span[text()='Anuluj']"))).click()
         except NoSuchElementException:
             pass
+        except TimeoutException:
+            pass
 
         url_agent = 'https://partner.ergohestia.pl/#/partner'
         driver.get(url_agent)
@@ -263,25 +268,27 @@ def warta(driver,
     try :
         driver.get(url_warta)
         driver.find_element_by_id('username').send_keys(warta_l)
+        time.sleep(.1)
         driver.find_element_by_id('password').send_keys(warta_h)
         driver.find_element_by_name('submit').click()
-        try :
+        try:
             if driver.find_element_by_name('continue') != 0 :
                 driver.find_element_by_name('continue').click()
-        except :
+        except:
             pass
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
                                                                        "//*[contains(text(), 'Majątek')]"))).click()
+        WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH,
+                                                                    "//*[@id='bookmark_settlements_bookmark']"))).click()
+        WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH,
+                                                               "//*[contains(text(), 'Rozliczenia Agencji')]"))).click()
         time.sleep(0.9)
-        rozliczenia_agencji = 'https://eagent.warta.pl/view360/#/app/main/settlement/property/A00005152001/agent/list/?aid=2632795&agentOuid=A00005152001'
-
-        driver.get(rozliczenia_agencji)
-        time.sleep(1.1)
+        curr_url = driver.current_url
         WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH,
                                                                             "//*[contains(text(), 'RSP')]")))[0].click()
         WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.CLASS_NAME,
                                                 "settlement-details-documents__content__item__list__elem")))[2].click()
-        driver.get(rozliczenia_agencji)
+        driver.get(curr_url)
         time.sleep(0.9)
         WebDriverWait(driver, 4).until(EC.presence_of_all_elements_located((By.XPATH,
                                                                             "//*[contains(text(), 'RSP')]")))[1].click()
