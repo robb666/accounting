@@ -27,7 +27,7 @@ def scrp(driver):
     df.insert(0, 'element', df.title)
     df.element.fillna(df['text'], inplace=True)
     # df.text = np.nan  # fillna didn't work
-    df = df.replace('\n', '\u2063', regex=True)
+    # df = df.replace('\n', '\u2063', regex=True)
     # print(df)
     ########
     # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
@@ -41,16 +41,16 @@ def healed_locator(driver, e, *, attr, element_row, value):
     if 'no such element' in str(e) or 'Unable to locate element' in str(e) or 'element not interactable' in str(e):
 
         df = scrp(driver)
-        df = df.replace('\u2063', '\n', regex=True)
+        # df = df.replace('\u2063', '\n', regex=True)
         df = df.fillna('None')
         # df = df.drop(['Unnamed: 0'], axis=1)
-        print(df.head())
+        print(df.head(15))
         # df = df.head()
 
         # to_test = pd.read_csv('Test.csv').iloc[[element_row]]
-        # to_test = to_test.replace('\u2063', '\n', regex=True)
         to_test = pd.read_csv('Test.csv', dtype=object,
                               header=0, usecols=lambda c: c in df.columns)
+        to_test = to_test.replace('\u2063', '\n', regex=True)
         print('to_test')
         print(to_test)
         # processed_test = to_test.append(df)[df.columns].iloc[[element_row]]
