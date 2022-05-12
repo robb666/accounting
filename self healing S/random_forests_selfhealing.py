@@ -51,7 +51,8 @@ def healed_locator(driver, e, *, attr, element_row, value):
         # to_test = to_test.replace('\u2063', '\n', regex=True)
         to_test = pd.read_csv('Test.csv', dtype=object,
                               header=0, usecols=lambda c: c in df.columns)
-
+        print('to_test')
+        print(to_test)
         # processed_test = to_test.append(df)[df.columns].iloc[[element_row]]
 
         processed_test = pd.concat([df, to_test], axis=0)
@@ -62,8 +63,7 @@ def healed_locator(driver, e, *, attr, element_row, value):
 
 
 
-        print('to_test')
-        print(to_test)
+
         # test = to_test.fillna('None')
         # concatenated = pd.concat([df, test], axis=0)#.drop('element', axis=1)
         # print(concatenated)
