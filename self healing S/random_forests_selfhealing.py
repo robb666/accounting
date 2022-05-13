@@ -56,13 +56,10 @@ def healed_locator(driver, e, *, attr, element_row, value):
         # processed_test = to_test.append(df)[df.columns].iloc[[element_row]]
 
         processed_test = pd.concat([df, to_test], axis=0)
-        processed_test = processed_test.iloc[[-1]]
+        processed_test = processed_test.iloc[[element_row]]
 
         print('processed_test')
         print(processed_test)
-
-
-
 
         # test = to_test.fillna('None')
         # concatenated = pd.concat([df, test], axis=0)#.drop('element', axis=1)
@@ -90,9 +87,17 @@ def healed_locator(driver, e, *, attr, element_row, value):
         print(element_dict)
         el_attr = list(element_dict.keys())[np.argmax(probabilities)]
         print(f"//*[@{attr}='{el_attr}']")
-        selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' and @class='button primary small']")
-        print(selector)
-        if value:
-            selector.send_keys(value)
-        else:  # click
-            selector.click()
+
+        print('attr')
+        print(attr)
+        if attr is None:
+            print('features from df:')
+            for feature in df.columns:
+                print(f"//*[@{feature}='{el_attr}']")
+
+        # selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' and @class='button primary small']")
+        # print(selector)
+        # if value:
+        #     selector.send_keys(value)
+        # else:  # click
+        #     selector.click()
