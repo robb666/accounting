@@ -26,14 +26,14 @@ def scrp(driver):
     df = pd.DataFrame.from_records(arr)
     df.insert(0, 'element', df.title)
     df.element.fillna(df['id'], inplace=True)
-    df.element.fillna(df['tag'], inplace=True)
+    df.element.fillna(df['text'], inplace=True)
     # df.text = np.nan  # fillna didn't work
     df = df.replace('\n', '\u2063', regex=True)
     print(df)
     ########
-    df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
+    # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
     # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
-    df = pd.read_csv('san.csv', dtype=object)
+    # df = pd.read_csv('san.csv', dtype=object)
 
     return df
 
