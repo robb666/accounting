@@ -25,8 +25,8 @@ def scrp(driver):
 
     df = pd.DataFrame.from_records(arr)
     df.insert(0, 'element', df.title)
-    df.element.fillna(df['text'], inplace=True)
-    df.element.fillna('DUPA', inplace=True)
+    df.element.fillna(df['id'], inplace=True)
+    df.element.fillna(df['tag'], inplace=True)
     # df.text = np.nan  # fillna didn't work
     df = df.replace('\n', '\u2063', regex=True)
     print(df)
@@ -101,6 +101,7 @@ def healed_locator(driver, e, *, attr, element_row, value, filename):
 
                 try:
                     selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}' and @class='button primary small']")
+                    # selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")
                     print(selector)
                     if value:
                         selector.send_keys(value)
@@ -109,4 +110,16 @@ def healed_locator(driver, e, *, attr, element_row, value, filename):
                     break
                 except Exception as e:
                     print(e)
+                    pass
+
+                try:
+                    selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")
+                    print(selector)
+                    if value:
+                        selector.send_keys(value)
+                    else:  # click
+                        selector.click()
+                    break
+                except Exception as e:
+                    print('exception no 2', e)
                     pass
