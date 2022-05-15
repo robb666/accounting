@@ -94,7 +94,8 @@ def healed_locator(driver, e, *, attr, header, element_row, value, filename):
                 print(f"//*[@{feature}='{el_attr}']")
 
                 try:
-                    selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}' and @class='button primary small']")
+                    # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
+                    selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}' and contains(@class, 'button')]")
                     # selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")
                     print(selector)
                     if value:
@@ -117,3 +118,14 @@ def healed_locator(driver, e, *, attr, header, element_row, value, filename):
                 except Exception as e:
                     print('exception no 2', e)
                     pass
+
+
+
+        else:
+            selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' and @class='button primary small']")
+            # selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")
+            print(selector)
+            if value:
+                selector.send_keys(value)
+            else:  # click
+                selector.click()
