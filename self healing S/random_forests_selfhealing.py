@@ -38,27 +38,23 @@ def scrp(driver):
     return df
 
 
-def healed_locator(driver, e, *, attr, element_row, value, filename):
+def healed_locator(driver, e, *, attr, header, element_row, value, filename):
     if 'no such element' in str(e) or 'Unable to locate element' in str(e) or 'element not interactable' in str(e):
 
         df = scrp(driver)
         # df = pd.read_csv('san.csv')
-        df = df.replace('\u2063', '\n', regex=True)
         df = df.fillna('None')
-        # df = df.drop(['Unnamed: 0'], axis=1)
+        df = df.replace('\u2063', '\n', regex=True)
 
-        # df = df.head()
 
-        # to_test = pd.read_csv('Test.csv').iloc[[element_row]]
         to_test = pd.read_csv(filename, dtype=object,
-                              usecols=lambda c: c in df.columns) #, on_bad_lines='skip')
+                              header=header, usecols=lambda c: c in df.columns).iloc[[element_row]] #, on_bad_lines='skip')
+        print('to_test')
         print(to_test)
-        to_test = to_test.iloc[[element_row]]
+        # to_test = to_test.iloc[[element_row]]
         to_test = to_test.fillna('None')
         to_test = to_test.replace('\u2063', '\n', regex=True)
 
-
-        # processed_test = to_test.append(df)[df.columns].iloc[[element_row]]
 
         processed_test = pd.concat([df, to_test], axis=0)
         print(processed_test)
@@ -70,14 +66,6 @@ def healed_locator(driver, e, *, attr, element_row, value, filename):
         print('processed_test')
         print(processed_test)
 
-        # test = to_test.fillna('None')
-        # concatenated = pd.concat([df, test], axis=0)#.drop('element', axis=1)
-        # print(concatenated)
-
-        # processed_test = pd.DataFrame(concatenated.iloc[-1]).T
-        # processed_test = processed_test.drop(['Unnamed: 0'], axis=1)
-
-        # print(processed_test)
 
         ohe = OneHotEncoder(sparse=False, handle_unknown='ignore')
         X_train = ohe.fit_transform(df.astype(str))

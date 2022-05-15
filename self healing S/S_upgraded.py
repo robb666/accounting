@@ -49,7 +49,7 @@ def san(url):
             By.XPATH, "//a[contains(@href, 'centrum24-web/login')] | //a[contains(text(), 'Santander internet')]"))).click()
     except Exception as e:
         print('Exc messa.', e)
-        healed_locator(driver, e, attr=None, element_row=0, value='', filename='Test.csv')
+        healed_locator(driver, e, attr=None, header=0,  element_row=0, value='', filename='Test.csv')
 
 
     WebDriverWait(driver, 1).until(EC.url_changes(url))
@@ -67,7 +67,7 @@ def san(url):
         time.sleep(1.3)
     except Exception as e:
         print('Exc messa. login', e)
-        healed_locator(driver, e, attr=None, element_row=2, value='100200', filename='Test.csv')
+        healed_locator(driver, e, attr=None, header=2, element_row=0, value='100200', filename='Test.csv')
 
 
 
