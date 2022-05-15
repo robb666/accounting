@@ -38,7 +38,7 @@ def scrp(driver):
     return df
 
 
-def healed_locator(driver, e, *, attr, element_row, value, filename):
+def healed_locator(driver, e, *, attr, header, element_row, value, filename):
     if 'no such element' in str(e) or 'Unable to locate element' in str(e) or 'element not interactable' in str(e):
 
         df = scrp(driver)
@@ -51,8 +51,9 @@ def healed_locator(driver, e, *, attr, element_row, value, filename):
 
         # to_test = pd.read_csv('Test.csv').iloc[[element_row]]
         to_test = pd.read_csv(filename, dtype=object,
-                              header=0, usecols=lambda c: c in df.columns)
+                              header=header, usecols=lambda c: c in df.columns, on_bad_lines='skip')
         to_test = to_test.fillna('None')
+        to_test = to_test.iloc[[element_row]]
         to_test = to_test.replace('\u2063', '\n', regex=True)
         print('to_test')
         print(to_test)
