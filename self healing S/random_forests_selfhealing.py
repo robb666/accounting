@@ -46,12 +46,13 @@ def healed_locator(driver, e, *, attr, header, element_row, value, filename):
         df = df.fillna('None')
         df = df.replace('\u2063', '\n', regex=True)
 
-
-        to_test = pd.read_csv(filename, dtype=object,
-                              header=header, usecols=lambda c: c in df.columns).iloc[[element_row]] #, on_bad_lines='skip')
+        to_test = pd.read_csv(filename,
+                              dtype=object,
+                              header=header,
+                              usecols=lambda c: c in df.columns
+                              ).iloc[[element_row]]
         print('to_test')
         print(to_test)
-        # to_test = to_test.iloc[[element_row]]
         to_test = to_test.fillna('None')
         to_test = to_test.replace('\u2063', '\n', regex=True)
 
