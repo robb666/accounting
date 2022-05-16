@@ -367,5 +367,5 @@ def zsanpl():
 
 service = main()
 
-next_month_path = 'C:\\Users\\PipBoy3000\\Desktop\\Księgowość\\10.2028\\'
-email(next_month_path)
+# next_month_path = 'C:\\Users\\PipBoy3000\\Desktop\\Księgowość\\10.2028\\'
+# email(next_month_path)
