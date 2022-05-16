@@ -88,21 +88,17 @@ def labels(service):
             for message_id in results:
                 msg = service.users().threads().get(userId='me', id=message_id['id']).execute()
                 yield label[0], message_id, msg
-
         else:
             results = service.users().messages().list(userId='me', labelIds=[label[1]],
                                                       maxResults=1, q=query).execute()
-            try:
-                message_id = results['messages'][0]['id']
-                msg = service.users().messages().get(userId='me', id=message_id).execute()
+            if message_id := results.get('messages'):
+                msg = service.users().messages().get(userId='me', id=message_id[0]['id']).execute()
                 yield label[0], message_id, msg
-            except Exception as e:
-                pass
 
 
 def attachment_id(fv, msg):
     """Sprawdza czy i o jakiej nazwie jest załącznik
-        w pojedyńczej wiadomości i przekazuje ID."""
+        w pojedyńczej wiadomości i przekazuje ID i nazwę."""
     for part in msg['payload']['parts']:
         a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
         b = True if fv in ('Insly') and re.search('faktura', part['filename'], re.I) else False
@@ -118,7 +114,7 @@ def attachment_id(fv, msg):
 
 
 def attachment_id_thread(fv, msg):
-    """Sprawdza czy i o jakiej nazwie są załączniki w wątkach i przekazuje ich ID."""
+    """Sprawdza czy i o jakiej nazwie są załączniki w wątkach i przekazuje ich ID i nazwę."""
     i = 0
     while i < len(msg['messages']):
         for part in msg['messages'][i]['payload']['parts']:
@@ -245,13 +241,11 @@ def aws_invoice(fv, message_id, msg, next_month_path):
 
 def tuw_invoice(fv, message_id, msg, next_month_path):
     if fv == 'TUW':
-        # print(str(msg))
         h = ''
         possible_words = re.compile('załączeniu|fakturę|prowizję', re.I)
         try:
             if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))) \
                                                             or str(msg['snippet']) == '':  # W przypadku braku treści.
-                # att_id = attachment_id(fv, msg)
                 for att_id, filename in attachment_id_thread(fv, msg):
                     get_att = service.users().messages().attachments().get(userId='me',
                                                                            messageId=message_id,
@@ -332,16 +326,16 @@ def interpolska(fv, message_id, msg, next_month_path):
 
 def email(next_month_path):
     for fv, id, message in labels(service):
-        # uniqa_invoice(fv, id, message, next_month_path)
-        # wiener_invoice(fv, id, message, next_month_path)
-        # insly_invoice(fv, id, message, next_month_path)
-        # orange_mob_invoice(fv, id, message, next_month_path)
-        # orange_stac_invoice(fv, id, message, next_month_path)
-        # aws_invoice(fv, id, message, next_month_path)
+        uniqa_invoice(fv, id, message, next_month_path)
+        wiener_invoice(fv, id, message, next_month_path)
+        insly_invoice(fv, id, message, next_month_path)
+        orange_mob_invoice(fv, id, message, next_month_path)
+        orange_stac_invoice(fv, id, message, next_month_path)
+        aws_invoice(fv, id, message, next_month_path)
         tuw_invoice(fv, id, message, next_month_path)
-        # tuz_invoice(fv, id, message, next_month_path)
-        # az_invoice(fv, id, message, next_month_path)
-        # interpolska(fv, id, message, next_month_path)
+        tuz_invoice(fv, id, message, next_month_path)
+        az_invoice(fv, id, message, next_month_path)
+        interpolska(fv, id, message, next_month_path)
 
 
 def zallianz():
