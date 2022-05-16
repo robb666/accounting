@@ -82,43 +82,27 @@ def labels(service):
     query01 = "from:faktury_prowizje@axaubezpieczenia.pl"
 
     for label in labels.items():
-        # print(label)
-        results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=1, q=query).execute()
-
-
-
-
-
-
-        if label[0] == 'TUW':
-
-            results = service.users().threads().list(userId='me', labelIds=[label[1]], maxResults=2, q=query
-                                                                                        ).execute().get('threads', [])
-            # print(results)
+        if label[0] in ('TUW'):
+            results = service.users().threads().list(userId='me', labelIds=[label[1]],
+                                                     maxResults=2, q=query).execute().get('threads', [])
             for message_id in results:
-
-            #     print(message_id, type(message_id))
-            #     # i = int(i)
-            #     message_id = results['messages'][0]['id']
-            #     msg = service.users().messages().get(userId='me', id=message_id).execute()
                 msg = service.users().threads().get(userId='me', id=message_id['id']).execute()
-                print(label[0], message_id['id'])
                 yield label[0], message_id, msg
 
-
-
-
-
-        try:
-            message_id = results['messages'][0]['id']
-            msg = service.users().messages().get(userId='me', id=message_id).execute()
-            yield label[0], message_id, msg
-        except Exception as e:
-            pass
+        else:
+            results = service.users().messages().list(userId='me', labelIds=[label[1]],
+                                                      maxResults=1, q=query).execute()
+            try:
+                message_id = results['messages'][0]['id']
+                msg = service.users().messages().get(userId='me', id=message_id).execute()
+                yield label[0], message_id, msg
+            except Exception as e:
+                pass
 
 
 def attachment_id(fv, msg):
-    """Sprawdza czy i o jakiej nazwie jest załącznik, przekazuje ID."""
+    """Sprawdza czy i o jakiej nazwie jest załącznik
+        w pojedyńczej wiadomości i przekazuje ID."""
     for part in msg['payload']['parts']:
         a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
         b = True if fv in ('Insly') and re.search('faktura', part['filename'], re.I) else False
@@ -133,31 +117,16 @@ def attachment_id(fv, msg):
                 return att_id
 
 
-def attachment_id_gen(fv, msg):
-    if fv != 'TUW':
-
-        for part in msg['payload']['parts']:
-            # print("part['filename']", part)
-            d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
-            # e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
-            if d :
+def attachment_id_thread(fv, msg):
+    """Sprawdza czy i o jakiej nazwie są załączniki w wątkach i przekazuje ich ID."""
+    i = 0
+    while i < len(msg['messages']):
+        for part in msg['messages'][i]['payload']['parts']:
+            e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
+            if e:
                 att_id = part['body']['attachmentId']
-                print('tu tuw att_id : \n', att_id)
                 yield att_id, part['filename']
-
-    else:
-        i = 0
-        while i < 2:
-            for part in msg['messages'][i]['payload']['parts']:
-                print(part)
-                # d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
-                e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
-                if e:
-                    print('tut tuw')
-                    att_id = part['body']['attachmentId']
-                    print('tu tuw att_id : \n', att_id)
-                    yield att_id, part['filename']
-                    i += 1
+                i += 1
 
 
 def uniqa_invoice(fv, message_id, msg, next_month_path):
@@ -283,7 +252,7 @@ def tuw_invoice(fv, message_id, msg, next_month_path):
             if re.search(possible_words, str(msg)) or (h := re.search('hasło:\s?([A-z0-9!-_]+)', str(msg))) \
                                                             or str(msg['snippet']) == '':  # W przypadku braku treści.
                 # att_id = attachment_id(fv, msg)
-                for att_id, filename in attachment_id_gen(fv, msg):
+                for att_id, filename in attachment_id_thread(fv, msg):
                     get_att = service.users().messages().attachments().get(userId='me',
                                                                            messageId=message_id,
                                                                            id=att_id).execute()
