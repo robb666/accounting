@@ -78,11 +78,37 @@ def labels(service):
               'Inter': 'Label_7352333857366744444'}
 
     today = date.today()
-    query = "newer_than:40d".format(today.strftime('%d/%m/%Y'))
+    query = "newer_than:35d".format(today.strftime('%d/%m/%Y'))
     query01 = "from:faktury_prowizje@axaubezpieczenia.pl"
 
     for label in labels.items():
+        # print(label)
         results = service.users().messages().list(userId='me', labelIds=[label[1]], maxResults=1, q=query).execute()
+
+
+
+
+
+
+        if label[0] == 'TUW':
+
+            results = service.users().threads().list(userId='me', labelIds=[label[1]], maxResults=2, q=query
+                                                                                        ).execute().get('threads', [])
+            # print(results)
+            for message_id in results:
+
+            #     print(message_id, type(message_id))
+            #     # i = int(i)
+            #     message_id = results['messages'][0]['id']
+            #     msg = service.users().messages().get(userId='me', id=message_id).execute()
+                msg = service.users().threads().get(userId='me', id=message_id['id']).execute()
+                print(label[0], message_id['id'])
+                yield label[0], message_id, msg
+
+
+
+
+
         try:
             message_id = results['messages'][0]['id']
             msg = service.users().messages().get(userId='me', id=message_id).execute()
@@ -108,12 +134,30 @@ def attachment_id(fv, msg):
 
 
 def attachment_id_gen(fv, msg):
-    for part in msg['payload']['parts']:
-        d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
-        e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
-        if d or e:
-            att_id = part['body']['attachmentId']
-            yield att_id, part['filename']
+    if fv != 'TUW':
+
+        for part in msg['payload']['parts']:
+            # print("part['filename']", part)
+            d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
+            # e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
+            if d :
+                att_id = part['body']['attachmentId']
+                print('tu tuw att_id : \n', att_id)
+                yield att_id, part['filename']
+
+    else:
+        i = 0
+        while i < 2:
+            for part in msg['messages'][i]['payload']['parts']:
+                print(part)
+                # d = True if fv == 'Euroins' and re.search('(.pdf$|.zip)', part['filename']) else False
+                e = True if fv == 'TUW' and re.search('(.pdf$|.zip)', part['filename']) else False
+                if e:
+                    print('tut tuw')
+                    att_id = part['body']['attachmentId']
+                    print('tu tuw att_id : \n', att_id)
+                    yield att_id, part['filename']
+                    i += 1
 
 
 def uniqa_invoice(fv, message_id, msg, next_month_path):
@@ -232,6 +276,7 @@ def aws_invoice(fv, message_id, msg, next_month_path):
 
 def tuw_invoice(fv, message_id, msg, next_month_path):
     if fv == 'TUW':
+        # print(str(msg))
         h = ''
         possible_words = re.compile('załączeniu|fakturę|prowizję', re.I)
         try:
@@ -249,7 +294,8 @@ def tuw_invoice(fv, message_id, msg, next_month_path):
                     else:
                         path = ''.join([rf'{next_month_path}TUW_{filename}'])
                         with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                            f.write('TUW hasło: TUW!_5121_TUW\n')
+                            # f.write('TUW hasło: TUW!_5121_TUW\n')
+                            f.write(' ')
                     with open(path, 'wb') as f:
                         f.write(get_att_de)
                         # zip_ref = zipfile.ZipFile(path + '.zip')
@@ -317,16 +363,16 @@ def interpolska(fv, message_id, msg, next_month_path):
 
 def email(next_month_path):
     for fv, id, message in labels(service):
-        uniqa_invoice(fv, id, message, next_month_path)
-        wiener_invoice(fv, id, message, next_month_path)
-        insly_invoice(fv, id, message, next_month_path)
-        orange_mob_invoice(fv, id, message, next_month_path)
-        orange_stac_invoice(fv, id, message, next_month_path)
-        aws_invoice(fv, id, message, next_month_path)
+        # uniqa_invoice(fv, id, message, next_month_path)
+        # wiener_invoice(fv, id, message, next_month_path)
+        # insly_invoice(fv, id, message, next_month_path)
+        # orange_mob_invoice(fv, id, message, next_month_path)
+        # orange_stac_invoice(fv, id, message, next_month_path)
+        # aws_invoice(fv, id, message, next_month_path)
         tuw_invoice(fv, id, message, next_month_path)
-        tuz_invoice(fv, id, message, next_month_path)
-        az_invoice(fv, id, message, next_month_path)
-        interpolska(fv, id, message, next_month_path)
+        # tuz_invoice(fv, id, message, next_month_path)
+        # az_invoice(fv, id, message, next_month_path)
+        # interpolska(fv, id, message, next_month_path)
 
 
 def zallianz():
@@ -358,5 +404,5 @@ def zsanpl():
 
 service = main()
 
-# next_month_path = 'C:\\Users\\PipBoy3000\\Desktop\\Księgowość\\10.2028\\'
-# email(next_month_path)
+next_month_path = 'C:\\Users\\PipBoy3000\\Desktop\\Księgowość\\10.2028\\'
+email(next_month_path)
