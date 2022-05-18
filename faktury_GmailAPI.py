@@ -114,7 +114,7 @@ def attachment_id(fv, msg):
 
 
 def attachment_id_thread(fv, msg):
-    """Sprawdza czy i o jakiej nazwie są załączniki w wątkach i przekazuje ich ID i nazwę."""
+    """Sprawdza, czy i o jakiej nazwie są załączniki w wątkach oraz przekazuje ich ID i nazwę."""
     i = 0
     while i < len(msg['messages']):
         for part in msg['messages'][i]['payload']['parts']:
