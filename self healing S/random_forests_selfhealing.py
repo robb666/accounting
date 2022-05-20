@@ -88,23 +88,24 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
 
         print('attr')
         print(attr)
-        if attr is None:
-            print('features from df:')
-            for attr in df.columns:
-                print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
+        # TODO zakwalifikować atrybut..bez iteracji
+        # if attr is None:
+        #     print('features from df:')
+        for attr in df.columns:
+            print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
 
-                try:
-                    # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
-                    selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]")
-                    print(selector)
-                    if value:
-                        selector.send_keys(value)
-                    else:  # click
-                        selector.click()
-                    break
-                except Exception as e:
-                    print(e)
-                    pass
+            try:
+                # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
+                selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]")
+                print(selector)
+                if value:
+                    selector.send_keys(value)
+                else:  # click
+                    selector.click()
+                break
+            except Exception as e:
+                print(e)
+                pass
 
 
 
@@ -120,9 +121,7 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
                 # except Exception as e:
                 #     print('exception no 2', e)
                 #     pass
-        #
-        #
-        #
+
         # else:
         #     selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' and @class='button primary small']")
         #     # selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")

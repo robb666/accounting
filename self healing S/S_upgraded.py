@@ -51,7 +51,7 @@ def san(url):
         print('Exc messa.', e)
         helper_attr = "and contains(@class, 'button')"
         healed_locator(driver, e,
-                       attr=None, header=0,  helper_attr=helper_attr, element_row=0, value='', filename='Test.csv')
+                       attr='title', header=0,  helper_attr=helper_attr, element_row=0, value='', filename='Test.csv')
 
 
     WebDriverWait(driver, 1).until(EC.url_changes(url))
@@ -74,7 +74,7 @@ def san(url):
         print('Exc messa. login', e)
         # helper_attr = "contains(@class, 'button')"
         healed_locator(driver, e,
-                       attr=None, helper_attr='', header=2, element_row=0, value='100200', filename='Test.csv')
+                       attr='id', helper_attr='', header=2, element_row=0, value='100200', filename='Test.csv')
 
 
 
