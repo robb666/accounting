@@ -86,8 +86,9 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
         el_attr = list(element_dict.keys())[np.argmax(probabilities)]
         print(f"//*[@{attr}='{el_attr}']")
 
-        print('attr')
-        print(attr)
+        print('el_attr feature:')
+        print(df[df.values == el_attr].columns) # TODO kolumne atrybutu
+        # print(attr)
         # TODO zakwalifikować atrybut..bez iteracji
         # if attr is None:
         #     print('features from df:')
