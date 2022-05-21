@@ -87,12 +87,12 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
         print(f"//*[@{attr}='{el_attr}']")
 
         print('el_attr feature:')
-        print(df[df.values == el_attr].columns) # TODO kolumne atrybutu
+        columns = df.columns[df.isin([el_attr]).any()].values # TODO kolumne atrybutu
         # print(attr)
         # TODO zakwalifikować atrybut..bez iteracji
         # if attr is None:
         #     print('features from df:')
-        for attr in df.columns:
+        for attr in columns:
             print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
 
             try:
