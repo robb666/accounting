@@ -46,27 +46,14 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
         df = df.fillna('None')
         df = df.replace('\u2063', '\n', regex=True)
 
-        to_test = pd.read_csv(filename,
-                              dtype=object,
-                              header=header,
-                              usecols=lambda c: c in df.columns
-                              ).iloc[[element_row]]
-        print('to_test')
-        print(to_test)
+        to_test = pd.read_csv(filename, dtype=object, header=header,
+                              usecols=lambda c: c in df.columns).iloc[[element_row]]
+
         to_test = to_test.fillna('None')
         to_test = to_test.replace('\u2063', '\n', regex=True)
 
-
         processed_test = pd.concat([df, to_test], axis=0)
-        print(processed_test)
         processed_test = processed_test.iloc[[-1]]
-
-        print('to_test')
-        print(to_test)
-        print()
-        print('processed_test')
-        print(processed_test)
-
 
         ohe = OneHotEncoder(sparse=False, handle_unknown='ignore')
         X_train = ohe.fit_transform(df.astype(str))
@@ -79,26 +66,15 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
         rf.fit(X_train, y_train)
 
         probabilities = rf.predict_proba(X_test)[0]
-        print(probabilities)
-        print(len(probabilities))
 
-        print(element_dict)
         el_attr = list(element_dict.keys())[np.argmax(probabilities)]
-        print(f"//*[@{attr}='{el_attr}']")
 
-        print('el_attr feature:')
-        columns = df.columns[df.isin([el_attr]).any()].values # TODO kolumne atrybutu
-        # print(attr)
+        columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
         # TODO zakwalifikować atrybut..bez iteracji
-        # if attr is None:
-        #     print('features from df:')
         for attr in columns:
-            print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
-
             try:
                 # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
                 selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]")
-                print(selector)
                 if value:
                     selector.send_keys(value)
                 else:  # click
@@ -106,28 +82,3 @@ def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, 
                 break
             except Exception as e:
                 print(e)
-                pass
-
-
-
-
-                # try:
-                #     selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}']")
-                #     print(selector)
-                #     if value:
-                #         selector.send_keys(value)
-                #     else:  # click
-                #         selector.click()
-                #     break
-                # except Exception as e:
-                #     print('exception no 2', e)
-                #     pass
-
-        # else:
-        #     selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' and @class='button primary small']")
-        #     # selector = driver.find_element(By.XPATH, f"//*[@{feature}='{el_attr}']")
-        #     print(selector)
-        #     if value:
-        #         selector.send_keys(value)
-        #     else:  # click
-        #         selector.click()
