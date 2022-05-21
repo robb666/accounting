@@ -38,8 +38,8 @@ def scrp(driver):
     return df
 
 
-def healed_locator(driver, e, *, attr, helper_attr, header, element_row, value, filename):
-    if 'no such element' in str(e) or 'Unable to locate element' in str(e) or 'element not interactable' in str(e):
+def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, value, filename):
+    # if 'no such element' in str(e) or 'Unable to locate element' in str(e) or 'element not interactable' in str(e):
 
         df = scrp(driver)
         # df = pd.read_csv('san.csv')

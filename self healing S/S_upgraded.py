@@ -43,15 +43,15 @@ def san(url):
 
 
 
-    try:
-        WebDriverWait(driver, 1).until(EC.presence_of_element_located((
-            # By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
-            By.XPATH, "//*[contains(text(), 'Santander internet')]"))).click()
-    except Exception as e:
-        print('Exc messa.', e)
-        helper_attr = "and contains(@class, 'button')"
-        healed_locator(driver, e,
-                       attr=None, header=0,  helper_attr=helper_attr, element_row=0, value='', filename='Test.csv')
+    # try:
+    #     WebDriverWait(driver, 1).until(EC.presence_of_element_located((
+    #         # By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
+    #         By.XPATH, "//*[contains(text(), 'Santander internet')]"))).click()
+    # except Exception as e:
+    #     print('Exc messa.', e)
+    helper_attr = "and contains(@class, 'button')"
+    healed_locator(driver, e=None,
+                   attr=None, header=0,  helper_attr=helper_attr, element_row=0, value='', filename='Test.csv')
 
 
     WebDriverWait(driver, 1).until(EC.url_changes(url))
@@ -63,18 +63,18 @@ def san(url):
         pass
 
 
-    try:
-        login = driver.find_element_by_id('input_nikko')
-        WebDriverWait(driver, 1).until(EC.presence_of_element_located((
-            # By.XPATH, "//*[contains(@href, 'centrum24-web/login')]"))).click()
-            By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
-        login.send_keys(san_l)
-        time.sleep(1.3)
-    except Exception as e:
-        print('Exc messa. login', e)
+    # try:
+    #     login = driver.find_element_by_id('input_nikko')
+    #     WebDriverWait(driver, 1).until(EC.presence_of_element_located((
+    #         # By.XPATH, "//*[contains(@href, 'centrum24-web/login')]"))).click()
+    #         By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
+    #     login.send_keys(san_l)
+    #     time.sleep(1.3)
+    # except Exception as e:
+    #     print('Exc messa. login', e)
         # helper_attr = "contains(@class, 'button')"
-        healed_locator(driver, e,
-                       attr=None, helper_attr='', header=2, element_row=0, value='100200', filename='Test.csv')
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=2, element_row=0, value='100200', filename='Test.csv')
 
 
 
