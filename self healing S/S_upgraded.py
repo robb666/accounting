@@ -52,17 +52,9 @@ def san(url):
 
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=0, value='100200', filename='Test.csv')
-
-    # try:
-    #     WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//input[@id='okBtn2']"))).click()
-    # except:
-    #     WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//input[@id='okBtn2']"))).click()
-
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-
     time.sleep(1.3)
-
     pwd = driver.find_element_by_id('ordinarypinnnnn')
     pwd.send_keys(san_h)
     driver.find_element_by_id('okBtn2').click()
