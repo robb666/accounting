@@ -51,21 +51,38 @@ def san(url):
         pass
 
     healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=0, value='100200', filename='Test.csv')
+                   attr=None, helper_attr='', header=3, element_row=0, value=san_l, filename='Test.csv')
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-    time.sleep(1.3)
-    pwd = driver.find_element_by_id('ordinarypinnnnn')
-    pwd.send_keys(san_h)
-    driver.find_element_by_id('okBtn2').click()
+    # time.sleep(1.3)
+    # pwd = driver.find_element_by_id('ordinarypin')
+    time.sleep(1)
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=3, element_row=0, value=san_h, filename='Test.csv')
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
 
-    onet = driver.find_element_by_id('back-button')
-    onet.click()
+    # pwd.send_keys(san_h)
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=6, element_row=0, value='', filename='Test.csv')
+
+
+
+    # driver.find_element_by_id('okBtn22').click()
+
+    # onet = driver.find_element_by_id('back-button')
+    # onet.click()
     time.sleep(3.5)
 
     tiktok = zsanpl()
-    driver.find_element_by_id('input_nik').send_keys(tiktok)
-    driver.find_element_by_id('okBtn2').click()
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=3, element_row=0, value=tiktok, filename='Test.csv')
+
+    healed_locator(driver, e=None,
+                   attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
+
+    # driver.find_element_by_id('input_nik').send_keys(tiktok)
+    # driver.find_element_by_id('okBtn2').click()
     try:
         time.sleep(1000)
     except:

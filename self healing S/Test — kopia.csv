@@ -1,0 +1,6 @@
+element,tag,text,href,class,target,rel,role,aria-current,data-ga-action,data-ga-name,data-ga-uri,title,tabindex,aria-haspopup,aria-label,id,style,data-redirect-after,data-skip-link,data-appsantag,placeholder,data-popover-href,data-toggle,html,type,name,value
+Przejdź do logowania,a,Przejdź do logowania,#,['skipLinks__button'],,,,,,,,,,,,,,,,,,,,,,,
+Santander internet,a,⁣                Santander internet⁣            ,https://www.centrum24.pl/centrum24-web/login,"['button', 'primary', 'small']",,"['nofollow', 'noopener']",,,,,,Santander internet,,,,,,,,,,,,,,,
+element,tag,text,href,target,rel,class,title,style,onclick,aria-label,lang,xml:lang,data-placement,data-html,data-toggle,data-original-title,data-target,data-redirect-after,id,name,size,maxlength,step,autocomplete,tabindex,value,minlength,type,data-refresh,disabled,alt
+input_nik,input,,,,,['content_center_input'],,,,,,,,,,,,,input_nik,nik,10.0,20.0,2.0,off,2.0,,6.0,,,,
+okBtn2,input,,,,,"['button', 'button-primary']",,,,,,,,,,,,,okBtn2,loginButton,,,,,2.0,Dalej,,submit,,disabled,DALEJ
