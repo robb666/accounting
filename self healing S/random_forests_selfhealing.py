@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
@@ -14,7 +16,7 @@ pd.set_option('display.width', None)
 def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
-    tags = ['span', 'a', 'input']  # to uzupełniać..?
+    tags = ['a', 'input']  # to uzupełniać..?
     # el_name = ['LOGIN', 'PASSW', 'LOG_BUTTON']
     arr = []
     for tag in tags:
@@ -31,7 +33,7 @@ def scrp(driver):
     df = df.replace('\n', '\u2063', regex=True)
     # print(df)
     ########
-    # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
+    df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
     # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
     # df = pd.read_csv('san.csv', dtype=object)
 
@@ -80,6 +82,8 @@ def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, va
                 if value:
                     selector.send_keys(value)
                 else:  # click
+                    print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
+                    time.sleep(1)
                     selector.click()
                 break
             except Exception as e:
