@@ -14,7 +14,7 @@ pd.set_option('display.width', None)
 def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
-    tags = ['a', 'input']  # to uzupełniać..?
+    tags = ['span', 'a', 'input']  # to uzupełniać..?
     # el_name = ['LOGIN', 'PASSW', 'LOG_BUTTON']
     arr = []
     for tag in tags:
@@ -53,6 +53,7 @@ def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, va
         to_test = to_test.replace('\u2063', '\n', regex=True)
 
         processed_test = pd.concat([df, to_test], axis=0)
+        print(processed_test)
         processed_test = processed_test.iloc[[-1]]
 
         ohe = OneHotEncoder(sparse=False, handle_unknown='ignore')
@@ -66,12 +67,13 @@ def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, va
         rf.fit(X_train, y_train)
 
         probabilities = rf.predict_proba(X_test)[0]
+        print(probabilities)
 
         el_attr = list(element_dict.keys())[np.argmax(probabilities)]
 
         columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
         # TODO zakwalifikować atrybut..bez iteracji
-        for attr in columns:
+        for attr in df.columns:
             try:
                 # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
                 selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]")

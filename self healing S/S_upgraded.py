@@ -22,7 +22,7 @@ from email import encoders
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from L_H_ks import url, san_l, san_h
-from random_forests_selfhealing import healed_locator
+from random_forests_selfhealing import scrp, healed_locator
 
 
 def san(url):
@@ -33,52 +33,25 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
     driver.get(url)
+
+    WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
+                                        By.ID, 'privacy-prompt-controls-button-accept'))).click()
+    healed_locator(driver, e=None,
+                   attr=None, header=0, helper_attr='', element_row=0, value='', filename='Test.csv')
     time.sleep(.7)
-    try:
-        driver.find_element_by_id('privacy-prompt-controls-button-accept').click()
-    except:
-        pass
-    driver.find_element_by_xpath('//span[contains(text(), "Zaloguj")]').click()
-    time.sleep(.7)
-
-
-
-    # try:
-    #     WebDriverWait(driver, 1).until(EC.presence_of_element_located((
-    #         # By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
-    #         By.XPATH, "//*[contains(text(), 'Santander internet')]"))).click()
-    # except Exception as e:
-    #     print('Exc messa.', e)
     helper_attr = "and contains(@class, 'button')"
     healed_locator(driver, e=None,
-                   attr=None, header=0,  helper_attr=helper_attr, element_row=0, value='', filename='Test.csv')
-
+                   attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='', filename='Test.csv')
 
     WebDriverWait(driver, 1).until(EC.url_changes(url))
-
 
     try:
         driver.find_element_by_xpath('//div[contains(@id, "button-accept")]').click()
     except:
         pass
 
-
-    # try:
-    #     login = driver.find_element_by_id('input_nikko')
-    #     WebDriverWait(driver, 1).until(EC.presence_of_element_located((
-    #         # By.XPATH, "//*[contains(@href, 'centrum24-web/login')]"))).click()
-    #         By.XPATH, "//a[contains(@href, 'centrum24-web/login') and contains(@class, 'button')]"))).click()
-    #     login.send_keys(san_l)
-    #     time.sleep(1.3)
-    # except Exception as e:
-    #     print('Exc messa. login', e)
-        # helper_attr = "contains(@class, 'button')"
     healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=2, element_row=0, value='100200', filename='Test.csv')
-
-
-
-
+                   attr=None, helper_attr='', header=3, element_row=0, value='100200', filename='Test.csv')
 
     try:
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH, "//input[@id='okBtn2']"))).click()
