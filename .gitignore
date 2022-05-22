@@ -75,6 +75,8 @@ klasa_mailowa.py
 doku_miesięczne pyinstaller command.txt
 token.json
 self healing S/random_forests_selfhealing.py
-self healing S/Test.csv
 self healing S/san.csv
 self healing S/Test1.csv
+self healing S/san — kopia.csv
+self healing S/Test — kopia.csv
+self healing S/Test — kopia.csv

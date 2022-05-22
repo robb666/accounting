@@ -36,52 +36,27 @@ def san(url):
 
     WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
                                         By.ID, 'privacy-prompt-controls-button-accept'))).click()
-    healed_locator(driver, e=None,
-                   attr=None, header=0, helper_attr='', element_row=0, value='', filename='Test.csv')
+    healed_locator(driver, e=None, attr=None, header=0, helper_attr='', element_row=0, value='')
     time.sleep(.7)
     helper_attr = "and contains(@class, 'button')"
-    healed_locator(driver, e=None,
-                   attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='', filename='Test.csv')
-
+    healed_locator(driver, e=None, attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='')
     WebDriverWait(driver, 1).until(EC.url_changes(url))
     try:
         driver.find_element_by_xpath('//div[contains(@id, "button-accept")]').click()
     except:
         pass
-
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=0, value=san_l, filename='Test.csv')
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-    # pwd = driver.find_element_by_id('ordinarypin')
-
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=3, element_row=0, value=san_l)
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=3, element_row=1, value='')
     time.sleep(1)
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=0, value=san_h, filename='Test.csv')
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-    # pwd.send_keys(san_h)
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=8, element_row=0, value=san_h)
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=8, element_row=1, value='')
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=6, element_row=0, value='')
 
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=6, element_row=0, value='', filename='Test.csv')
-
-
-
-    # driver.find_element_by_id('okBtn22').click()
-
-    # onet = driver.find_element_by_id('back-button')
-    # onet.click()
     time.sleep(3.5)
 
     tiktok = zsanpl()
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=0, value=tiktok, filename='Test.csv')
-
-    healed_locator(driver, e=None,
-                   attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-
-    # driver.find_element_by_id('input_nik').send_keys(tiktok)
-    # driver.find_element_by_id('okBtn2').click()
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=11, element_row=0, value=tiktok)
+    healed_locator(driver, e=None, attr=None, helper_attr='', header=11, element_row=1, value='')
     try:
         time.sleep(1000)
     except:
