@@ -4,23 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import Options
 from accounting.faktury_GmailAPI import zsanpl
 import time
-import os
-import pickle
-import os.path
-from googleapiclient.discovery import build
-import base64
-import mimetypes
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email import encoders
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from L_H_ks import url, san_l, san_h
 from random_forests_selfhealing import scrp, healed_locator
 
@@ -38,6 +23,7 @@ def san(url):
                                         By.ID, 'privacy-prompt-controls-button-accept'))).click()
     healed_locator(driver, e=None, attr=None, header=0, helper_attr='', element_row=0, value='')
     time.sleep(.7)
+
     helper_attr = "and contains(@class, 'button')"
     healed_locator(driver, e=None, attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='')
     WebDriverWait(driver, 1).until(EC.url_changes(url))
