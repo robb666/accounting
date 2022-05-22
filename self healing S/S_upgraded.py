@@ -44,7 +44,6 @@ def san(url):
                    attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='', filename='Test.csv')
 
     WebDriverWait(driver, 1).until(EC.url_changes(url))
-
     try:
         driver.find_element_by_xpath('//div[contains(@id, "button-accept")]').click()
     except:
@@ -54,15 +53,15 @@ def san(url):
                    attr=None, helper_attr='', header=3, element_row=0, value=san_l, filename='Test.csv')
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-    # time.sleep(1.3)
     # pwd = driver.find_element_by_id('ordinarypin')
+
     time.sleep(1)
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=0, value=san_h, filename='Test.csv')
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=3, element_row=1, value='', filename='Test.csv')
-
     # pwd.send_keys(san_h)
+
     healed_locator(driver, e=None,
                    attr=None, helper_attr='', header=6, element_row=0, value='', filename='Test.csv')
 

@@ -4,3 +4,5 @@ Santander internet,a,⁣                Santander internet⁣            ,https:
 element,tag,text,href,target,rel,class,title,style,onclick,aria-label,lang,xml:lang,data-placement,data-html,data-toggle,data-original-title,data-target,data-redirect-after,id,name,size,maxlength,step,autocomplete,tabindex,value,minlength,type,data-refresh,disabled,alt
 input_nik,input,,,,,['content_center_input'],,,,,,,,,,,,,input_nik,nik,10.0,20.0,2.0,off,2.0,,6.0,,,,
 okBtn2,input,,,,,"['button', 'button-primary']",,,,,,,,,,,,,okBtn2,loginButton,,,,,2.0,Dalej,,submit,,disabled,DALEJ
+element,tag,text,rel,class,href,title,style,target,onclick,type,id,name,value
+back-button,input,,,"['button', 'button-link']",,,,,,submit,back-button,oneTimeAccess,Jednorazowy dostęp do serwisu
