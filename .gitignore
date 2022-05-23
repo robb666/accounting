@@ -81,3 +81,6 @@ self healing S/san — kopia.csv
 self healing S/Test — kopia.csv
 self healing S/Test — kopia.csv
 dist/Test.csv
+self healing S/Test old.csv
+self healing S/Test.csv
+self healing S/Test.csv
