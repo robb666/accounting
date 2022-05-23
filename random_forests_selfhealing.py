@@ -42,11 +42,11 @@ def scrp(driver):
     return df
 
 
-def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, value, filename='Test.csv'):
+def healed_locator(driver, *, helper_attr, header, element_row, value, filename='Test.csv'):
     df = scrp(driver)
     df = df.fillna('None')
     df = df.replace('\u2063', '\n', regex=True)
-
+    print()
     to_test = pd.read_csv(filename, dtype=object, header=header,
                           usecols=lambda c: c in df.columns).iloc[[element_row]]
 
@@ -75,13 +75,13 @@ def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, va
     columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
     # TODO zakwalifikować atrybut..bez iteracji
     for attr in columns[1:]:
-        print( f"//*[@{attr}='{el_attr}' {helper_attr}]")
+        print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
         try:  # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
             selector = driver.find_element(By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]")
             if value:
                 selector.send_keys(value)
             else:  # click
-                WebDriverWait(driver, 5).until(EC.element_to_be_clickable((
+                WebDriverWait(driver, 4).until(EC.element_to_be_clickable((
                     By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]"))).click()
             break
         except Exception as e:
