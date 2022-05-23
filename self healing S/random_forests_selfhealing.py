@@ -18,7 +18,7 @@ pd.set_option('display.width', None)
 def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
-    tags = ['a', 'input']  # to uzupełniać..?
+    tags = ['a', 'input', 'div']  # to uzupełniać..?
     # el_name = ['LOGIN', 'PASSW', 'LOG_BUTTON']
     arr = []
     for tag in tags:
@@ -35,7 +35,7 @@ def scrp(driver):
     df = df.replace('\n', '\u2063', regex=True)
     # print(df)
     ########
-    # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
+    df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
     # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
     # df = pd.read_csv('san.csv', dtype=object)
 

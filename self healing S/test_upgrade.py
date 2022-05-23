@@ -18,9 +18,10 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
     driver.get(url)
-
-    WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
-                                        By.ID, 'privacy-prompt-controls-button-accept'))).click()
+    healed_locator(driver, header=8, element_row=0, helper_attr='', value='')
+    time.sleep(1800)
+    # WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
+    #                                     By.ID, 'privacy-prompt-controls-button-accept'))).click()
 
     healed_locator(driver, header=0, element_row=0, helper_attr='', value='')
 
@@ -29,7 +30,7 @@ def san(url):
 
     helper_attr = "or text()='Biura regionalne'"
     healed_locator(driver, header=6, element_row=0, helper_attr=helper_attr, value='')
-    time.sleep(1800)
+
 
 
 if __name__ == '__main__':

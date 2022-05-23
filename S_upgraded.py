@@ -18,19 +18,21 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
     driver.get(url)
+    healed_locator(driver, header=14, element_row=0, helper_attr='', value='')
+    # WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.ID, 'privacy-prompt-controls-button-accept'))).click()
 
-    WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
-                                        By.ID, 'privacy-prompt-controls-button-accept'))).click()
     healed_locator(driver, header=0, element_row=0, helper_attr='', value='')
     time.sleep(.7)
 
     helper_attr = "and contains(@class, 'button')"
     healed_locator(driver, header=0, element_row=1, helper_attr=helper_attr, value='')
     WebDriverWait(driver, 1).until(EC.url_changes(url))
+
     try:
         driver.find_element_by_xpath('//div[contains(@id, "button-accept")]').click()
     except:
         pass
+
     healed_locator(driver, header=3, element_row=0, helper_attr='',  value=san_l)
     healed_locator(driver, header=3, element_row=1, helper_attr='',  value='')
     time.sleep(1)

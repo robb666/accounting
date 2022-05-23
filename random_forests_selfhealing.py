@@ -18,7 +18,7 @@ pd.set_option('display.width', None)
 def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
-    tags = ['a', 'input']  # to uzupełniać..?
+    tags = ['a', 'input', 'div']  # to uzupełniać..?
     # el_name = ['LOGIN', 'PASSW', 'LOG_BUTTON']
     arr = []
     for tag in tags:

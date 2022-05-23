@@ -20,7 +20,7 @@ df = pd.read_csv('san.csv')
 # df2 = df.iloc[[51, 53]]
 # df3 = df.iloc[[53]]
 # df4 = df.iloc[[37, 38]]
-df666 = df.iloc[[60]]
+df666 = df.iloc[[725]]
 
 # df1 = df1.replace('\u2063', '\n', regex=True)
 
@@ -31,4 +31,4 @@ print(df666)
 # df5.to_csv('Test.csv', mode='a', index=False, sep=',')
 # df1.to_csv('Test.csv', index=False, sep=',')
 # df3.to_csv('Test.csv', mode='a', index=False, sep=',')
-# df666.to_csv('Test.csv', mode='a', index=False, sep=',')
+# df666.to_csv('Test old.csv', mode='a', index=False, sep=',')
