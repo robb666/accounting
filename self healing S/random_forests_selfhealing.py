@@ -42,7 +42,7 @@ def scrp(driver):
     return df
 
 
-def healed_locator(driver, e, *, attr=None, helper_attr, header, element_row, value, filename='Test.csv'):
+def healed_locator(driver, *, helper_attr, header, element_row, value, filename='Test.csv'):
     df = scrp(driver)
     df = df.fillna('None')
     df = df.replace('\u2063', '\n', regex=True)

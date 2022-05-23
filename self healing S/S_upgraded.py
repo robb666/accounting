@@ -21,28 +21,28 @@ def san(url):
 
     WebDriverWait(driver, 1).until(EC.element_to_be_clickable((
                                         By.ID, 'privacy-prompt-controls-button-accept'))).click()
-    healed_locator(driver, e=None, attr=None, header=0, helper_attr='', element_row=0, value='')
+    healed_locator(driver, header=0, element_row=0, helper_attr='', value='')
     time.sleep(.7)
 
     helper_attr = "and contains(@class, 'button')"
-    healed_locator(driver, e=None, attr=None, header=0,  helper_attr=helper_attr, element_row=1, value='')
+    healed_locator(driver, header=0, element_row=1, helper_attr=helper_attr, value='')
     WebDriverWait(driver, 1).until(EC.url_changes(url))
     try:
         driver.find_element_by_xpath('//div[contains(@id, "button-accept")]').click()
     except:
         pass
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=3, element_row=0, value=san_l)
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=3, element_row=1, value='')
+    healed_locator(driver, header=3, element_row=0, helper_attr='',  value=san_l)
+    healed_locator(driver, header=3, element_row=1, helper_attr='',  value='')
     time.sleep(1)
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=8, element_row=0, value=san_h)
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=8, element_row=1, value='')
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=6, element_row=0, value='')
+    healed_locator(driver, header=8, element_row=0, helper_attr='',  value=san_h)
+    healed_locator(driver, header=8, element_row=1, helper_attr='',  value='')
+    healed_locator(driver, header=6, element_row=0, helper_attr='',  value='')
 
     time.sleep(3.5)
 
     tiktok = zsanpl()
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=11, element_row=0, value=tiktok)
-    healed_locator(driver, e=None, attr=None, helper_attr='', header=11, element_row=1, value='')
+    healed_locator(driver, header=11, element_row=0, helper_attr='',  value=tiktok)
+    healed_locator(driver, header=11, element_row=1, helper_attr='',  value='')
     try:
         time.sleep(1000)
     except:
