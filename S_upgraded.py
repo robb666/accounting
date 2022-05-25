@@ -20,7 +20,6 @@ def san(url):
     driver.get(url)
     click = ''
     healed_locator(driver, header=14, element_row=0, helper_attr='', value=click)
-    sleep(1800)
     healed_locator(driver, header=0, element_row=0, helper_attr='', value=click)
     sleep(.7)
 
@@ -28,8 +27,8 @@ def san(url):
     healed_locator(driver, header=0, element_row=1, helper_attr=helper_attr, value='')
     WebDriverWait(driver, 1).until(EC.url_changes(url))
 
-    # helper_attr = "or contains(text(), 'Akceptuję')"
-    healed_locator(driver, header=16, element_row=0, helper_attr='', value='')
+    helper_attr = "or contains(text(), 'Akceptuję')"
+    healed_locator(driver, header=16, element_row=0, helper_attr=helper_attr, value='')
 
     healed_locator(driver, header=3, element_row=0, helper_attr='',  value=san_l)
     healed_locator(driver, header=3, element_row=1, helper_attr='',  value='')
@@ -42,6 +41,7 @@ def san(url):
 
     tiktok = zsanpl()
     healed_locator(driver, header=11, element_row=0, helper_attr='',  value=tiktok)
+    # sleep(1800)
     healed_locator(driver, header=11, element_row=1, helper_attr='',  value='')
     try:
         sleep(1000)
