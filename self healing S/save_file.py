@@ -12,31 +12,22 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 120)
 
 
-df = pd.DataFrame({
-     'int32':    [['ada', 'ala'], ['ula'], None, None],
-     'int64':    np.random.randint(10**7, 10**9, 4).astype(np.int64)*10,
-     'float':    np.random.rand(4),
-     'string':   np.random.choice(['jed', 'dwa', None, None], 4),
-     'string2':   np.random.choice(['jed', 'dwa', None, None], 4),
-     })
-
-# print(df)
 
 
-df_pickle = pd.read_pickle('san.pkl')[:]
-# df_pickle = pd.DataFrame(df_pickle)
+df_pickle = pd.read_pickle('san.pkl').iloc[[659]]
 print(df_pickle)
 
 
-store = pd.HDFStore('example.h5')
+store = pd.HDFStore('elements.h5')
+
+# store.append('accept_2', df_pickle, format='fixed', append=False)
+#
+# store.remove('accept_2')
+print(store.info())
+store.close()
 
 
-# store.append('store_key16', df_pickle, format='fixed', append=False)
-
-# print(store.info())
-# store.close()
-
-# df = pd.read_hdf(store, key='store_key16')
+# df = pd.read_hdf(store, key='accept_2')
 # store.close()
 # print(df)
 

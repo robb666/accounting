@@ -35,16 +35,11 @@ def scrp(driver):
     df.element.fillna(df['text'], inplace=True)
     # df.text = np.nan  # fillna didn't work
     # df = df.replace('\n', '\u2063', regex=True)
-
     # print(df)
     ########
 
     # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
-    # df.to_pickle('san.pkl')
-    df = pd.DataFrame(dtype=object).convert_dtypes()
-    hdf = pd.HDFStore('storage.h5')
-    hdf.put('san1', df, format='table', data_columns=True)
-    hdf.close()
+    df.to_pickle('san.pkl')
     # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
     # df = pd.read_csv('san.csv', dtype=object)
 
