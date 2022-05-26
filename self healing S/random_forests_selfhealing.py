@@ -1,6 +1,3 @@
-import os
-import time
-
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
@@ -9,7 +6,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
-
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)

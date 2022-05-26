@@ -4,10 +4,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from faktury_GmailAPI import zsanpl
+from accounting.faktury_GmailAPI import zsanpl
 from time import sleep
-from accounting.L_H_ks import url, san_l, san_h
-from random_forests_selfhealing import scrp, healed_locator
+from L_H_ks import url, san_l, san_h
+from random_forests_selfhealing import healed_locator
 from site_elements import Elements
 
 
@@ -20,30 +20,28 @@ def san(url):
                               options=options)
     driver.get(url)
     click = ''
-    healed_locator(driver, header=14, element_row=0, helper_attr='', value=click)
-    healed_locator(driver, header=0, element_row=0, helper_attr='', value=click)
+    healed_locator(driver, element=Elements.accept_1, value=click)
+    healed_locator(driver, element=Elements.login, value=click)
     sleep(.7)
 
     helper_attr = "and contains(@class, 'button')"
-    healed_locator(driver, header=0, element_row=1, helper_attr=helper_attr, value='')
+    healed_locator(driver, element=Elements.san, helper_attr=helper_attr, value=click)
     WebDriverWait(driver, 1).until(EC.url_changes(url))
 
     helper_attr = "or contains(text(), 'Akceptuję')"
-    healed_locator(driver, header=16, element_row=0, helper_attr=helper_attr, value='')
-
-    healed_locator(driver, header=3, element_row=0, helper_attr='',  value=san_l)
-    # sleep(1800)
-    healed_locator(driver, header=3, element_row=1, helper_attr='',  value='')
+    healed_locator(driver, element=Elements.accept_2, helper_attr=helper_attr, value=click)
+    healed_locator(driver, element=Elements.nik, value=san_l)
+    healed_locator(driver, element=Elements.button_nik, value=click)
     sleep(1)
-    healed_locator(driver, header=8, element_row=0, helper_attr='',  value=san_h)
-    healed_locator(driver, header=8, element_row=1, helper_attr='',  value='')
-    healed_locator(driver, header=6, element_row=0, helper_attr='',  value='')
-
+    healed_locator(driver, element=Elements.ordinarypin, value=san_h)
+    healed_locator(driver, element=Elements.button_ordinarypin, value=click)
+    healed_locator(driver, element=Elements.oneTimeAccess, value=click)
+    # sleep(1800)
     sleep(3.5)
 
     tiktok = zsanpl()
-    healed_locator(driver, header=11, element_row=0, helper_attr='',  value=tiktok)
-    healed_locator(driver, header=11, element_row=1, helper_attr='',  value='')
+    healed_locator(driver, element=Elements.otp, value=tiktok)
+    healed_locator(driver, element=Elements.otp_button, value=click)
     try:
         sleep(1000)
     except:
