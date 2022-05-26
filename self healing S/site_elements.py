@@ -24,9 +24,3 @@ class Elements:
 
     store.close()
 
-
-# loc = Elements()
-
-# print(loc.otp)
-# print(loc.san.astype(str))
-# print(loc.accept_1.astype(str).info())

@@ -22,8 +22,8 @@ def san(url):
                               options=options)
     driver.get(url)
     click = ''
-    healed_locator(driver, element=Elements.accept_1, helper_attr='', value=click)
-    healed_locator(driver, element=Elements.login, helper_attr='', value=click)
+    healed_locator(driver, element=Elements.accept_1, value=click)
+    healed_locator(driver, element=Elements.login, value=click)
     sleep(.7)
 
     helper_attr = "and contains(@class, 'button')"
@@ -33,19 +33,18 @@ def san(url):
     helper_attr = "or contains(text(), 'Akceptuję')"
     healed_locator(driver, element=Elements.accept_2, helper_attr=helper_attr, value='')
 
-    healed_locator(driver, element=Elements.nik, helper_attr='',  value=san_l)
-    healed_locator(driver, element=Elements.button_nik, helper_attr='',  value='')
+    healed_locator(driver, element=Elements.nik, value=san_l)
+    healed_locator(driver, element=Elements.button_nik, value='')
     sleep(1)
-    healed_locator(driver, element=Elements.ordinarypin, helper_attr='',  value=san_h)
-    healed_locator(driver, element=Elements.button_ordinarypin, helper_attr='',  value='')
-    healed_locator(driver, element=Elements.oneTimeAccess, helper_attr='',  value='')
+    healed_locator(driver, element=Elements.ordinarypin, value=san_h)
+    healed_locator(driver, element=Elements.button_ordinarypin, value='')
+    healed_locator(driver, element=Elements.oneTimeAccess, value='')
     # sleep(1800)
-
     sleep(3.5)
 
     tiktok = zsanpl()
-    healed_locator(driver, element=Elements.otp, helper_attr='',  value=tiktok)
-    healed_locator(driver, element=Elements.otp_button, helper_attr='',  value='')
+    healed_locator(driver, element=Elements.otp, value=tiktok)
+    healed_locator(driver, element=Elements.otp_button, value='')
     try:
         sleep(1000)
     except:

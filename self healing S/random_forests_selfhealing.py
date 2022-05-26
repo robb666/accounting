@@ -21,7 +21,6 @@ def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
     tags = ['a', 'input', 'div']  # to uzupełniać..?
-    # el_name = ['LOGIN', 'PASSW', 'LOG_BUTTON']
     arr = []
     for tag in tags:
         for element in soup.find_all(tag):
@@ -33,34 +32,21 @@ def scrp(driver):
     df.insert(0, 'element', df.title)
     df.element.fillna(df['id'], inplace=True)
     df.element.fillna(df['text'], inplace=True)
-    # df.text = np.nan  # fillna didn't work
-    # df = df.replace('\n', '\u2063', regex=True)
-    # print(df)
-    ########
 
-    # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
-    df.to_pickle('san.pkl')
-    # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
-    # df = pd.read_csv('san.csv', dtype=object)
+    # df.to_pickle('san.pkl')
 
     return df
 
 
-def healed_locator(driver, *, helper_attr, element, value, filename='Test.csv'):
+def healed_locator(driver, *, helper_attr='', element, value):
     df = scrp(driver)
     df = df.fillna('None')
-    df = df.replace('\u2063', '\n', regex=True)
-    print()
-    # to_test = pd.read_csv(filename, dtype=object, header=header,
-    #                       usecols=lambda c: c in df.columns).iloc[[element_row]]
-    to_test = pd.DataFrame(element, dtype=object, columns=df.columns)
 
+    to_test = pd.DataFrame(element, dtype=object, columns=df.columns)
     to_test = to_test.fillna('None')
-    to_test = to_test.replace('\u2063', '\n', regex=True)
 
     processed_test = pd.concat([df, to_test], axis=0)
     print(processed_test)
-
     processed_test = processed_test.iloc[[-1]]
 
     ohe = OneHotEncoder(sparse=False, handle_unknown='ignore')
