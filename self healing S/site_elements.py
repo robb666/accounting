@@ -3,11 +3,6 @@ import pandas as pd
 store = pd.HDFStore('elements.h5')
 # print(store.info())
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', 120)
-
 
 class Elements:
     accept_1 = pd.read_hdf(store, key='accept_1')

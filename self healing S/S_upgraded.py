@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from accounting.faktury_GmailAPI import zsanpl
 from time import sleep
 from accounting.L_H_ks import url, san_l, san_h
-from random_forests_selfhealing import scrp, healed_locator
+from random_forests_selfhealing import healed_locator
 from site_elements import Elements
 
 
