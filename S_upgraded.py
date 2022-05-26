@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from accounting.faktury_GmailAPI import zsanpl
+from faktury_GmailAPI import zsanpl
 from time import sleep
 from L_H_ks import url, san_l, san_h
 from random_forests_selfhealing import healed_locator

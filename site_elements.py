@@ -1,4 +1,6 @@
 import pandas as pd
+import tables
+print(tables.__version__)
 
 store = pd.HDFStore('elements.h5')
 # print(store.info())
