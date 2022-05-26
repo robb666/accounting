@@ -8,6 +8,7 @@ from faktury_GmailAPI import zsanpl
 from time import sleep
 from accounting.L_H_ks import url, san_l, san_h
 from random_forests_selfhealing import scrp, healed_locator
+from site_elements import Elements
 
 
 def san(url):
@@ -31,6 +32,7 @@ def san(url):
     healed_locator(driver, header=16, element_row=0, helper_attr=helper_attr, value='')
 
     healed_locator(driver, header=3, element_row=0, helper_attr='',  value=san_l)
+    # sleep(1800)
     healed_locator(driver, header=3, element_row=1, helper_attr='',  value='')
     sleep(1)
     healed_locator(driver, header=8, element_row=0, helper_attr='',  value=san_h)
@@ -41,7 +43,6 @@ def san(url):
 
     tiktok = zsanpl()
     healed_locator(driver, header=11, element_row=0, helper_attr='',  value=tiktok)
-    # sleep(1800)
     healed_locator(driver, header=11, element_row=1, helper_attr='',  value='')
     try:
         sleep(1000)

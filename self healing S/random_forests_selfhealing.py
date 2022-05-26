@@ -1,3 +1,4 @@
+import os
 import time
 
 import pandas as pd
@@ -13,6 +14,7 @@ from sklearn.ensemble import RandomForestClassifier
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', 120)
 
 
 def scrp(driver):
@@ -32,10 +34,12 @@ def scrp(driver):
     df.element.fillna(df['id'], inplace=True)
     df.element.fillna(df['text'], inplace=True)
     # df.text = np.nan  # fillna didn't work
-    df = df.replace('\n', '\u2063', regex=True)
+    # df = df.replace('\n', '\u2063', regex=True)
     # print(df)
     ########
-    df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
+
+    # df.to_csv('san.csv', index=False, sep=',', encoding='utf-8')
+    # df.to_pickle('san.pkl')
     # # df = pd.read_csv('san.csv', dtype=object, converters={'some_name':lambda x:x.replace('/n','')})
     # df = pd.read_csv('san.csv', dtype=object)
 
@@ -73,7 +77,7 @@ def healed_locator(driver, *, helper_attr, header, element_row, value, filename=
     el_attr = list(element_dict.keys())[np.argmax(probabilities)]
 
     columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
-    # TODO zakwalifikować atrybut..bez iteracji
+    # TODO zakwalifikować atrybut..bez iteracji, wykożystać np.isin, ----||---- indeks ze sklepu, Page Object Model (POM)
     for attr in columns[1:]:
         print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
         try:  # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.
@@ -83,6 +87,6 @@ def healed_locator(driver, *, helper_attr, header, element_row, value, filename=
             else:  # click
                 WebDriverWait(driver, 4).until(EC.element_to_be_clickable((
                     By.XPATH, f"//*[@{attr}='{el_attr}' {helper_attr}]"))).click()
-            break
+            break  # return
         except Exception as e:
             print(e)

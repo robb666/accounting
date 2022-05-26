@@ -77,7 +77,7 @@ def healed_locator(driver, *, helper_attr, header, element_row, value, filename=
     el_attr = list(element_dict.keys())[np.argmax(probabilities)]
 
     columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
-    # TODO zakwalifikować atrybut..bez iteracji
+    # TODO zakwalifikować atrybut..bez iteracji, wykożystać np.isin, ----||---- indeks ze sklepu, Page Object Model (POM)
     for attr in columns[1:]:
         print(f"//*[@{attr}='{el_attr}' {helper_attr}]")
         try:  # kiedy więcej niż jeden element o danym atrybucie znajduje się na stronie.

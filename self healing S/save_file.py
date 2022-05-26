@@ -12,15 +12,19 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 120)
 
 
+df_ex = pd.DataFrame({'element': ['a', 'b', 'c', 'd'],
+                      'tag': ['e', 'f', 'g', 'h'],
+                      'niema': ['i', 'j', 'k', 'l']})
+print(df_ex.columns)
 
 
-df_pickle = pd.read_pickle('san.pkl').iloc[[34]]
+df_pickle = pd.read_pickle('san.pkl').iloc[[53]]
 print(df_pickle)
 
 
 store = pd.HDFStore('elements.h5')
 
-store.append('otp_button', df_pickle, format='fixed', append=False)
+# store.append('button_nik', df_pickle, format='fixed', append=False)
 #
 # store.remove('nik')
 print()
@@ -28,9 +32,12 @@ print(store.info())
 # store.close()
 
 
-df = pd.read_hdf(store, key='otp_button')
-store.close()
+df = pd.read_hdf(store, key='accept_1')
+# cf = ['element', 'element']
+df = pd.DataFrame(df, columns=df_ex.columns)
+
 print(df)
+store.close()
 
 
 
