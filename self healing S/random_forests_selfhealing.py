@@ -20,7 +20,7 @@ pd.set_option('display.max_colwidth', 120)
 def scrp(driver):
     html = driver.page_source
     soup = BeautifulSoup(html, 'lxml')
-    tags = ['a', 'input', 'div']  # to uzupełniać..?
+    tags = ['a', 'input', 'div']  # to uzupełniać..
     arr = []
     for tag in tags:
         for element in soup.find_all(tag):

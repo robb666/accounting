@@ -10,8 +10,6 @@ from accounting.L_H_ks import url, san_l, san_h
 from random_forests_selfhealing import scrp, healed_locator
 from site_elements import Elements
 
-# print(Elements.accept_1)
-
 
 def san(url):
     options = webdriver.ChromeOptions()
@@ -27,24 +25,23 @@ def san(url):
     sleep(.7)
 
     helper_attr = "and contains(@class, 'button')"
-    healed_locator(driver, element=Elements.san, helper_attr=helper_attr, value='')
+    healed_locator(driver, element=Elements.san, helper_attr=helper_attr, value=click)
     WebDriverWait(driver, 1).until(EC.url_changes(url))
 
     helper_attr = "or contains(text(), 'Akceptuję')"
-    healed_locator(driver, element=Elements.accept_2, helper_attr=helper_attr, value='')
-
+    healed_locator(driver, element=Elements.accept_2, helper_attr=helper_attr, value=click)
     healed_locator(driver, element=Elements.nik, value=san_l)
-    healed_locator(driver, element=Elements.button_nik, value='')
+    healed_locator(driver, element=Elements.button_nik, value=click)
     sleep(1)
     healed_locator(driver, element=Elements.ordinarypin, value=san_h)
-    healed_locator(driver, element=Elements.button_ordinarypin, value='')
-    healed_locator(driver, element=Elements.oneTimeAccess, value='')
+    healed_locator(driver, element=Elements.button_ordinarypin, value=click)
+    healed_locator(driver, element=Elements.oneTimeAccess, value=click)
     # sleep(1800)
     sleep(3.5)
 
     tiktok = zsanpl()
     healed_locator(driver, element=Elements.otp, value=tiktok)
-    healed_locator(driver, element=Elements.otp_button, value='')
+    healed_locator(driver, element=Elements.otp_button, value=click)
     try:
         sleep(1000)
     except:
