@@ -1,8 +1,14 @@
 import pandas as pd
-import tables
-print(tables.__version__)
+import os
+import sys
+import subprocess
 
-store = pd.HDFStore('elements.h5')
+# os.environ['PATH'] += \
+#     os.pathsep + os.path.expanduser(r'C:\Users\PipBoy3000\Desktop\IT\projekty\accounting\.env\Lib\site-packages\tables.libs')
+
+
+
+store = pd.HDFStore(os.getcwd() + '\elements.h5')
 # print(store.info())
 
 
@@ -21,3 +27,7 @@ class Elements:
 
     store.close()
 
+
+os.getcwd()
+el = Elements()
+print(el.accept_1)
