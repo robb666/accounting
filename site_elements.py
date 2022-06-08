@@ -26,41 +26,44 @@ class Elements:
     store.close()
 
 
-class HDF:
-    def __init__(self, pickle, store, element=None):
-        self.pickle = pickle
-        self.store = store
-        self.element = element
+class HDF5:
 
-    def store(self):
-        return pd.HDFStore('elements.h5')
-
-    def read_pickle(self):
-        return pd.read_pickle(self.pickle).iloc[[11]]
-
-    def append(self):
-        return self.store.append('otp_button', self.read_pickle, format='fixed', append=False)
-
-    def remove(self):
-        return self.store.remove(self.element)
-
-    def read(self):
-        return pd.read_hdf(self.store, key='nik')
+    def __init__(self, pickle_path, store_path):
+        self.pickle_path = pickle_path
+        self.store = pd.HDFStore(store_path)
 
     def info(self):
         return self.store.info()
 
-    def __repr__(self):
-        return self.read_hdf
+    def __str__(self):
+        print(self.info)
+        return self.store
+
+    def append(self, key):
+        return self.store.append(key, self.read_pickle(row), format='fixed', append=False)
+
+    def read_pickle(self, row):
+        return pd.read_pickle(self.pickle_path).iloc[[row]]
+
+    def remove(self, element):
+        return self.store.remove(element)
+
+    def read(self, key):
+        return pd.read_hdf(self.store, key=key)
 
     def close(self):
         return self.store.close()
 
 
-file = r'san.pkl'
-store = r'\elements.h5'
-hdf = HDF(file, store)
+pickle_file = r'san.pkl'
+store_file = r'elements.h5'
 
-print(hdf.read_pickle())
-# print(hdf.info())
-hdf.close_hdf()
+hdf = HDF5(pickle_file, store_file)
+# hdf.remove('słowniczek')
+hdf.read_pickle(88)
+hdf.read('nik')
+hdf.info()
+
+
+
+hdf.close()
