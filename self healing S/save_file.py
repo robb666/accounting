@@ -7,7 +7,7 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 120)
 
 
-df_pickle = pd.read_pickle('san.pkl')#.iloc[[32]]
+df_pickle = pd.read_pickle('san.pkl').iloc[[11]]
 print(df_pickle)
 
 
@@ -18,11 +18,11 @@ store = pd.HDFStore('elements.h5')
 # store.remove('nik')
 print()
 print(store.info())
-# store.close()
-
-
-df = pd.read_hdf(store, key='otp_button')
-
-print(df)
 store.close()
+
+
+# df = pd.read_hdf(store, key='nik')
+#
+# print(df)
+# store.close()
 

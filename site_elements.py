@@ -1,62 +1,16 @@
 import pandas as pd
-import numpy as np
 import os
-import sys
-import h5py
-import subprocess
-# store = pd.HDFStore(os.getcwd() + '\elements.h5')
 
 
-
-# # store = h5py.File('elements.h5', 'r')
-with h5py.File('elements.h5') as hdf:
-    ls = list(hdf.keys())
-    print(f'List of datasets: {ls}')
-    data = list(hdf.items())
-    print(list(data[0][1].get('axis0')[:]))
-    # data = hdf.get('nik')
-    # print(list(data['axis0']))
-    # print(list(data['axis1']))
-    # print(list(data['block0_items']))
-    # print(list(data['block0_values']))
-    # print(list(data))
-
-    # print(list(hdf))
-    # print(list(hdf.get('nik')))
-    # base_items = list(hdf.items())
-    # print(base_items)
-    # G2 = hdf.get('ordinarypin')
-    # G2_items = list(G2.items())
-    # print(G2_items)
-    # G21 = G2.get('axis0')
-    # dataset = list(G21)
-    #
-    # print(dataset)
-    #
-    # df = pd.DataFrame(dataset).T
-    # print(df)
-    # Gn = G2.get('zaloguj')
-    # print(Gn)
-
-    # print(Gn)
-# for i in store:
-#     print(store[i])
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', 120)
 
 
-
-
-print()
-print()
-print()
-print()
-
-
-
-
-
-store = pd.HDFStore(os.getcwd() + '\elements.h5')
-print(store.info())
 class Elements:
+    store = pd.HDFStore(os.getcwd() + r'\elements.h5')
+
     accept_1 = pd.read_hdf(store, key='accept_1')
     login = pd.read_hdf(store, key='zaloguj')
     san = pd.read_hdf(store, key='SInternet')
@@ -70,6 +24,43 @@ class Elements:
     otp_button = pd.read_hdf(store, key='otp_button')
 
     store.close()
-os.getcwd()
-el = Elements()
-print(el.nik)
+
+
+class HDF:
+    def __init__(self, pickle, store, element=None):
+        self.pickle = pickle
+        self.store = store
+        self.element = element
+
+    def store(self):
+        return pd.HDFStore('elements.h5')
+
+    def read_pickle(self):
+        return pd.read_pickle(self.pickle).iloc[[11]]
+
+    def append(self):
+        return self.store.append('otp_button', self.read_pickle, format='fixed', append=False)
+
+    def remove(self):
+        return self.store.remove(self.element)
+
+    def read(self):
+        return pd.read_hdf(self.store, key='nik')
+
+    def info(self):
+        return self.store.info()
+
+    def __repr__(self):
+        return self.read_hdf
+
+    def close(self):
+        return self.store.close()
+
+
+file = r'san.pkl'
+store = r'\elements.h5'
+hdf = HDF(file, store)
+
+print(hdf.read_pickle())
+# print(hdf.info())
+hdf.close_hdf()
