@@ -32,24 +32,22 @@ class HDF5:
         self.pickle_path = pickle_path
         self.store = pd.HDFStore(store_path)
 
+
     def info(self):
         return self.store.info()
 
-    def __str__(self):
-        print(self.info)
-        return self.store
-
-    def append(self, key):
-        return self.store.append(key, self.read_pickle(row), format='fixed', append=False)
-
-    def read_pickle(self, row):
-        return pd.read_pickle(self.pickle_path).iloc[[row]]
-
-    def remove(self, element):
-        return self.store.remove(element)
+    def read_pickle(self, *, row=None):
+        df = pd.read_pickle(self.pickle_path)
+        return df.iloc[0:len(df), :] if row is None else df.iloc[row:row+1, :]
 
     def read(self, key):
         return pd.read_hdf(self.store, key=key)
+
+    def append(self, key, *, row):
+        return self.store.append(key, self.read_pickle(row), format='fixed', append=False)
+
+    def remove(self, element):
+        return self.store.remove(element)
 
     def close(self):
         return self.store.close()
@@ -59,10 +57,12 @@ pickle_file = r'san.pkl'
 store_file = r'elements.h5'
 
 hdf = HDF5(pickle_file, store_file)
+# print(hdf.read_pickle(row=66))
+# hdf.append('słowniczek')
 # hdf.remove('słowniczek')
-hdf.read_pickle(88)
-hdf.read('nik')
-hdf.info()
+
+print(hdf.read('słowniczek'))
+# print(hdf.info())
 
 
 
