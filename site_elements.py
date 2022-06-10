@@ -27,7 +27,7 @@ class Elements:
 
 
 class HDF5:
-
+    """Utility class for moving elements from pickle to .h5."""
     def __init__(self, from_pickle, to_store, *, row=None):
         self.pickle = from_pickle
         self.store = pd.HDFStore(to_store)
@@ -56,14 +56,6 @@ class HDF5:
 pickle_file = r'san.pkl'
 store_file = r'elements.h5'
 
-# hdf = HDF5(pickle_file, store_file, row=50)
-# print(hdf.read_pickle())
-# hdf.append('myśl')
-# hdf.remove('słowniczek')
-
-# print(hdf.read('myśl'))
-# print(hdf.info())
-
-
-#
-# hdf.close()
+hdf = HDF5(pickle_file, store_file, row=90)
+...
+hdf.close()

@@ -36,7 +36,7 @@ def san(url):
     healed_locator(driver, element=Elements.ordinarypin, value=san_h)
     healed_locator(driver, element=Elements.button_ordinarypin, value=click)
     healed_locator(driver, element=Elements.oneTimeAccess, value=click)
-    # sleep(1800)
+
     sleep(3.5)
 
     tiktok = zsanpl()
