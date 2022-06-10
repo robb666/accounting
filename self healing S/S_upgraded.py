@@ -4,9 +4,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from accounting.faktury_GmailAPI import zsanpl
+from faktury_GmailAPI import zsanpl
 from time import sleep
-from accounting.L_H_ks import url, san_l, san_h
+from L_H_ks import url, san_l, san_h
 from random_forests_selfhealing import healed_locator
 from site_elements import Elements
 
@@ -19,6 +19,7 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
     driver.get(url)
+
     click = ''
     healed_locator(driver, element=Elements.accept_1, value=click)
     healed_locator(driver, element=Elements.login, value=click)
@@ -33,10 +34,10 @@ def san(url):
     healed_locator(driver, element=Elements.nik, value=san_l)
     healed_locator(driver, element=Elements.button_nik, value=click)
     sleep(1)
+
     healed_locator(driver, element=Elements.ordinarypin, value=san_h)
     healed_locator(driver, element=Elements.button_ordinarypin, value=click)
     healed_locator(driver, element=Elements.oneTimeAccess, value=click)
-    # sleep(1800)
     sleep(3.5)
 
     tiktok = zsanpl()
