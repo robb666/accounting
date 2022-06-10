@@ -19,6 +19,7 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
     driver.get(url)
+
     click = ''
     healed_locator(driver, element=Elements.accept_1, value=click)
     healed_locator(driver, element=Elements.login, value=click)
@@ -33,10 +34,10 @@ def san(url):
     healed_locator(driver, element=Elements.nik, value=san_l)
     healed_locator(driver, element=Elements.button_nik, value=click)
     sleep(1)
+
     healed_locator(driver, element=Elements.ordinarypin, value=san_h)
     healed_locator(driver, element=Elements.button_ordinarypin, value=click)
     healed_locator(driver, element=Elements.oneTimeAccess, value=click)
-
     sleep(3.5)
 
     tiktok = zsanpl()
