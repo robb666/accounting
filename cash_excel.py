@@ -29,11 +29,11 @@ def baza():
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
         ExcelApp.DisplayAlerts = False
-        wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsx")
+        wb = ExcelApp.Workbooks("\\2014 BAZA MAGRO.xlsm")
         ws = wb.Worksheets("BAZA 2014")
     except:
         ExcelApp = win32.gencache.EnsureDispatch("Excel.Application")
-        wb = ExcelApp.Workbooks.OpenXML(path_bazy + "\\2014 BAZA MAGRO.xlsx")
+        wb = ExcelApp.Workbooks.OpenXML(path_bazy + "\\2014 BAZA MAGRO.xlsm")
         ws = wb.Worksheets("BAZA 2014")
 
     ExcelApp.Visible = True
