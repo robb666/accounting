@@ -329,11 +329,13 @@ def warta_ż(driver, url_warta_ż='https://eplatforma.warta.pl/'):
 
 
 @driver_inst
-def unilink(driver, url_unilink='https://unilink.pl/logowanie'):
+# def unilink(driver, url_unilink='https://unilink.pl/logowanie'):
+def unilink(driver, url_unilink='https://sso2.unilink.pl/zaloguj'):
     try:
         driver.get(url_unilink)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
+        # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
+        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "mat-form-field-label-3"))).send_keys(unilink_h)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "submit"))).click()
         time.sleep(1)
         url_unilink_faktury = 'https://unilink.pl/pokaz/4020'

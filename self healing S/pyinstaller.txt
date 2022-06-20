@@ -1,0 +1,2 @@
+# do logowania bnk. nie może być one-file!!!
+pyinstaller -F --hidden-import="sklearn.utils._typedefs" --hidden-import="sklearn.neighbors._partition_nodes" --icon=S.ico S_upgraded.py
