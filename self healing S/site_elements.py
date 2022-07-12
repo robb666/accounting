@@ -13,6 +13,7 @@ class Elements:
 
     accept_1 = pd.read_hdf(store, key='accept_1')
     login = pd.read_hdf(store, key='zaloguj')
+    login2 = pd.read_hdf(store, key='login2')
     san = pd.read_hdf(store, key='SInternet')
     accept_2 = pd.read_hdf(store, key='accept_2')
     nik = pd.read_hdf(store, key='nik')
@@ -28,7 +29,7 @@ class Elements:
 
 class HDF5:
     """Utility class for moving elements from pickle to .h5."""
-    def __init__(self, from_pickle, to_store, *, row=None):
+    def __init__(self, from_pickle, to_store, row=None):
         self.pickle = from_pickle
         self.store = pd.HDFStore(to_store)
         self.row = row
@@ -38,7 +39,7 @@ class HDF5:
 
     def read_pickle(self):
         df = pd.read_pickle(self.pickle)
-        return df.iloc[0:len(df), :] if self.row is None else df.iloc[self.row:self.row+1, :]
+        return df.iloc[0:len(df), :] if self.row is None else df.iloc[self.row: self.row+1, :]
 
     def read(self, key):
         return pd.read_hdf(self.store, key=key)
@@ -56,6 +57,16 @@ class HDF5:
 pickle_file = r'san.pkl'
 store_file = r'elements.h5'
 
-hdf = HDF5(pickle_file, store_file, row=90)
-...
+hdf = HDF5(pickle_file, store_file)
+
+
+# print(hdf.read('zaloguj'))
+print()
+print()
+print(hdf.read('login2'))
+print()
+# print(hdf.read_pickle())
 hdf.close()
+
+
+elem = Elements()
