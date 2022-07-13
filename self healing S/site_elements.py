@@ -13,7 +13,6 @@ class Elements:
 
     accept_1 = pd.read_hdf(store, key='accept_1')
     login = pd.read_hdf(store, key='zaloguj')
-    login2 = pd.read_hdf(store, key='login2')
     san = pd.read_hdf(store, key='SInternet')
     accept_2 = pd.read_hdf(store, key='accept_2')
     nik = pd.read_hdf(store, key='nik')
@@ -57,16 +56,13 @@ class HDF5:
 pickle_file = r'san.pkl'
 store_file = r'elements.h5'
 
-hdf = HDF5(pickle_file, store_file)
-
-
-# print(hdf.read('zaloguj'))
-print()
-print()
-print(hdf.read('login2'))
-print()
+# hdf = HDF5(pickle_file, store_file, row=708)
+# print()
+# print()
+# print(hdf.info())
+# print()
 # print(hdf.read_pickle())
-hdf.close()
+# hdf.close()
 
 
-elem = Elements()
+# elem = Elements()

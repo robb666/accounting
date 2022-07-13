@@ -34,7 +34,6 @@ def scrp(driver):
     return df
 
 
-
 def healed_locator(driver, *, helper_attr='', element, value):
     df = scrp(driver)
     df = df.fillna('None')
@@ -60,8 +59,7 @@ def healed_locator(driver, *, helper_attr='', element, value):
     print(probabilities)
 
     el_attr = list(element_dict.keys())[np.argmax(probabilities)]
-    # print('el_attr')
-    # print(el_attr)
+
     columns = df.columns[df.isin([el_attr]).any()].values  # kolumny atrybutu
     # TODO zakwalifikować atrybut..bez iteracji, wykożystać np.isin, ----||---- indeks ze sklepu, Page Object Model (POM)
 

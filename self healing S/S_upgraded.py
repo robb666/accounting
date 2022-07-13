@@ -19,33 +19,7 @@ def san(url):
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',
                               options=options)
 
-    driver.get(url)
-
-    # url2 = 'https://www.centrum24.pl/centrum24-web/login'
-    # driver.get(url2)
-
-
-    click = ''
-
-
-    healed_locator(driver, element=Elements.accept_1, value=click)
-    print(Elements.login2)
-    helper_attr = "and @class='button--suffix'"
-    healed_locator(driver, element=Elements.login2, helper_attr=helper_attr, value=click)
-    # sleep(2000)
-    # healed_locator(driver, element='Zaloguj ', value=click)
-    sleep(.7)
-
-    helper_attr = "and contains(@class, 'button')"
-    # helper_attr = "and contains(@class, 'button primary')"
-    healed_locator(driver, element=Elements.san, helper_attr=helper_attr, value=click)
-    WebDriverWait(driver, 1).until(EC.url_changes(url))
-
-
-
-    # healed_locator(driver, element=Elements.accept_1, value=click)
-
-
+    driver.get(url); click = ''
 
     helper_attr = "or contains(text(), 'Akceptuję')"
     healed_locator(driver, element=Elements.accept_2, helper_attr=helper_attr, value=click)
