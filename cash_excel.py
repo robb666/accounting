@@ -54,16 +54,17 @@ def filtr_tu(tow):
 def okres(n):
     msc = (datetime.today() + relativedelta(months=n)).strftime('%m')
     msc_rok = (datetime.today() + relativedelta(months=n)).strftime('%m.%Y')
+    rok_msc = (datetime.today() + relativedelta(months=n)).strftime('%y_%m')
 
-    return msc, msc_rok
+    return msc, msc_rok, rok_msc
 
 
-def arkusz_raportu(msc):
+def arkusz_raportu(msc_rok):
     ExcelApp_cash = win32.DispatchEx('Excel.Application')
     ExcelApp_cash.Visible = True
     wb_cash = ExcelApp_cash.Workbooks.Add()
     ws_cash = wb_cash.Worksheets.Add()
-    ws_cash.Name = f'Inkaso {msc}.2021r.'
+    ws_cash.Name = f'Inkaso {msc_rok}r.'
 
     ws_cash.Cells(1, 1).Value = 'Data'
     ws_cash.Cells(1, 2).Value = 'TU'
@@ -75,16 +76,18 @@ def arkusz_raportu(msc):
     return ExcelApp_cash, wb_cash, ws_cash
 
 
-def filtry_kolumn(ws, msc):
-    ws.Columns(1).AutoFilter(Field=2, Criteria1=f'21_{msc}')
+def filtry_kolumn(ws, rok_msc):
+    ws.Columns(1).AutoFilter(Field=2, Criteria1=f'{rok_msc}')
     ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
 
 
 def copy_paste_daty(ws, ws_cash):
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(3)
+    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
     ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)  # 12
     ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft  # -4131
+
     time.sleep(.7)
 
 
@@ -95,7 +98,7 @@ def copy_paste_tu(ws, ws_cash, col_diff):
     none_list = []
     row = 2
 
-    for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff + 110}'):
+    for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff + 190}'):
         tow = str(tow)
         if none := tow is None:
             none_list.append(none)
@@ -163,10 +166,10 @@ def raport_inkaso(*, za_okres, path):
         print('Raport kasowy...')
         ExcelApp, wb, ws, col_diff = baza()
 
-        msc, msc_rok = okres(za_okres)
-        ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc)
+        msc, msc_rok, rok_msc = okres(za_okres)
+        ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
 
-        filtry_kolumn(ws, msc)
+        filtry_kolumn(ws, rok_msc)
         copy_paste_daty(ws, ws_cash)
         copy_paste_tu(ws, ws_cash, col_diff)
         copy_paste_nr(ws, ws_cash)
@@ -184,3 +187,4 @@ def raport_inkaso(*, za_okres, path):
 
 # next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
 #                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+# raport_inkaso(za_okres=-1, path=next_month_path)
