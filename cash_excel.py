@@ -185,6 +185,8 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-# next_month_path = f'C:\\Users\\ROBERT\\Desktop\\Księgowość\\' \
-#                       f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
+
+                      # f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+
 # raport_inkaso(za_okres=-1, path=next_month_path)
