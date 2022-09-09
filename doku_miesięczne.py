@@ -276,6 +276,9 @@ def warta(driver,
                 driver.find_element_by_name('continue').click()
         except:
             pass
+
+        popup_war(driver)
+
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH,
                                                                        "//*[contains(text(), 'Majątek')]"))).click()
         WebDriverWait(driver, 4).until(EC.presence_of_element_located((By.XPATH,
@@ -302,6 +305,21 @@ def warta(driver,
         with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
             f.write("Brak WARTA\n")
         print('Brak WARTA')
+        pass
+
+
+def popup_war(driver):
+    try:
+        WebDriverWait(driver, 0.1).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+            '#intercom-container > div > span > div > div > div > '
+            'div.intercom-152lp93.e1uu5mk80 > div > div > span'))).click()
+    except:
+        pass
+
+    try:
+        WebDriverWait(driver, 0.1).until(
+            EC.presence_of_element_located((By.XPATH, "//*[@class='modal-header__close ng-scope']"))).click()
+    except:
         pass
 
 
