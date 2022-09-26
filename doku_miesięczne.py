@@ -64,7 +64,7 @@ def allianz(driver, url_allianz='https://start.allianz.pl'):
         tiktok = zallianz()
         token.send_keys(tiktok)
         driver.find_element_by_xpath('//button[@accesskey="s"]').click()
-        url_inv = 'https://chuck.allianz.pl/agent/#/invoices'
+        url_inv = 'https://chuck.allianz.pl/agent/#/statements'
         driver.get(url_inv)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
         time.sleep(1)
