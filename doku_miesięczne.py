@@ -64,6 +64,8 @@ def allianz(driver, url_allianz='https://start.allianz.pl'):
         tiktok = zallianz()
         token.send_keys(tiktok)
         driver.find_element_by_xpath('//button[@accesskey="s"]').click()
+        time.sleep(1)
+        driver.find_element_by_xpath('//button[@accesskey="s"]').click()
         url_inv = 'https://chuck.allianz.pl/agent/#/statements'
         driver.get(url_inv)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.CSS_SELECTOR, '.am-btn-large'))).click()
@@ -251,6 +253,7 @@ def uniqa(driver, url_post_login='https://pos.uniqa.pl/pl/login_fe'):
             driver.add_cookie({"name": cookie[0], "value" : cookie[1]})
         driver.get(ks.url)
 
+        driver.get(ks.url)
         WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#form2\:showFilem2"))).click()
         time.sleep(3)
         driver.quit()
@@ -351,9 +354,10 @@ def warta_ż(driver, url_warta_ż='https://eplatforma.warta.pl/'):
 def unilink(driver, url_unilink='https://sso2.unilink.pl/zaloguj'):
     try:
         driver.get(url_unilink)
-        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
-        # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
+        WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "mat-form-field-label-1"))).send_keys(unilink_l)
+        # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "login"))).send_keys(unilink_l)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "mat-form-field-label-3"))).send_keys(unilink_h)
+        # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "password"))).send_keys(unilink_h)
         WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.ID, "submit"))).click()
         time.sleep(1)
         url_unilink_faktury = 'https://unilink.pl/pokaz/4020'
@@ -462,6 +466,7 @@ if __name__ == '__main__':
 
     tasks = [allianz, compensa, euroins, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
 
+
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
 
@@ -470,5 +475,5 @@ if __name__ == '__main__':
             executor.submit(tasks[n])
 
     send_attachments('ubezpieczenia.magro@gmail.com', bookkeeping)
-    # send_attachments('ubezpieczenia.magro@gmail.com', 'ubezpieczenia.magro@gmail.com')
+    # send_attachments('ubezpieczenia.magro@gmail.com', 'ubezpieczenia.magro@gmail.com') # chujowe rozwiązanie
     time.sleep(1)

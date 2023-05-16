@@ -172,20 +172,23 @@ def wiener_invoice(fv, message_id, msg, next_month_path):
 
 def insly_invoice(fv, message_id, msg, next_month_path):
     if fv == 'Insly':
-        if str(msg).find('Faktura') > -1 and not 'minął termin' in str(msg):
-            att_id = attachment_id(fv, msg)
-            get_att = service.users().messages().attachments().get(userId='me',
-                                                                   messageId=message_id,
-                                                                   id=att_id).execute()
-            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join([rf'{next_month_path}Insly_faktura' + '.pdf'])
-            with open(path, 'wb') as f:
-                f.write(get_att_de)
-            print('Insly ok')
-        else:
-            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                f.write('Brak Insly\n')
-            print('Brak faktury Insly')
+        try:
+            if str(msg).find('Faktura') > -1 and not 'minął termin' in str(msg):
+                att_id = attachment_id(fv, msg)
+                get_att = service.users().messages().attachments().get(userId='me',
+                                                                       messageId=message_id,
+                                                                       id=att_id).execute()
+                get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+                path = ''.join([rf'{next_month_path}Insly_faktura' + '.pdf'])
+                with open(path, 'wb') as f:
+                    f.write(get_att_de)
+                print('Insly ok')
+            else:
+                with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
+                    f.write('Brak Insly\n')
+                print('Brak faktury Insly')
+        except:
+            print('Brak załącznika Insly. Sprawdź zakładkę..')
 
 
 def orange_stac_invoice(fv, message_id, msg, next_month_path):

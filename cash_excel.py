@@ -46,7 +46,8 @@ def filtr_tu(tow):
     tu = {'ALL': 'Allianz', 'AXA': 'AXA', 'COM': 'Compensa', 'EIN': 'Euroins', 'EPZU': 'PZU', 'GEN': 'Generali',
           'ŻGEN': 'Generali', 'GOT': 'Gothaer', 'HDI': 'HDI', 'HES': 'Ergo Hestia', 'IGS': 'IGS', 'INT': 'INTER',
           'LIN': 'LINK 4', 'MTU': 'MTU', 'PRO': 'Proama', 'PZU': 'PZU', 'RIS': 'InterRisk', 'TUW': 'TUW', 'TUZ': 'TUZ',
-          'UNI': 'Uniqa', 'WAR': 'Warta', 'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'None': ''}
+          'UNI': 'Uniqa', 'WAR': 'Warta', 'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'TRA': 'Trasti',
+          'WEF': 'Wefox', 'BAL': 'Balcia', 'None': ''}
 
     return tu[tow]
 
@@ -185,8 +186,6 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
-
-                      # f'{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}\\'
+# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}'
 
 # raport_inkaso(za_okres=-1, path=next_month_path)
