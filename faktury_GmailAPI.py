@@ -152,22 +152,22 @@ def uniqa_invoice(fv, message_id, msg, next_month_path):
             print('Brak Uniqa')
 
 
-def wiener_invoice(fv, message_id, msg, next_month_path):
-    if fv == 'Wiener':
-        # if str(msg).find('INFORMACJA PROWIZYJNA') > -1:
-        if fv == 'Wiener':
-            att_id = attachment_id(fv, msg)
-            get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
-                                                                   id=att_id).execute()
-            get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
-            path = ''.join([rf'{next_month_path}Wiener_prowizja' + '.xlsx'])
-            with open(path, 'wb') as f:
-                f.write(get_att_de)
-            print('Wiener ok')
-        else:
-            with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
-                f.write('Brak Wiener\n')
-            print('Brak Wiener')
+# def wiener_invoice(fv, message_id, msg, next_month_path):
+#     if fv == 'Wiener':
+#         # if str(msg).find('INFORMACJA PROWIZYJNA') > -1:
+#         if fv == 'Wiener':
+#             att_id = attachment_id(fv, msg)
+#             get_att = service.users().messages().attachments().get(userId='me', messageId=message_id,
+#                                                                    id=att_id).execute()
+#             get_att_de = base64.urlsafe_b64decode(get_att['data'].encode('UTF-8'))  # binary
+#             path = ''.join([rf'{next_month_path}Wiener_prowizja' + '.xlsx'])
+#             with open(path, 'wb') as f:
+#                 f.write(get_att_de)
+#             print('Wiener ok')
+#         else:
+#             with open(rf'{next_month_path}brak dokumentów.txt', 'a') as f:
+#                 f.write('Brak Wiener\n')
+#             print('Brak Wiener')
 
 
 def insly_invoice(fv, message_id, msg, next_month_path):
@@ -330,7 +330,7 @@ def interpolska(fv, message_id, msg, next_month_path):
 def email(next_month_path):
     for fv, id, message in labels(service):
         uniqa_invoice(fv, id, message, next_month_path)
-        wiener_invoice(fv, id, message, next_month_path)
+        # wiener_invoice(fv, id, message, next_month_path)
         insly_invoice(fv, id, message, next_month_path)
         orange_mob_invoice(fv, id, message, next_month_path)
         orange_stac_invoice(fv, id, message, next_month_path)

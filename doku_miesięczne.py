@@ -14,7 +14,7 @@ import concurrent.futures
 from faktury_GmailAPI import email, zallianz
 from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, eins_l, eins_h, generali_l, generali_h, \
-     hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, interrisk_l, interrisk_h, proama_l, proama_h, \
+     hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, wiener_l, wiener_h, interrisk_l, interrisk_h, proama_l, proama_h, \
      unilink_l, unilink_h, pzu_l, pzu_h, warta_ż_l, warta_ż_h, gapi, bookkeeping, OTP
 import time
 import smtplib
@@ -416,6 +416,29 @@ def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
         pass
 
 
+@driver_inst
+def wiener(driver, url_wiener='https://wienet.pl/#/login'):
+    try:
+        driver.get(url_wiener)
+        time.sleep(1.4)
+        driver.find_element_by_xpath("//input[@id='username' or @id='login']").send_keys(wiener_l)
+        driver.find_element_by_xpath("//input[@id='password']").send_keys(wiener_h)
+        driver.find_element_by_xpath("//*[@type='submit' or @type='button']").click()
+        time.sleep(1)
+        driver.get('https://wienet.pl/#/commissionStatements')
+        time.sleep(1.4)
+        driver.find_element_by_css_selector('a.font-weight-bold').click()
+        driver.find_element_by_css_selector('a.tm-btnLink:nth-child(2)').click()
+        time.sleep(1)
+        print('Wiener ok')
+    except:
+        driver.quit()
+        with open(rf"{next_month_path}brak dokumentów.txt", "a") as f:
+            f.write("Brak Wiener\n")
+        print('Brak Wiener')
+        pass
+
+
 def path_exists(next_month_path, num):
     if os.path.exists(next_month_path):
         num += 1
@@ -469,7 +492,7 @@ if __name__ == '__main__':
     mk_month_dir(next_month_path)
 
     tasks = [allianz, compensa, euroins, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
-
+    # wiener()
 
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
