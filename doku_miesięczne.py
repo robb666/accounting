@@ -116,7 +116,7 @@ def euroins(driver, url_eins='https://eins.com.pl/index.php/login'):
         driver.get(url_eins)
         driver.find_element_by_xpath('//input[@id="user"]').send_keys(eins_l)
         driver.find_element_by_xpath('//input[@id="password"]').send_keys(eins_h)
-        driver.find_element_by_xpath('//input[@id="submit-form"]').click()
+        driver.find_element_by_xpath('//button[@type="submit"]').click()
         totp = pyotp.TOTP(OTP).now()
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.XPATH,
                                                                 '//input[@name="challenge"]'))).send_keys(totp)
@@ -125,6 +125,7 @@ def euroins(driver, url_eins='https://eins.com.pl/index.php/login'):
         url = 'https://eins.com.pl/index.php/apps/files/?dir=/MAGRO_E/noty%20prowizyjne&fileid=58566'
         driver.get(url)
         WebDriverWait(driver, 9).until(EC.url_contains('58566'))
+        time.sleep(1)
         driver.find_element_by_xpath(
             '//tbody/tr[not(@data-id <= preceding-sibling::tr/@data-id) and not(@data-id <= following-sibling::tr/@data-id)]'
         ).click()
@@ -199,9 +200,10 @@ def hestia(driver, url='https://sso.ergohestia.pl/my.policy'):
 
 @driver_inst
 def interrisk(driver, url_interrisk='https://portal.interrisk.pl/Zaloguj'):
-    try :
+    # try :
         driver.get(url_interrisk)
         driver.find_element_by_id('ctl00_cph1_uxLogin_UserName').send_keys(interrisk_l)
+        driver.find_element_by_css_selector('#ctl00_cph1_cookies > div > input:nth-child(3)').click()
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID,
                                                                 "ctl00_cph1_uxLogin_Password"))).send_keys(interrisk_h)
         WebDriverWait(driver, 9).until(EC.presence_of_element_located((By.ID, "ctl00_cph1_uxLogin_LoginButton"))).click()
@@ -229,11 +231,11 @@ def interrisk(driver, url_interrisk='https://portal.interrisk.pl/Zaloguj'):
         time.sleep(2.5)
         driver.quit()
         print('InterRisk ok')
-    except :
-        driver.quit()
-        with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
-            f.write("Brak InterRisk\n")
-        print('Brak InterRisk')
+    # except :
+    #     driver.quit()
+    #     with open(rf"{next_month_path}/brak dokumentów.txt", "a") as f:
+    #         f.write("Brak InterRisk\n")
+    #     print('Brak InterRisk')
 
 
 @driver_inst
@@ -379,6 +381,7 @@ def unilink(driver, url_unilink='https://sso2.unilink.pl/zaloguj'):
 
 @driver_inst
 def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
+
     try:
         driver.get(url_pezu)
         login = driver.find_element_by_id('input_1')
@@ -386,17 +389,18 @@ def pzu(driver, url_pezu='https://everest.pzu.pl/pc/PolicyCenter.do'):
         hasło = driver.find_element_by_id('input_2')
         hasło.send_keys(pzu_h)
         driver.find_element_by_css_selector('.credentials_input_submit').click()
-        login = driver.find_element_by_id('Login:LoginScreen:LoginDV:username-inputEl')
+        login = driver.find_element_by_css_selector('#Login-LoginScreen-LoginDV-username > div > input[type=text]')
         login.send_keys(pzu_l)
-        hasło = driver.find_element_by_id('Login:LoginScreen:LoginDV:password-inputEl')
+        hasło = driver.find_element_by_css_selector('#Login-LoginScreen-LoginDV-password > div > input')
         hasło.send_keys(pzu_h)
-        driver.find_element_by_id('Login:LoginScreen:LoginDV:submit').click()
+        driver.find_element_by_css_selector('#Login-LoginScreen-LoginDV-submit > div').click()
+
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                        '#Desktop\:MenuLinks\:Desktop_ProducerStatementReportOnlinePzu > div'))).click()
+                                        '#Desktop-MenuLinks-Desktop_ProducerStatementReportOnlinePzu > div'))).click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                '#ProducerStatementReportOnlinePzu-0-statementTab > div > div.gw-label'))).click()
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,
-                                                'ProducerStatementReportOnlinePzu:0:statementTab-btnInnerEl'))).click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR,
-                                '#ProducerStatementReportOnlinePzu\:0\:StatementsLV\:1\:DownloadPdfFileLink'))).click()
+                                'ProducerStatementReportOnlinePzu-0-StatementsLV-1-DownloadPdfFileLink'))).click()
         time.sleep(4)
         driver.quit()
         documents = next_month_path

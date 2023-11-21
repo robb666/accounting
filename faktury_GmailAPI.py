@@ -100,7 +100,7 @@ def attachment_id(fv, msg):
     """Sprawdza czy i o jakiej nazwie jest załącznik
         w pojedyńczej wiadomości i przekazuje ID i nazwę."""
     for part in msg['payload']['parts']:
-        a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS') and part['filename'] else False
+        a = True if fv in ('Uniqa', 'Wiener', 'TUW', 'A-Z', 'AWS', 'Inter') and part['filename'] else False
         b = True if fv in ('Insly') and re.search('faktura', part['filename'], re.I) else False
         c = True if fv in ('Orange mob', 'Orange stac', 'TUZ') and re.search('.pdf$', part['filename'], re.I) else False
         d = True if fv in ('Wiener') and re.search('raport', part['filename'], re.I) else False
