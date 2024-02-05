@@ -9,6 +9,7 @@ from datetime import date, timedelta
 import base64
 from win32com.client import Dispatch
 import re
+from time import sleep
 
 
 # If modifying these scopes, delete the file token.pickle.
@@ -339,6 +340,26 @@ def email(next_month_path):
         tuz_invoice(fv, id, message, next_month_path)
         az_invoice(fv, id, message, next_month_path)
         interpolska(fv, id, message, next_month_path)
+
+
+def mfa():
+    service = main()
+    num_tries = 35
+    for tries in range(num_tries):
+        sleep(1)
+        print(f'try: {tries}')
+        results = service.users().messages().list(userId='me', labelIds=['Label_5031229198080812034'], q='is:unread').execute()
+        messages = results.get('messages', [])
+
+        if len(messages) > 0:
+            message = next(iter(messages[::-1]))
+            msg = service.users().messages().get(userId='me', id=message['id'], format='full').execute()
+            token = re.search('(znak specjalny oraz cyfry\):\s)(\w+-\d+)', msg.get('snippet')).group(2)
+            service.users().messages().modify(userId='me', id=message['id'], body={'removeLabelIds': ['UNREAD']}).execute()
+            print(token)
+            return token
+        else:
+            continue
 
 
 def zallianz():

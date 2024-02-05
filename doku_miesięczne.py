@@ -11,7 +11,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 import concurrent.futures
-from faktury_GmailAPI import email, zallianz
+from faktury_GmailAPI import email, mfa, zallianz
 from cash_excel import raport_inkaso
 from L_H_ks import san_l, san_h, allianz_l, allianz_h, compensa_l, compensa_h, eins_l, eins_h, generali_l, generali_h, \
      hestia_l, hestia_h, uniqa_l, uniqa_h, warta_l, warta_h, wiener_l, wiener_h, interrisk_l, interrisk_h, proama_l, proama_h, \
@@ -245,6 +245,19 @@ def uniqa(driver, url_post_login='https://pos.uniqa.pl/pl/login_fe'):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                                                                     'Chrome/73.0.3683.86 Safari/537.36'}
     try:
+
+        """Do poprawy"""
+        # driver.get('https://pos.uniqa.pl')
+        # driver.find_element_by_id('login').send_keys(uniqa_l)
+        # driver.find_element_by_id('password').send_keys(uniqa_h)
+        #
+        # driver.find_element_by_css_selector(
+        #     '#front-end-login-form-wrapper > form > div.inputs > div > input[type=submit]').click()
+        # driver.get("https://pos.uniqa.pl/pl/footer/personal_listing/personal_listing")
+        # time.sleep(1)
+        # driver.find_element_by_xpath("//*[text()='Prowizje']")[1].click()
+
+
         with requests.Session() as s:
             r = s.post(url_post_login, data=payload, headers=headers)
             ks = s.get('https://pos.uniqa.pl/pl/zadania_i_plany/prowizje?menu=1')
@@ -281,6 +294,12 @@ def warta(driver,
                 driver.find_element_by_name('continue').click()
         except:
             pass
+
+        token = mfa()
+        driver.find_element_by_id('token').send_keys(token)
+
+        driver.find_element(By.CSS_SELECTOR, '#fm1 > div:nth-child(3) > input:nth-child(2)').click()
+        driver.find_element(By.CSS_SELECTOR, '#registerform > div:nth-child(2) > input.btn.btn-submit.left').click()
 
         popup_war(driver)
 
@@ -492,7 +511,7 @@ if __name__ == '__main__':
     mk_month_dir(next_month_path)
 
     tasks = [allianz, compensa, euroins, generali, hestia, interrisk, uniqa, warta, warta_ż, unilink, pzu]
-    # wiener()
+    # warta()
 
     raport_inkaso(za_okres=-1, path=next_month_path)
     email(next_month_path)  # faktury z gmailAPI
