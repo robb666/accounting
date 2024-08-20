@@ -37,6 +37,7 @@ def driver_inst(func):
         preferences = {'download.default_directory': next_month_path,
                        'plugins.always_open_pdf_externally': True}
         options.add_experimental_option('excludeSwitches', ['enable-logging'])  # win devtools supress
+        options.add_argument("--disable-search-engine-choice-screen")
         options.add_experimental_option("prefs", preferences)
         # options.add_experimental_option("detach", True)
         # options.headless = True
