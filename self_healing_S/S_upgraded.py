@@ -14,6 +14,7 @@ from site_elements import Elements
 def san(url):
     options = webdriver.ChromeOptions()
     preferences = {'download.default_directory': r'C:\Users\PipBoy3000\Desktop\\'}
+    options.add_argument("--disable-search-engine-choice-screen")
     options.add_experimental_option("prefs", preferences)
     options.add_experimental_option('excludeSwitches', ['enable-logging'])  # win devtools supress
     driver = webdriver.Chrome(executable_path=r'M:\zzzProjekty/drivery przegądarek/chromedriver.exe',

@@ -67,12 +67,22 @@ def arkusz_raportu(msc_rok):
     ws_cash = wb_cash.Worksheets.Add()
     ws_cash.Name = f'Inkaso {msc_rok}r.'
 
-    ws_cash.Cells(1, 1).Value = 'Data'
-    ws_cash.Cells(1, 2).Value = 'TU'
-    ws_cash.Cells(1, 3).Value = 'Nr polisy'
-    ws_cash.Cells(1, 4).Value = 'Kwota inkaso'
-    ws_cash.Cells(1, 5).Value = 'Suma inkaso w PLN:'
-    ws_cash.Cells(1, 5).Font.Bold = True
+    ws_cash.Cells(1, 4).Value = f'Inkaso {msc_rok}r.'
+    ws_cash.Cells(2, 1).Value = 'MAGRO UBEZPIECZENIA SP. Z O.O.'
+    ws_cash.Cells(2, 1).Font.Bold = True
+    ws_cash.Cells(3, 1).Value = '90-441 Łódź, Al. Kościuszki 123/307'
+    ws_cash.Cells(4, 1).Value = 'NIP 7252160008'
+
+    ws_cash.Cells(20, 1).Value = 'Data'
+    ws_cash.Cells(20, 1).Font.Bold = True
+    ws_cash.Cells(20, 2).Value = 'TU'
+    ws_cash.Cells(20, 2).Font.Bold = True
+    ws_cash.Cells(20, 3).Value = 'Nr polisy'
+    ws_cash.Cells(20, 3).Font.Bold = True
+    ws_cash.Cells(20, 4).Value = 'Kwota inkaso'
+    ws_cash.Cells(20, 4).Font.Bold = True
+    ws_cash.Cells(19, 3).Value = 'Razem inkaso:'
+    ws_cash.Cells(19, 3).Font.Bold = True
 
     return ExcelApp_cash, wb_cash, ws_cash
 
@@ -85,9 +95,9 @@ def filtry_kolumn(ws, rok_msc):
 def copy_paste_daty(ws, ws_cash):
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(3)
-    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
-    ws_cash.Range(f'A2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)  # 12
-    ws_cash.Range(f'A2:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft  # -4131
+    ws_cash.Range(f'A21:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
+    ws_cash.Range(f'A21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)  # 12
+    ws_cash.Range(f'A21:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft  # -4131
 
     time.sleep(.7)
 
@@ -95,48 +105,48 @@ def copy_paste_daty(ws, ws_cash):
 def copy_paste_tu(ws, ws_cash, col_diff):
     ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
-    ws_cash.Range(f'B2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'B21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
     none_list = []
     row = 2
 
-    for tow in ws_cash.Range(f'B2:B{ws.UsedRange.Rows.Count - col_diff + 190}'):
-        tow = str(tow)
-        if none := tow is None:
-            none_list.append(none)
-            row += 1
-            if len(none_list) > 3:
-                break
-        ws_cash.Cells(row, 2).Value = filtr_tu(tow)
-        row += 1
+    # for tow in ws_cash.Range(f'B21:B{ws.UsedRange.Rows.Count + 190}'):
+    #     tow = str(tow)
+    #     if none := tow is None:
+    #         none_list.append(none)
+    #         row += 1
+    #         if len(none_list) > 3:
+    #             break
+    #     ws_cash.Cells(row, 2).Value = filtr_tu(tow)
+    #     row += 1
 
 
 def copy_paste_nr(ws, ws_cash):
     ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
     ws_cash.Columns(3).NumberFormat = 0
-    ws_cash.Range(f'C2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-    ws_cash.Range(f'C2:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
+    ws_cash.Range(f'C21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'C21:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
     time.sleep(.7)
 
 
 def copy_paste_inkaso(ws, ws_cash, col_diff):
     ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
-    ws_cash.Range(f'D2').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'D21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 
-    for i, value in enumerate(ws_cash.Range(f'D2:D{ws.UsedRange.Rows.Count - col_diff}')):
+    for i, value in enumerate(ws_cash.Range(f'D21:D{ws.UsedRange.Rows.Count - col_diff}')):
         if str(value) in ('0.0', 'None', None, ''):
             ws_cash.Rows(i + 2).EntireRow.Delete()
 
-    ws_cash.Cells(1, 6).Value = '=SUM(D:D)'
-    ws_cash.Cells(1, 6).Font.Size = 15
-    ws_cash.Cells(1, 6).Font.Bold = True
+    ws_cash.Cells(19, 4).Value = '=SUM(D21:D2000)'
+    ws_cash.Cells(19, 4).Font.Size = 15
+    ws_cash.Cells(19, 4).Font.Bold = True
 
 
 def sortowanie(ws, ws_cash, col_diff):
     xlAscending = 1
     xlSortColumns = 1
-    ws_cash.Range(f"A2:D{ws.UsedRange.Rows.Count - col_diff}").Sort(Key1=ws_cash.Range("A1"),
+    ws_cash.Range(f"A21:A{ws_cash.UsedRange.Rows.Count}").Sort(Key1=ws_cash.Range("A1"),
                                                                     Order1=xlAscending, Orientation=xlSortColumns)
 
 
@@ -152,6 +162,7 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, next_month_path)
     ExcelApp.Application.CutCopyMode = False
 
     wb_cash.SaveAs(path_do_zapisu_w + f"Raport_kasowy_{msc_rok}.xlsx")
+    wb_cash.SaveAs(path_do_zapisu_w + f"Raport_kasowy_{msc_rok}.pdf", FileFormat=57)
     wb.Close(SaveChanges=False)
     wb_cash.Close()
     ExcelApp.Application.Quit()
@@ -177,6 +188,7 @@ def raport_inkaso(*, za_okres, path):
         copy_paste_inkaso(ws, ws_cash, col_diff)
         sortowanie(ws, ws_cash, col_diff)
         auto_fit(ws_cash)
+        time.sleep(1)
         opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
         print('Raport kasowy ok')
 
@@ -186,6 +198,6 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\{(datetime.today() + relativedelta(months=-1)).strftime("%m.%Y")}'
+next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
 
-# raport_inkaso(za_okres=-1, path=next_month_path)
+raport_inkaso(za_okres=-1, path=next_month_path)
