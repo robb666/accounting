@@ -87,6 +87,13 @@ def arkusz_raportu(msc_rok):
     return ExcelApp_cash, wb_cash, ws_cash
 
 
+def summary(ws_cash):
+    for row in range(8, 18):
+        ws_cash.Cells(row, 3).Value = 'TU'
+        ws_cash.Cells(row, 4).Value = '1234'
+        ws_cash.Cells(row, 4).Value = f'=SUM(D2:D{18})'
+
+
 def filtry_kolumn(ws, rok_msc):
     ws.Columns(1).AutoFilter(Field=2, Criteria1=f'{rok_msc}')
     ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
@@ -188,6 +195,7 @@ def raport_inkaso(*, za_okres, path):
         copy_paste_inkaso(ws, ws_cash, col_diff)
         sortowanie(ws, ws_cash, col_diff)
         auto_fit(ws_cash)
+        summary(ws_cash)
         time.sleep(1)
         opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
         print('Raport kasowy ok')
