@@ -87,11 +87,42 @@ def arkusz_raportu(msc_rok):
     return ExcelApp_cash, wb_cash, ws_cash
 
 
-def summary(ws_cash):
-    for row in range(8, 18):
-        ws_cash.Cells(row, 3).Value = 'TU'
-        ws_cash.Cells(row, 4).Value = '1234'
-        ws_cash.Cells(row, 4).Value = f'=SUM(D2:D{18})'
+def summary(ws_cash, start_row, end_row):
+    insurers = {}
+
+    for row in range(start_row, end_row + 1):
+        insurer = ws_cash.Cells(row, 2).Value
+        print(insurer)
+        amount = ws_cash.Cells(row, 4).Value
+        print(amount)
+
+        if insurer and amount is not None and isinstance(amount, (int, float)):
+            if insurer in insurers:
+                insurers[insurer] += amount
+            else:
+                insurers[insurer] = amount
+
+    print(insurers)
+    summary_start_row = 5 + 2  # Leave one row as a gap
+    total_sum = 0
+
+    for idx, (insurer, sum_value) in enumerate(insurers.items()):
+        ws_cash.Cells(summary_start_row + idx, 3).Value = insurer
+        ws_cash.Cells(summary_start_row + idx, 4).Value = sum_value
+        ws_cash.Cells(summary_start_row + idx, 4).Font.Bold = False
+        total_sum += sum_value
+
+    # Write the grand total at the end
+    grand_total_row = summary_start_row + len(insurers)
+    ws_cash.Cells(grand_total_row - 1, 3).Borders(9).Weight = 2
+    ws_cash.Cells(grand_total_row - 1, 4).Borders(9).Weight = 2
+    ws_cash.Cells(grand_total_row, 3).Value = "Razem"
+    ws_cash.Cells(grand_total_row, 4).Value = total_sum
+    ws_cash.Cells(grand_total_row, 4).Font.Size = 12
+    ws_cash.Cells(grand_total_row, 4).Font.Bold = True
+
+    # Format the summary rows for clarity
+    # ws_cash.Cells(grand_total_row, 4).NumberFormat = "#,##0.00"
 
 
 def filtry_kolumn(ws, rok_msc):
@@ -181,29 +212,32 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, next_month_path)
 
 def raport_inkaso(*, za_okres, path):
     gen_py()
-    try:
-        print('Raport kasowy...')
-        ExcelApp, wb, ws, col_diff = baza()
+    # try:
+    print('Raport kasowy...')
+    ExcelApp, wb, ws, col_diff = baza()
 
-        msc, msc_rok, rok_msc = okres(za_okres)
-        ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
+    msc, msc_rok, rok_msc = okres(za_okres)
+    ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
+    start_row = 21
+    # end_row = ws_cash.Cells(ws_cash.Rows.Count, 2).End(-4162).Row  # Dynamically find the last row
+    end_row = 300
+    print(start_row, end_row)
+    filtry_kolumn(ws, rok_msc)
+    copy_paste_daty(ws, ws_cash)
+    copy_paste_tu(ws, ws_cash, col_diff)
+    copy_paste_nr(ws, ws_cash)
+    copy_paste_inkaso(ws, ws_cash, col_diff)
+    sortowanie(ws, ws_cash, col_diff)
+    summary(ws_cash, start_row, end_row)
+    auto_fit(ws_cash)
+    time.sleep(1)
+    opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
+    print('Raport kasowy ok')
 
-        filtry_kolumn(ws, rok_msc)
-        copy_paste_daty(ws, ws_cash)
-        copy_paste_tu(ws, ws_cash, col_diff)
-        copy_paste_nr(ws, ws_cash)
-        copy_paste_inkaso(ws, ws_cash, col_diff)
-        sortowanie(ws, ws_cash, col_diff)
-        auto_fit(ws_cash)
-        summary(ws_cash)
-        time.sleep(1)
-        opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
-        print('Raport kasowy ok')
-
-    except Exception as e:
-        with open(rf'{path}brak dokumentów.txt', 'a') as f:
-            f.write('Brak raportu kasowego\n')
-        print(f'Brak raportu kasowego: {e}')
+    # except Exception as e:
+    #     with open(rf'{path}brak dokumentów.txt', 'a') as f:
+    #         f.write('Brak raportu kasowego\n')
+    #     print(f'Brak raportu kasowego: {e}')
 
 
 next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
