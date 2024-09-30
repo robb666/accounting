@@ -92,9 +92,7 @@ def summary(ws_cash, start_row, end_row):
 
     for row in range(start_row, end_row + 1):
         insurer = ws_cash.Cells(row, 2).Value
-        print(insurer)
         amount = ws_cash.Cells(row, 4).Value
-        print(amount)
 
         if insurer and amount is not None and isinstance(amount, (int, float)):
             if insurer in insurers:
@@ -102,7 +100,6 @@ def summary(ws_cash, start_row, end_row):
             else:
                 insurers[insurer] = amount
 
-    print(insurers)
     summary_start_row = 5 + 2  # Leave one row as a gap
     total_sum = 0
 
@@ -117,6 +114,7 @@ def summary(ws_cash, start_row, end_row):
     ws_cash.Cells(grand_total_row - 1, 3).Borders(9).Weight = 2
     ws_cash.Cells(grand_total_row - 1, 4).Borders(9).Weight = 2
     ws_cash.Cells(grand_total_row, 3).Value = "Razem"
+    ws_cash.Cells(grand_total_row, 3).Font.Bold = True
     ws_cash.Cells(grand_total_row, 4).Value = total_sum
     ws_cash.Cells(grand_total_row, 4).Font.Size = 12
     ws_cash.Cells(grand_total_row, 4).Font.Bold = True
@@ -130,61 +128,61 @@ def filtry_kolumn(ws, rok_msc):
     ws.Columns(1).AutoFilter(Field=51, Criteria1='G')
 
 
-def copy_paste_daty(ws, ws_cash):
+def copy_paste_daty(ws, start_row, ws_cash):
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(3)
-    ws_cash.Range(f'A21:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
-    ws_cash.Range(f'A21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)  # 12
-    ws_cash.Range(f'A21:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft  # -4131
+    ws_cash.Range(f'A{start_row}:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
+    ws_cash.Range(f'A{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)  # 12
+    ws_cash.Range(f'A{start_row}:A{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft  # -4131
 
     time.sleep(.7)
 
 
-def copy_paste_tu(ws, ws_cash, col_diff):
+def copy_paste_tu(ws, ws_cash, start_row, col_diff):
     ws.Range(f'AL5:AL{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
-    ws_cash.Range(f'B21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'B{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
     none_list = []
-    row = 2
+    row = 21
 
-    # for tow in ws_cash.Range(f'B21:B{ws.UsedRange.Rows.Count + 190}'):
-    #     tow = str(tow)
-    #     if none := tow is None:
-    #         none_list.append(none)
-    #         row += 1
-    #         if len(none_list) > 3:
-    #             break
-    #     ws_cash.Cells(row, 2).Value = filtr_tu(tow)
-    #     row += 1
+    for tow in ws_cash.Range(f'B{start_row}:B{col_diff}'):
+        tow = str(tow)
+        if none := tow is None:
+            none_list.append(none)
+            row += 1
+            if len(none_list) > 3:
+                break
+        ws_cash.Cells(row, 2).Value = filtr_tu(tow)
+        row += 1
 
 
-def copy_paste_nr(ws, ws_cash):
+def copy_paste_nr(ws, ws_cash, start_row):
     ws.Range(f'AN5:AN{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
     ws_cash.Columns(3).NumberFormat = 0
-    ws_cash.Range(f'C21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
-    ws_cash.Range(f'C21:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
+    ws_cash.Range(f'C{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'C{start_row}:C{ws.UsedRange.Rows.Count}').HorizontalAlignment = constants.xlHAlignLeft
     time.sleep(.7)
 
 
-def copy_paste_inkaso(ws, ws_cash, col_diff):
+def copy_paste_inkaso(ws, ws_cash, start_row, col_diff):
     ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
-    ws_cash.Range(f'D21').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
+    ws_cash.Range(f'D{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 
-    for i, value in enumerate(ws_cash.Range(f'D21:D{ws.UsedRange.Rows.Count - col_diff}')):
+    for i, value in enumerate(ws_cash.Range(f'D{start_row}:D{ws.UsedRange.Rows.Count - col_diff}')):
         if str(value) in ('0.0', 'None', None, ''):
             ws_cash.Rows(i + 2).EntireRow.Delete()
 
-    ws_cash.Cells(19, 4).Value = '=SUM(D21:D2000)'
+    ws_cash.Cells(19, 4).Value = f'=SUM(D{start_row}:D2000)'
     ws_cash.Cells(19, 4).Font.Size = 15
     ws_cash.Cells(19, 4).Font.Bold = True
 
 
-def sortowanie(ws, ws_cash, col_diff):
+def sortowanie(ws, ws_cash, start_row, col_diff):
     xlAscending = 1
     xlSortColumns = 1
-    ws_cash.Range(f"A21:A{ws_cash.UsedRange.Rows.Count}").Sort(Key1=ws_cash.Range("A1"),
+    ws_cash.Range(f"A{start_row}:A{ws_cash.UsedRange.Rows.Count}").Sort(Key1=ws_cash.Range("A1"),
                                                                     Order1=xlAscending, Orientation=xlSortColumns)
 
 
@@ -211,28 +209,28 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, next_month_path)
 
 
 def raport_inkaso(*, za_okres, path):
-    gen_py()
+        gen_py()
     # try:
-    print('Raport kasowy...')
-    ExcelApp, wb, ws, col_diff = baza()
+        print('Raport kasowy...')
+        ExcelApp, wb, ws, col_diff = baza()
 
-    msc, msc_rok, rok_msc = okres(za_okres)
-    ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
-    start_row = 21
-    # end_row = ws_cash.Cells(ws_cash.Rows.Count, 2).End(-4162).Row  # Dynamically find the last row
-    end_row = 300
-    print(start_row, end_row)
-    filtry_kolumn(ws, rok_msc)
-    copy_paste_daty(ws, ws_cash)
-    copy_paste_tu(ws, ws_cash, col_diff)
-    copy_paste_nr(ws, ws_cash)
-    copy_paste_inkaso(ws, ws_cash, col_diff)
-    sortowanie(ws, ws_cash, col_diff)
-    summary(ws_cash, start_row, end_row)
-    auto_fit(ws_cash)
-    time.sleep(1)
-    opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
-    print('Raport kasowy ok')
+        msc, msc_rok, rok_msc = okres(za_okres)
+        ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
+        start_row = 21
+        # end_row = ws_cash.Cells(ws_cash.Rows.Count, 2).End(-4162).Row  # Dynamically find the last row
+        end_row = 300
+
+        filtry_kolumn(ws, rok_msc)
+        copy_paste_daty(ws, start_row, ws_cash)
+        copy_paste_tu(ws, ws_cash, start_row, end_row)
+        copy_paste_nr(ws, ws_cash, start_row)
+        copy_paste_inkaso(ws, ws_cash, start_row, col_diff)
+        sortowanie(ws, ws_cash, start_row, col_diff)
+        summary(ws_cash, start_row, end_row)
+        auto_fit(ws_cash)
+        time.sleep(1)
+        opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
+        print('Raport kasowy ok')
 
     # except Exception as e:
     #     with open(rf'{path}brak dokumentów.txt', 'a') as f:
