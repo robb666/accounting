@@ -209,8 +209,8 @@ def opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, next_month_path)
 
 
 def raport_inkaso(*, za_okres, path):
-        gen_py()
-    # try:
+    gen_py()
+    try:
         print('Raport kasowy...')
         ExcelApp, wb, ws, col_diff = baza()
 
@@ -232,10 +232,10 @@ def raport_inkaso(*, za_okres, path):
         opcje_zapisu(ExcelApp, ExcelApp_cash, wb, wb_cash, msc_rok, path)
         print('Raport kasowy ok')
 
-    # except Exception as e:
-    #     with open(rf'{path}brak dokumentów.txt', 'a') as f:
-    #         f.write('Brak raportu kasowego\n')
-    #     print(f'Brak raportu kasowego: {e}')
+    except Exception as e:
+        with open(rf'{path}brak dokumentów.txt', 'a') as f:
+            f.write('Brak raportu kasowego\n')
+        print(f'Brak raportu kasowego: {e}')
 
 
 next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
