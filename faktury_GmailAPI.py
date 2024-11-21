@@ -137,7 +137,7 @@ def uniqa_invoice(fv, message_id, msg, next_month_path):
             with open(path, 'wb') as f:
                 f.write(get_att_de)
 
-            # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego AXA
+            # Ten fragment zdejmuje hasło z rozliczenia prowizyjnego Uniqa (AXA)
             xlApp = Dispatch("Excel.Application")
             xlwb = xlApp.Workbooks.Open(next_month_path + 'Uniqa_prowizja.xls',
                                         False, False, None, 'PVxCC32%pLkO')
