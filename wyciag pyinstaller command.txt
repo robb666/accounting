@@ -1,9 +1,4 @@
-pyinstaller -F --noconsole --add-data "C:\Users\Robert\AppData\Local\Programs\Python\Python39\Lib\site-packages\ahk";"ahk" wyciag.py --hidden-import pyautogui
-
-
-
-
 # musi być ścieżka z .env (virtualnego środowiska)
-C:\Users\PipBoy3000\Desktop\IT\projekty\accounting\.env\Lib\site-packages\ahk
+# C:\Users\PipBoy3000\Desktop\IT\projekty\accounting\.env\Lib\site-packages\ahk
 
 pyinstaller -F --noconsole --add-data "C:\Users\PipBoy3000\Desktop\IT\projekty\accounting\.env\Lib\site-packages\ahk";"ahk" wyciag.py --hidden-import pyautogui
