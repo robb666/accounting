@@ -49,7 +49,7 @@ def filtr_tu(tow):
           'UNI': 'Uniqa', 'WAR': 'Warta', 'ŻWAR': 'Warta', 'WIE': 'Wiener', 'YCD': 'You Can Drive', 'TRA': 'Trasti',
           'WEF': 'Wefox', 'BAL': 'Balcia', 'None': ''}
 
-    return tu[tow]
+    return tu.get(tow, tow)
 
 
 def okres(n):
@@ -68,21 +68,25 @@ def arkusz_raportu(msc_rok):
     ws_cash.Name = f'Inkaso {msc_rok}r.'
 
     ws_cash.Cells(1, 4).Value = f'Inkaso {msc_rok}r.'
+    ws_cash.Cells(1, 4).Font.Bold = True
     ws_cash.Cells(2, 1).Value = 'MAGRO UBEZPIECZENIA SP. Z O.O.'
     ws_cash.Cells(2, 1).Font.Bold = True
     ws_cash.Cells(3, 1).Value = '90-441 Łódź, Al. Kościuszki 123/307'
     ws_cash.Cells(4, 1).Value = 'NIP 7252160008'
 
-    ws_cash.Cells(20, 1).Value = 'Data'
-    ws_cash.Cells(20, 1).Font.Bold = True
-    ws_cash.Cells(20, 2).Value = 'TU'
-    ws_cash.Cells(20, 2).Font.Bold = True
-    ws_cash.Cells(20, 3).Value = 'Nr polisy'
-    ws_cash.Cells(20, 3).Font.Bold = True
-    ws_cash.Cells(20, 4).Value = 'Kwota inkaso'
-    ws_cash.Cells(20, 4).Font.Bold = True
-    ws_cash.Cells(19, 3).Value = 'Razem inkaso:'
-    ws_cash.Cells(19, 3).Font.Bold = True
+    ws_cash.Cells(25, 1).Value = 'Data'
+    ws_cash.Cells(25, 1).Font.Bold = True
+    ws_cash.Cells(25, 2).Value = 'TU'
+    ws_cash.Cells(25, 2).Font.Bold = True
+    ws_cash.Cells(25, 3).Value = 'Nr polisy'
+    ws_cash.Cells(25, 3).Font.Bold = True
+    ws_cash.Cells(25, 4).Value = 'Kwota inkaso'
+    ws_cash.Cells(25, 4).Font.Bold = True
+
+    ws_cash.Cells(25, 1).Borders(9).Weight = 1
+    ws_cash.Cells(25, 2).Borders(9).Weight = 1
+    ws_cash.Cells(25, 3).Borders(9).Weight = 1
+    ws_cash.Cells(25, 4).Borders(9).Weight = 1
 
     return ExcelApp_cash, wb_cash, ws_cash
 
@@ -100,7 +104,7 @@ def summary(ws_cash, start_row, end_row):
             else:
                 insurers[insurer] = amount
 
-    summary_start_row = 5 + 2  # Leave one row as a gap
+    summary_start_row = 5 + 2  # Leave two row as a gap
     total_sum = 0
 
     for idx, (insurer, sum_value) in enumerate(insurers.items()):
@@ -111,12 +115,14 @@ def summary(ws_cash, start_row, end_row):
 
     # Write the grand total at the end
     grand_total_row = summary_start_row + len(insurers)
-    ws_cash.Cells(grand_total_row - 1, 3).Borders(9).Weight = 2
-    ws_cash.Cells(grand_total_row - 1, 4).Borders(9).Weight = 2
-    ws_cash.Cells(grand_total_row, 3).Value = "Razem"
+    ws_cash.Cells(grand_total_row - 1, 3).Borders(9).Weight = 1
+    ws_cash.Cells(grand_total_row - 1, 4).Borders(9).Weight = 1
+    ws_cash.Cells(grand_total_row, 3).Value = 'Razem inkaso:'
+    ws_cash.Cells(grand_total_row, 3).Font.Size = 15
     ws_cash.Cells(grand_total_row, 3).Font.Bold = True
+    # ws_cash.Cells(grand_total_row + 2, 4).Value = f'=SUM(D{start_row}:D2000)'
     ws_cash.Cells(grand_total_row, 4).Value = total_sum
-    ws_cash.Cells(grand_total_row, 4).Font.Size = 12
+    ws_cash.Cells(grand_total_row, 4).Font.Size = 15
     ws_cash.Cells(grand_total_row, 4).Font.Bold = True
 
     # Format the summary rows for clarity
@@ -129,6 +135,7 @@ def filtry_kolumn(ws, rok_msc):
 
 
 def copy_paste_daty(ws, start_row, ws_cash):
+    # Posortować przed skopiowaniem
     ws.Range(f'AD5:AD{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(3)
     ws_cash.Range(f'A{start_row}:A{ws.UsedRange.Rows.Count}').NumberFormat = "@"
@@ -143,7 +150,7 @@ def copy_paste_tu(ws, ws_cash, start_row, col_diff):
     time.sleep(1)
     ws_cash.Range(f'B{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
     none_list = []
-    row = 21
+    row = start_row
 
     for tow in ws_cash.Range(f'B{start_row}:B{col_diff}'):
         tow = str(tow)
@@ -165,25 +172,17 @@ def copy_paste_nr(ws, ws_cash, start_row):
     time.sleep(.7)
 
 
-def copy_paste_inkaso(ws, ws_cash, start_row, col_diff):
+def copy_paste_inkaso(ws, ws_cash, start_row):
     ws.Range(f'BC5:BC{ws.UsedRange.Rows.Count}').Copy()
     time.sleep(1)
     ws_cash.Range(f'D{start_row}').PasteSpecial(Paste=constants.xlPasteValuesAndNumberFormats)
 
-    for i, value in enumerate(ws_cash.Range(f'D{start_row}:D{ws.UsedRange.Rows.Count - col_diff}')):
-        if str(value) in ('0.0', 'None', None, ''):
-            ws_cash.Rows(i + 2).EntireRow.Delete()
 
-    ws_cash.Cells(19, 4).Value = f'=SUM(D{start_row}:D2000)'
-    ws_cash.Cells(19, 4).Font.Size = 15
-    ws_cash.Cells(19, 4).Font.Bold = True
-
-
-def sortowanie(ws, ws_cash, start_row, col_diff):
+def sortowanie(ws, ws_cash, start_row):
     xlAscending = 1
     xlSortColumns = 1
     ws_cash.Range(f"A{start_row}:A{ws_cash.UsedRange.Rows.Count}").Sort(Key1=ws_cash.Range("A1"),
-                                                                    Order1=xlAscending, Orientation=xlSortColumns)
+                                                            Order1=xlAscending, Orientation=xlSortColumns)
 
 
 def auto_fit(ws_cash):
@@ -216,16 +215,16 @@ def raport_inkaso(*, za_okres, path):
 
         msc, msc_rok, rok_msc = okres(za_okres)
         ExcelApp_cash, wb_cash, ws_cash = arkusz_raportu(msc_rok)
-        start_row = 21
-        # end_row = ws_cash.Cells(ws_cash.Rows.Count, 2).End(-4162).Row  # Dynamically find the last row
-        end_row = 300
+        start_row = 26
+        # end_row = ws_cash.Cells(ws_cash.Rows.Count, 3).End(-4162).Row  # Dynamically find the last row
+        end_row = 500
 
         filtry_kolumn(ws, rok_msc)
         copy_paste_daty(ws, start_row, ws_cash)
         copy_paste_tu(ws, ws_cash, start_row, end_row)
         copy_paste_nr(ws, ws_cash, start_row)
-        copy_paste_inkaso(ws, ws_cash, start_row, col_diff)
-        sortowanie(ws, ws_cash, start_row, col_diff)
+        copy_paste_inkaso(ws, ws_cash, start_row)
+        sortowanie(ws, ws_cash, end_row)
         summary(ws_cash, start_row, end_row)
         auto_fit(ws_cash)
         time.sleep(1)
@@ -238,5 +237,5 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
-# raport_inkaso(za_okres=-1, path=next_month_path)
+next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
+raport_inkaso(za_okres=-1, path=next_month_path)
