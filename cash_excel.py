@@ -237,5 +237,5 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
-raport_inkaso(za_okres=-1, path=next_month_path)
+# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
+# raport_inkaso(za_okres=-1, path=next_month_path)
