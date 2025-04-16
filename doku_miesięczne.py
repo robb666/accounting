@@ -41,7 +41,8 @@ def driver_inst(func):
         options.add_experimental_option("prefs", preferences)
         # options.add_experimental_option("detach", True)
         # options.headless = True
-        driver = webdriver.Chrome(executable_path=r'\\Js\e\zzzProjekty\drivery przegądarek\chromedriver.exe',
+        # driver = webdriver.Chrome(executable_path=r'\\Js\e\zzzProjekty\drivery przegądarek\chromedriver.exe',
+        driver = webdriver.Chrome(executable_path=r'D:\zzzProjekty\drivery przegądarek\chromedriver.exe',
                                   options=options)
         return func(driver)
     return wrapper

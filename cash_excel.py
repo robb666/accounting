@@ -24,7 +24,8 @@ def gen_py():
 
 
 def baza():
-    path_bazy = r'\\Js\e\Agent baza'
+    # path_bazy = r'\\Js\e\Agent baza'
+    path_bazy = r'D:\Agent baza'
     """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
