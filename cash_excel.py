@@ -25,7 +25,7 @@ def gen_py():
 
 def baza():
     # path_bazy = r'\\Js\e\Agent baza'
-    path_bazy = r'D:\Agent baza'
+    path_bazy = r'M:\Agent baza'
     """Sprawdza czy arkusz jest otwarty. Jeżeli arkusz jest zamknięty, otwiera go."""
     try:
         ExcelApp = win32.GetActiveObject('Excel.Application')
@@ -238,5 +238,5 @@ def raport_inkaso(*, za_okres, path):
         print(f'Brak raportu kasowego: {e}')
 
 
-# next_month_path = f'C:\\Users\\PipBoy3000\\Desktop\\'
-# raport_inkaso(za_okres=-1, path=next_month_path)
+next_month_path = f'C:\\Users\\ubezp\\Desktop\\'
+raport_inkaso(za_okres=-1, path=next_month_path)
